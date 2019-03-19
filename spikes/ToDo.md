@@ -13,7 +13,8 @@ To Do:
   + Docker
     + How to call Docker from python script
     + How to manage many Docker containers
+    + Returning info from a spawned Container
   + [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
   + Front End Framework
     + [Bootstrap](https://getbootstrap.com/)
- 
+  
