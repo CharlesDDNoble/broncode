@@ -5,7 +5,9 @@ To Do:
   + [Selenium for in browser testing](https://www.seleniumhq.org/)
 + Standards
   + [Python Standards](https://www.python.org/dev/peps/pep-0008/)
-+ Tools
++ Software Tools
+  + Django
+    + How does it work?
   + Code Editor
     + [Code Mirror](https://codemirror.net/)
   + Docker
