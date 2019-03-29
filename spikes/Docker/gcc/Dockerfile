@@ -1,4 +1,9 @@
-FROM gcc:4.9
-COPY test.c .
-RUN gcc -o test test.c
-CMD ["./test"]
+FROM debian:latest
+
+RUN apt-get update
+RUN apt-get install -y gcc python3 netcat
+
+COPY . /broncode
+WORKDIR /broncode
+
+CMD ["python3", "receive.py"]
