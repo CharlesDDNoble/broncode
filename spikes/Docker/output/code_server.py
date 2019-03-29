@@ -1,31 +1,39 @@
 import socket
+import subprocess
 import os
 
+def writeCodeFile(data):
+	inFile = open("code.c","wb");
+	inFile.write(data)	
+	inFile.close()
+	
 def handle_requests(server):
+	errorMsg = bytes("There was an error in compiling your code:\n",'utf-8')
+	# outFile = open("code.out","rb");
+	# capture stdout/stderr of spawned proc
+	compileCmd  = ["gcc", "-Wall", "-Werror", "-o", "code", "code.c"]
+	runCmd = ["./code"]
+	compProc = 0
 	while True:
 		clientSoc = 0
-	    # accept connections
+	    	# accept connections
 		(clientSoc, address) = server.accept()
 		if clientSoc:
 			data = clientSoc.recv(4096)
-			inFile = open("code.c","wb");
-			inFile.write(data)
-			inFile.close()
-			res = os.system('gcc -Wall -Werror -o code code.c >& code.out')
-
-			if res == 0:
-				os.system("./code > code.out")
+			writeCodeFile(data)
+			compProc = subprocess.run(compileCmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			if compProc.returncode == 0:
+				compProc = subprocess.run(runCmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				clientSoc.send(compProc.stdout)
+				clientSoc.send(compProc.stderr)
+				#TODO:check for runtime error
 			else:
-				errorMsg = bytes("There was an error in compiling your code:\n",'utf-8')
+				#output compilation error
 				clientSoc.send(errorMsg)
-
-			#open the out file
-			outFile = open("code.out","rb");
-
-			for line in outFile:
-				clientSoc.send(line)
-
+				clientSoc.send(compProc.stderr)
+				
 			break
+	#clean up
 	os.system("rm -f code code.c code.out")
 	
 
