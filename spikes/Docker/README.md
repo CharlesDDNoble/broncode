@@ -1,3 +1,7 @@
+How to install:
+	follow instructions [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+
+	
 How to use docker:
 	1. Pull image, a docker image is basically a vm
 
