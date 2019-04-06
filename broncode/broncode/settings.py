@@ -25,12 +25,13 @@ SECRET_KEY = 'b7^-9s1en8=xkttzq783%==tnc@yi!495tkv8@od#y2l&9gqqs'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['broncode.cs.wmich.edu']
+ALLOWED_HOSTS = ['broncode.cs.wmich.edu', 'localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'codemirror.apps.CodemirrorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

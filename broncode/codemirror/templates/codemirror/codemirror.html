@@ -1,0 +1,42 @@
+<script data-main="/static/codemirror/lib/codemirror" src="/static/require-js/require.js"></script>
+<script>
+
+    {% comment %} Using require to load Code Mirror {% endcomment %}
+    require.config({
+        packages: [{
+            name: "codemirror",
+            location: "/static/codemirror",
+            main: "lib/codemirror"
+        }]
+    });
+
+    {% comment %} 
+    * Using require to load all js files needed for code mirror. 
+    * Can also do the following:
+        ```
+        require("codemirror/mode/javascript/javascript")
+        var codeMirror = require("codemirror");
+        var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), { // more code });
+        ```
+    * NOTE: The last name in the require path is the name of the JS file
+    {% endcomment %}
+    require([
+        "codemirror",
+        "codemirror/mode/javascript/javascript",
+        "codemirror/mode/clike/clike",
+    ], function(CodeMirror) {
+        CodeMirror.fromTextArea(document.getElementById("codemirror"), {
+            mime: "text/x-csrc",
+            indentUnit: 4,
+            lineNumbers: true,
+            theme: "lesser-dark"
+        });
+    });
+</script>
+{% comment %} Loading the css files {% endcomment %}
+<link rel="stylesheet" href="/static/codemirror/lib/codemirror.css">
+<link href="/static/codemirror/theme/lesser-dark.css" rel="stylesheet" type="text/css"/>
+
+
+<h1 style="font-family:sans-serif">C-Editor</h1>
+<textarea id="codemirror"></textarea>
