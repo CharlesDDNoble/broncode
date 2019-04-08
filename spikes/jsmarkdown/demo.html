@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>showdown demo</title>
+    <script src="showdown.min.js"></script>
+</head>
+<script>
+function run() {
+  var text = document.getElementById('sourceTA').value,
+    target = document.getElementById('targetDiv'),
+    converter = new showdown.Converter(),
+    html = converter.makeHtml(text);
+    
+    target.innerHTML = html;
+}
+</script>
+<body>
+    <textarea id="sourceTA" rows="10" cols="82"></textarea>
+    <hr/>
+    <button id="runBtn" onClick="run()">Convert</button>
+    <hr/>
+    <div id="targetDiv"></div>
+</body>
+</html>
