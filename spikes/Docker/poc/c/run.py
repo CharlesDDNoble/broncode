@@ -25,10 +25,10 @@ def handle_container(file_name):
 
 def write_code_file(file_name):
 	code =  "#include <stdio.h>					\n" \
-			"									\n" \
+			"								\n" \
 			"int main(int argc, char *argv[]) {	\n" \
 			"	printf(\"Hello World!\\n\");	\n" \
-			"	return 0;						\n" \
+			"	return comp_err;						\n" \
 			"}									\n" 
 	out_file = open(file_name,"w")
 	out_file.write(str(code))
