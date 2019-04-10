@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <title>showdown demo</title>
     <script src="showdown.min.js"></script>
+    <script src="extraclasses.js"></script>
 </head>
 <script>
+showdown.setFlavor('github');
 function run() {
   var text = document.getElementById('sourceTA').value,
     target = document.getElementById('targetDiv'),
-    converter = new showdown.Converter(),
+    pretarget = document.getElementById('targetDivPre'),
+    converter = new showdown.Converter({extentions: ['extraClasses']}),
     html = converter.makeHtml(text);
     
     target.innerHTML = html;
+    pretarget.innerHTML = html;
+    pretarget.innerHTML = pretarget.innerHTML.replace(/&/g, "&amp;");
+    pretarget.innerHTML = pretarget.innerHTML.replace(/</g, "&lt;");
+    pretarget.innerHTML = pretarget.innerHTML.replace(/>/g, "&gt;");
 }
 </script>
 <body>
@@ -21,5 +28,7 @@ function run() {
     <button id="runBtn" onClick="run()">Convert</button>
     <hr/>
     <div id="targetDiv"></div>
+    <hr/>
+    <pre><code><div id="targetDivPre"></div></code></pre>
 </body>
 </html>
