@@ -1,0 +1,35 @@
+﻿
+{% block outputConsole %}
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'codemirror/lib/codemirror.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'codemirror/addon/hint/show-hint.css' %}">
+
+    <script src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+    <script src="{% static 'codemirror/addon/edit/continuelist.js' %}"></script>
+    <script src="{% static 'codemirror/mode/xml/xml.js' %}"></script>
+    <script src="{% static 'codemirror/mode/markdown/markdown.js' %}"></script>
+
+    <style>
+      .CodeMirror {
+            /* Set height, width, borders, and global font properties here */
+            font-family: monospace;
+            height: auto;
+            color: black;
+            direction: ltr;
+        }
+    </style>
+
+   <textarea id="outputBox"> {{testResult}} </textarea>
+   <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("outputBox"), {
+        mode: 'markdown',
+        lineNumbers: false,
+        theme: "blackboard",
+        readOnly: true,
+        viewportMargin: Infinity,
+        extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
+      });
+    </script>
+
+{% endblock %}
