@@ -7,6 +7,10 @@ from .codehandler import CodeHandler
 def index(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
+    # Grab sample code
+    filename = finders.find('poc/samplefiles/testCode.c')
+    fp = open(filename, 'r')
+    sampleCode = fp.read()
 
     # Get variable from template ('component/codemirror.html')
     code = request.POST.get('codearea','na')
@@ -19,11 +23,8 @@ def index(request):
     if code != 'na':
          handler = CodeHandler(code, 'code.c', 'broncode_c')
          log = handler.log
+         sampleCode = code
 
-    # Grab sample code
-    filename = finders.find('poc/samplefiles/testCode.c')
-    fp = open(filename, 'r')
-    sampleCode = fp.read()
 
     # Render the 'index.html' page
     return render(
