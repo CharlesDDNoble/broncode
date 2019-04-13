@@ -1,35 +1,33 @@
 import os
 import subprocess
+from codeexecutor import CodeExecutor
 
-def compile_and_run():
-    #TODO: Docstring
-	#TODO: add compile args	
-    cmd_run = ["python3", "code.py"]
-    done_process = subprocess.run(
-                        cmd_run, stdout = subprocess.PIPE,
-                        stderr = subprocess.PIPE)
-    return(done_process)
-
-
-def main():
-	error_msg = "Something went wrong running your code:\n"
-	#TODO: create timer on compilation/wait to guard against inf loop
-	#wait for code file to be copied into container
-	while not os.path.exists("code.py"):
-		pass
-
-	#compile code (if necessary) and run it using a subprocess
-	done_process = compile_and_run()
-
-	#if there were no errors in comp/run code
-	if done_process.returncode == 0:
-		print(done_process.stdout.decode("utf-8"))
-	else:
-		#output error msg and stderr
-		print(error_msg)
-		print(done_process.stdout.decode("utf-8"))
-		print(done_process.stderr.decode("utf-8"))  
+class CExecutor(CodeExecutor):
 	
+	def __init__(self):
+		self.log = ""
 
-if __name__ == "__main__":
-	main()
+	def run(self):
+		cmd_run = ["python3", "code.py"]
+		done_process = subprocess.run(
+					cmd_run, stdout = subprocess.PIPE, 
+					stderr = subprocess.PIPE)
+		return(done_process)
+
+	def execute(self):
+		#TODO: create timer on compilation/run to guard against inf loop
+		error_msg_run = "Something went wrong running your code:\n"
+
+		#wait for code file to be copied into container
+		while not os.path.exists("code.c"):
+			pass
+
+		done_process = self.run()
+
+		#if there were errors in comp
+		if done_process.returncode:
+			self.log += error_msg_run
+
+		#add the logs of the returned process to this object's log
+		self.log += done_process.stdout.decode("utf-8")
+		self.log += done_process.stderr.decode("utf-8") 

@@ -2,24 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>showdown demo</title>
+    <title>Markdown demo</title>
     <script src="showdown.min.js"></script>
+    <script src="rendermarkdownfile.js"></script>
 </head>
-<script>
-function run() {
-  var text = document.getElementById('sourceTA').value,
-    target = document.getElementById('targetDiv'),
-    converter = new showdown.Converter(),
-    html = converter.makeHtml(text);
-    
-    target.innerHTML = html;
-}
-</script>
 <body>
-    <textarea id="sourceTA" rows="10" cols="82"></textarea>
-    <hr/>
-    <button id="runBtn" onClick="run()">Convert</button>
-    <hr/>
-    <div id="targetDiv"></div>
+    <h1>This content is not markdown.</h1>
+    <p>Look at me, I'm not markdown.</p>
+    <h1>This content is markdown.</h1>
+    <div>
+        <script>renderMarkdownFile("./markdown.md");</script>
+    </div>
 </body>
 </html>
