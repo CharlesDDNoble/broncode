@@ -15,7 +15,7 @@ class CodeHandler:
 		self.clean_up()
 
 	def handle_container(self):
-		error_msg_time_out = 	"Something went wrong running your code:\n\t"
+		error_msg_time_out = 	"Something went wrong running your code:\n\t" \
 								"It took too long to execute, so we stopped it!\n"
 		time_out = False
 		#TODO: Check returns of docker-py function calls for error
