@@ -9,15 +9,15 @@ class CodeHandler:
         self.code_file_name = code_file_name
         self.image_name = image_name
         self.code = code
-	self.time = 0
+		self.time = 0
         self.write_to_file()
         self.log = self.handle_container()
         self.clean_up()
 
     def handle_container(self):
-	error_msg_time_out = 	"Something went wrong running your code:\n\t
-				 It took too long to execute, so we stopped it!\n"
-	time_out = False
+		error_msg_time_out = 	"Something went wrong running your code:\n\t"
+								"It took too long to execute, so we stopped it!\n"
+		time_out = False
         #TODO: Check returns of docker-py function calls for error
         client = docker.from_env()
 	
@@ -32,17 +32,18 @@ class CodeHandler:
         #TODO: convert to subprocess  
         os.system("docker cp "+self.code_file_name+" "+container.id+":/")
 
-        #wait until the container is exited
-	self.time = time.time()
+        #wait until the container is exited; interrupt if time out
+		self.time = time.time()
         while "running" in container.status and not time_out:
-            container.reload()
-	    if time.time() - self.time >= 3.5:
-		time_out = True
-	
-	if time_out:
-		log += error_msg_time_out
-	else:
-        	log = container.logs().decode("utf-8")
+			container.reload()
+			if time.time() - self.time >= 3.5:
+				time_out = True
+		
+		#set this object's log to the time out error msg or container's log
+		if time_out:
+			log = error_msg_time_out
+		else:
+			log = container.logs().decode("utf-8")
 
         return(log)
 
