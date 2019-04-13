@@ -4,13 +4,16 @@ import time
 
 class CodeHandler:
 
-	def __init__(self, code = 0, code_file_name = 0, image_name = 0):
+	def __init__(self, code = '', flags = '', code_file_name = '', image_name = ''):
 		#TODO: consider logging inputs and outputs
+		self.code = code
+		self.flags = flags
 		self.code_file_name = code_file_name
 		self.image_name = image_name
-		self.code = code
 		self.time = 0
-		self.write_to_file()
+
+	def run(self):
+		self.write_files()
 		self.log = self.handle_container()
 		self.clean_up()
 
@@ -47,13 +50,21 @@ class CodeHandler:
 
 		return(log)
 
-	def write_to_file(self):
-		out_file = open(self.code_file_name,"w")
-		out_file.write(self.code)
+	def write_files(self):
+		#write code file
+		code_file = open(self.code_file_name,"w")
+		code_file.write(self.code)
+		code_file.close()
+
+		#write flag file
+		flag_file = open('flags.txt',"w")
+		flag_file.write(flags)
+		flag_file.close()
 
 	def clean_up(self):
 		#TODO: convert to subprocess
 		os.system("rm -f "+self.code_file_name)  
+		os.system("rm -f flags.txt")  
 
 	def run_time_trial(self, reps = 10):
 		start_time = time.time()

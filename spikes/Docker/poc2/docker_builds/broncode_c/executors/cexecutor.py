@@ -6,6 +6,7 @@ class CExecutor(codeexecutor.CodeExecutor):
 	
 	def __init__(self):
 		self.log = ""
+		self.flags = ["-o", "code"]
 
 	def run(self):
 		cmd_run = ["./code"]
@@ -15,16 +16,33 @@ class CExecutor(codeexecutor.CodeExecutor):
 		return(done_process)
 
 	def compile(self):
-		cmd_compile  = ["gcc", "-o", "code", "code.c"]
+		cmd_compile  = ["gcc","code.c"]
+		cmd_compile += self.flags
+
 		done_process = subprocess.run(
 				cmd_compile, stdout = subprocess.PIPE,
 				stderr = subprocess.PIPE)
+		
 		return(done_process)
+
+	def parse_flags(self):
+		flag_file = file.open('flags.txt','r')		
+		for line in flag_file:
+			args = line.split(' ')
+			self.flags += args
+		flag_file.close()
+
 
 	def execute(self):
 		#TODO: create timer on compilation/run to guard against inf loop
 		error_msg_comp = "Something went wrong compiling your code:\n"
 		error_msg_run = "Something went wrong running your code:\n"
+
+		#wait for flags file
+		while not os.path.exists("flags.txt"):
+			pass
+
+		self.parse_flags()
 
 		#wait for code file to be copied into container
 		while not os.path.exists("code.c"):

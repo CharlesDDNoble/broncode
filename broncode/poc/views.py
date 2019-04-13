@@ -21,7 +21,7 @@ def index(request):
 
     # Open a file and write the contents to it
     if code != 'na':
-         handler = CodeHandler(code, 'code.c', 'broncode_c')
+         handler = CodeHandler(code, compilerFlags, 'code.c', 'broncode_c')
          log = handler.log
          sampleCode = code
 
