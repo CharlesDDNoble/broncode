@@ -13,7 +13,7 @@ class CodeHandler:
         start_time = time.time()
         self.log = self.handle_container()
         elapsed_time = time.time() - start_time
-        elap = str(elapsed_time/reps+"\n")
+        elap = str(elapsed_time+"\n")
         self.log += "Total time to process code: "+elap
         self.clean_up()
 

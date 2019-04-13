@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.contrib.staticfiles import finders
 from datetime import datetime
-
+from .codehandler import CodeHandler
 
 def index(request):
     """Renders the home page."""
@@ -13,14 +13,13 @@ def index(request):
 
     # Get variable from template ('component/flags.html')
     compilerFlags = request.POST.get('compilerFlags', 'na')
+    log = ''
 
     # Open a file and write the contents to it
     if code != 'na':
-        print(code)
-        codeFile = open('testCode.c','w')
-        codeFile.write(code)
-        codeFile.close()
-    
+         handler = CodeHandler(code, 'code.c', 'broncode_c')
+         log = handler.log
+
     # Grab sample code
     filename = finders.find('poc/samplefiles/testCode.c')
     fp = open(filename, 'r')
@@ -34,6 +33,7 @@ def index(request):
             'title': 'Broncode',
             'year': datetime.now().year,
             'codeText': sampleCode,
-            'defaultFlags': '-g -O3'
+            'defaultFlags': '-g -O3',
+            'testResult' : log
         }
     )
