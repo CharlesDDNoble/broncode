@@ -1,0 +1,37 @@
+
+{% block codemirrorFlags %}
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'codemirror/lib/codemirror.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'codemirror/addon/hint/show-hint.css' %}">
+
+    <script src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+    <script src="{% static 'codemirror/addon/edit/matchbrackets.js' %}"></script>
+    <script src="{% static 'codemirror/addon/hint/show-hint.js' %}"></script>
+
+    <script src="{% static 'codemirror/mode/clike/clike.js' %}"></script>
+    <script src="{% static 'codemirror/mode/shell/shell.js' %}"></script>
+
+    <style>
+        .CodeMirror {
+            /* Set height, width, borders, and global font properties here */
+            font-family: monospace;
+            height: auto;
+            color: black;
+            direction: ltr;
+        }
+    </style>
+    <form action="" method="post">
+        {% csrf_token %}
+        <textarea id="compileFlags" name="compileFlags" id="compiler-flags"> {{defaultFlags}} </textarea>
+    </form>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('compileFlags'), {
+            mode: 'shell',
+            lineNumbers: false,
+            matchBrackets: false,
+            viewportMargin: Infinity
+        });
+    </script>
+
+{% endblock %}

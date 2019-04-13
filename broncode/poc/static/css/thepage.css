@@ -1,0 +1,38 @@
+/* General */
+html {
+    max-height: 100vh;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+    max-height: 100%;
+}
+/* Classes */
+.row {
+    margin: 0%;
+}
+/* IDs */
+#navbar {
+    background-color: rgb(20, 20, 30);
+    padding: 0 2rem 0 2rem;
+}
+#markdown-content {
+    min-height: 91.1vh;
+    background-color: rgb(235, 235, 235);
+}
+#codemirror {
+    padding: 0;
+    min-height: 81.1vh;
+    background-color: rgb(31, 30, 46);
+}
+#compiler-flags {
+    min-height: 10vh;
+    background-color: rgb(20, 20, 30);
+}
+#results {
+    min-height: 91.1vh;
+    background-color: rgb(17, 16, 24);
+    padding: 0 2rem 0 2rem;
+    color: white;
+}

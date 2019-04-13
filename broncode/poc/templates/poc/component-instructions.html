@@ -1,0 +1,26 @@
+﻿
+{% block instructions %}
+
+  {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'codemirror/lib/codemirror.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'codemirror/addon/hint/show-hint.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/component-instructions.css' %}">
+
+    <script src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+    <script src="{% static 'codemirror/addon/edit/continuelist.js' %}"></script>
+    <script src="{% static 'codemirror/mode/xml/xml.js' %}"></script>
+    <script src="{% static 'codemirror/mode/markdown/markdown.js' %}"></script>
+
+    <textarea id="instructions-box"> {{instructions}} </textarea>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("instructions-box"), {
+        mode: 'markdown',
+        lineNumbers: false,
+        theme: "blackboard",
+        readOnly: true,
+        viewportMargin: Infinity,
+        extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
+      });
+    </script>
+
+{% endblock %}
