@@ -1,3 +1,4 @@
+#!/bin/bash
 DIR_SUFFIX="broncode"
 
 build_image() {
