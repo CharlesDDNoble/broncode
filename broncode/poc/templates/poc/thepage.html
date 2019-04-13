@@ -1,1 +1,13 @@
-This is it.
+{% load static %}
+<script src="{% static "js/showdown.min.js" %}"></script>
+<script src="{% static "js/rendermarkdownfile.js" %}"></script>
+</head>
+<body>
+    <h1>This content is not markdown.</h1>
+    <p>Look at me, I'm not markdown.</p>
+    <h1>This content is markdown.</h1>
+    <div>
+        <script>renderMarkdownFile("{% static "md/markdown.md" %}");</script>
+    </div>
+</body>
+</html>
