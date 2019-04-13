@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from poc import views
 
 urlpatterns = [
-    path('', views.thepage, name = 'the page'),
+    path('', views.index, name = 'the page'),
 ]

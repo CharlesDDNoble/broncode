@@ -47,18 +47,22 @@
             <div class="col s4">
                 <!--A row to hold the compilerflags and codemirror-->
                 <div class="row">
-                    <!--Column for compilerflags-->
-                    <div class="col s12" id="compiler-flags">
-                        {% block compilerFlags%}
-                        {% include 'poc/component-flags.html' %}
-                        {% endblock compilerFlags %}
-                    </div>
-                    <!--Column for codemirror-->
-                    <div class="col s12" id="codemirror">
-                        {% block codemirror %}
-                        {% include 'poc/component-codemirror.html' %}
-                        {% endblock codemirror %}
-                    </div>    
+                    <!--Start of form-->
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <!--Column for compilerflags-->
+                        <div class="col s12" id="compiler-flags-wrapper">
+                            {% block compilerFlags%}
+                            {% include 'poc/component-flags.html' %}
+                            {% endblock compilerFlags %}
+                        </div>
+                        <!--Column for codemirror-->
+                        <div class="col s12" id="codemirror-wrapper">
+                            {% block codemirror %}
+                            {% include 'poc/component-codemirror.html' %}
+                            {% endblock codemirror %}
+                        </div> 
+                    </form>
                 </div>
             </div>
             <!--Column for the results put on the far right-->
