@@ -16,12 +16,16 @@ def index(request):
     code = request.POST.get('codearea','na')
 
     # Get variable from template ('component/flags.html')
-    compilerFlags = request.POST.get('compilerFlags', 'na')
+    compilerFlags = request.POST.get('compileFlags', 'na')
     log = ''
+
+    print(code)
+    print(compilerFlags)
 
     # Open a file and write the contents to it
     if code != 'na':
          handler = CodeHandler(code, compilerFlags, 'code.c', 'broncode_c')
+         handler.run()
          log = handler.log
          sampleCode = code
 

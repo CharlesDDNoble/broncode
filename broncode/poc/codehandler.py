@@ -10,6 +10,7 @@ class CodeHandler:
 		self.flags = flags
 		self.code_file_name = code_file_name
 		self.image_name = image_name
+		self.log = ''
 		self.time = 0
 
 	def run(self):
@@ -34,6 +35,7 @@ class CodeHandler:
 		#TODO: get docker-py to do this...  
 		#TODO: convert to subprocess  
 		os.system("docker cp "+self.code_file_name+" "+container.id+":/")
+		os.system("docker cp flags.txt "+container.id+":/")
 
 		#wait until the container is exited; interrupt if time out
 		self.time = time.time()
@@ -58,7 +60,7 @@ class CodeHandler:
 
 		#write flag file
 		flag_file = open('flags.txt',"w")
-		flag_file.write(flags)
+		flag_file.write(self.flags)
 		flag_file.close()
 
 	def clean_up(self):
