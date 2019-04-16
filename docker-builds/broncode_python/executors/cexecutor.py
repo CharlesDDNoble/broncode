@@ -1,4 +1,5 @@
 import os
+import time
 import subprocess
 from . import codeexecutor
 
@@ -18,7 +19,8 @@ class CExecutor(codeexecutor.CodeExecutor):
 	def compile(self):
 		cmd_compile  = ["gcc","-o","code"] + self.flags + ["code.c"]
 
-		for tok in cmd_compile:
+		self.log += cmd_compile[0]
+		for tok in cmd_compile[1:]:
 			self.log += " "+tok
 		self.log += "\n"
                 
@@ -40,9 +42,11 @@ class CExecutor(codeexecutor.CodeExecutor):
 		#TODO: create timer on compilation/run to guard against inf loop
 		error_msg_comp = "Something went wrong compiling your code:\n"
 		error_msg_run = "Something went wrong running your code:\n"
+		msg_sucess = "Your code successfully compiled and ran, here's the output:\n"
 
 		#wait for flags file
 		while not os.path.exists("flags.txt"):
+			time.sleep(0.25)
 			pass
 
 		self.log += "Parsing gcc flags...\n"
@@ -50,6 +54,7 @@ class CExecutor(codeexecutor.CodeExecutor):
 
 		#wait for code file to be copied into container
 		while not os.path.exists("code.c"):
+			time.sleep(0.25)
 			pass
 
 		self.log += "Compiling code...\n"
@@ -60,9 +65,8 @@ class CExecutor(codeexecutor.CodeExecutor):
 			self.log += error_msg_comp
 		else:
 			done_process = self.run()
-			#can't rely on return code
-			#how to check if there were errors in running
-			#self.log += error_msg_run
+			self.log += msg_sucess
+			
 
 		#add the logs of the returned process to this object's log
 		self.log += done_process.stdout.decode("utf-8")

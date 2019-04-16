@@ -1,4 +1,5 @@
 import os
+import time
 import subprocess
 from . import codeexecutor
 
@@ -20,6 +21,7 @@ class PythonExecutor(codeexecutor.CodeExecutor):
 
 		#wait for code file to be copied into container
 		while not os.path.exists("code.py"):
+			time.sleep(0.25)
 			pass
 
 		done_process = self.run()

@@ -19,7 +19,7 @@ To Do:
     + How to manage many Docker containers
     + ~~Returning info from a spawned Container~~
     + ~~[Python library](https://github.com/docker/docker-py)~~
-    + Time limit
+    + ~~Time limit~~
     + ~~Test if there's any way to do anything persistent~~
   + [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links)
   + Front End Framework
@@ -32,5 +32,9 @@ To Do:
   + Code editor for C
   + Stdin
   + Compile
+    + Smarter parsing of command line args (extraneous spaces cause gcc to throw errors)
+      e.g. "gcc -o code  -Wall    -Werror code.c" <- if there are extra spaces this doesn't work
+    + More efficient update system, i.e. how to notify the script running in the docker
+      container that the code files are now copied. Some type of push mechanic maybe??? 
   + Show results
   + Stretch goal: another language e.g. R
