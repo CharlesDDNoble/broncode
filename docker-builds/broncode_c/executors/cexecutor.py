@@ -33,7 +33,7 @@ class CExecutor(codeexecutor.CodeExecutor):
 	def parse_flags(self):
 		flag_file = open('flags.txt','r')		
 		for line in flag_file:
-			args = line.split(' ')
+			args = line.split()
 			self.flags += args
 		flag_file.close()
 

@@ -19,9 +19,6 @@ def index(request):
     compilerFlags = request.POST.get('compileFlags', 'na')
     log = ''
 
-    print(code)
-    print(compilerFlags)
-
     # Open a file and write the contents to it
     if code != 'na':
          handler = CodeHandler(code, compilerFlags, 'code.c', 'broncode_c')
