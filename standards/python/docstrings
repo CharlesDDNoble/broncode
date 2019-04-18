@@ -26,7 +26,7 @@ def add(x,y):
 
 	Adds two integers x and y together and returns the result
 
-	Parameters:
+	Args:
 		x (int): a number
 		y (int): a number
 
