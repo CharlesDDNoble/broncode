@@ -44,7 +44,8 @@ class CodeHandler:
 		client = docker.from_env()
 	
 		#create container and detach
-		container = client.containers.run(self.image_name, detach = True)
+		container = client.containers.run(self.image_name, 
+						detach = True, cpu_period = 5000, cpu_quota = 1000)
 
 		#wait until the container is running
 		while "created" in container.status and not time_out:
