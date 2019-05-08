@@ -3,6 +3,9 @@ from django.http import HttpRequest
 from django.contrib.staticfiles import finders
 from datetime import datetime
 from .codehandler import CodeHandler
+import os
+import random
+import string
 
 def index(request):
     """Renders the home page."""
@@ -15,6 +18,14 @@ def index(request):
     # Get variable from template ('component/codemirror.html')
     code = request.POST.get('codearea','na')
 
+	# Current solution to handling concurrent requests:
+	# generate a random string to use as a directory name for file IO
+	# NOTE: this can later be replaced with a unique identifer (user id)
+    alpha_num = string.ascii_letters + string.digits
+    name = ''.join(random.choices(alpha_num, k = 32))
+    os.mkdir(name)
+	os.chdir(name)	
+
     # Get variable from template ('component/flags.html')
     compilerFlags = request.POST.get('compileFlags', 'na')
     log = ''
@@ -26,6 +37,10 @@ def index(request):
          log = handler.log
          sampleCode = code
 
+	#clean-up temporary directory	
+	os.chdir("..")	
+	os.rmdir(name)
+	
 
     # Render the 'index.html' page
     return render(
