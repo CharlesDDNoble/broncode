@@ -9,9 +9,9 @@ update() {
 
 for FILE in ./*
 do
-        if [ "${FILE:2:8}" == "$DIR_SUFFIX" ]
-        then
-                update "$FILE"
-        fi
+    if [ "${FILE:2:8}" == "$DIR_SUFFIX" ] && [ "${FILE:11:7}" != "service" ]
+    then
+        update "$FILE"
+    fi
 done
 exit 0
