@@ -8,7 +8,7 @@ if __name__ == "__main__":
     port = 4000
     flags = " -o3 \n" 
     flags = make_block(flags).encode("utf-8")
-    code = "int main(int argc,char** argv){return 0;}\n"
+    code = "int main(int argc,char** argv){error;return 0;}\n"
     code = make_block(code).encode("utf-8")
     
     handler = CodeHandler(host,port,code,flags)

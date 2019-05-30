@@ -7,11 +7,11 @@ def make_block(msg):
     return msg + "\0" * (4096-len(msg))
 
 def main():
-    host = '127.0.0.1'
-    port = 80
+    host = ''
+    port = 4000
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serversocket.bind((host, port))
-    serversocket.listen(10) #maximum 1 connections
+    serversocket.listen(1) # become a server socket, maximum 1 connections
     msg = ''
     BLOCK_SIZE = 4096
 
@@ -30,7 +30,8 @@ def main():
 
     codex = CExecutor()
     codex.execute()
-    print(codex.log)
+    connection.send(codex.log.encode("utf-8"))
+    connection.close()
 
 if __name__ == "__main__":
     main()
