@@ -28,7 +28,7 @@ class CodeHandler:
         self.flags = flags
         self.log = ''
         self.run_time = 0
-        self.max_time = 3.0
+        self.max_time = 5.0
         self.time_out = False
         self.BLOCK_SIZE = 4096
 
@@ -49,33 +49,39 @@ class CodeHandler:
                                 "It took too long to execute, so we stopped it!\n"
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        log = b''
+        done = False
+        signal.signal(signal.SIGALRM, self.alarm_handler)
+        signal.alarm(int(self.max_time))
+        while not self.time_out and not done:
+            try:
+                sock.connect((self.host,self.port))
 
-        try:
-            signal.signal(signal.SIGALRM, self.alarm_handler)
-            signal.alarm(int(self.max_time))
+                self.run_time = time()
+                
+                sock.send(self.make_block(self.flags))
+                
+                sock.send(self.make_block(self.code))
+                
+                log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'')
 
-            sock.connect((self.host,self.port))
+                signal.alarm(0)
 
-            self.run_time = time()
-            
-            sock.send(self.make_block(self.flags))
-            
-            sock.send(self.make_block(self.code))
-            
-            log = sock.recv(self.BLOCK_SIZE)
-
-            signal.alarm(0)
-
-            self.run_time = time() - self.run_time
-            
-            sock.close()
-        except TimeoutError:
-            log = error_msg_time_out.encode("utf-8")
-        except Exception:
-            log = bytes("Something strange occurred!\n","utf-8")
-        finally:
-            return log
-        
+                self.run_time = time() - self.run_time
+                
+                sock.close()
+                done = True
+            except TimeoutError:
+                log = error_msg_time_out.encode("utf-8")
+            except OSError:
+                self.max_time-=1
+                signal.alarm(int(self.max_time))
+                continue
+            except Exception as excep:
+                log = bytes("Something strange occurred!\n","utf-8")
+                log += bytes(str(excep),"utf-8")
+                done = True
+        return log
 
     def run_time_trial(self, reps = 10):
         """Measures the average time to handle a docker container.

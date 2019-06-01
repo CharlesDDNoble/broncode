@@ -17,7 +17,7 @@ class CExecutor(codeexecutor.CodeExecutor):
         return(done_process)
 
     def compile(self):
-        cmd_compile  = ["gcc","-o","code"] + self.flags + ["code.c"]
+        cmd_compile  = ["gcc"] + self.flags + ["-o","code","code.c"]
 
         self.log += cmd_compile[0]
         for tok in cmd_compile[1:]:
