@@ -25,7 +25,7 @@ def index(request):
     port = 4000
     # handle the code execution using docker
     if code != 'na':
-         handler = CodeHandler(code, compilerFlags,host,port)
+         handler = CodeHandler(host,port,code,compilerFlags)
          handler.run()
          log = handler.log
          sampleCode = code

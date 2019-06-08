@@ -29,66 +29,56 @@ class CodeHandler:
         self.log = ''
         self.run_time = 0
         self.max_time = 5.0
-        self.time_out = False
         self.BLOCK_SIZE = 4096
 
     def run(self):
         """Main driver function for the CodeHandler object"""
-        self.log = self.handle_container()
+        self.log = self.handle_connection()
 
     def make_block(self,msg):
+        """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
         return msg + bytes('\0' * (self.BLOCK_SIZE-len(msg)),"utf-8")
 
-    def alarm_handler(self,signum,frame):
-        self.time_out = True
-        raise TimeoutError('Timeout!')
-
-    def handle_container(self):
+    def handle_connection(self):
         """Handles the socket connection to a docker container."""
-        error_msg_time_out =    "Something went wrong running your code:\n" \
-                                "It took too long to execute, so we stopped it!\n"
-
+        error_msg_time_out = "Something went wrong running your code:\n" \
+                              "It took too long to execute, so we stopped it!\n"
+        error_msg_conn = "Something went wrong trying to connect to our code server!\n" \
+                          "Sorry for the inconvience, please try again later."
+        # Max time on all socket blocking actions
+        socket.setdefaulttimeout(self.max_time)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        log = b''
+        log = ''
+        conn_attempt = 0
         done = False
-        signal.signal(signal.SIGALRM, self.alarm_handler)
-        signal.alarm(int(self.max_time))
-        while not self.time_out and not done:
+
+        while not done and conn_attempt <= 3:
             try:
                 sock.connect((self.host,self.port))
-
                 self.run_time = time()
-                
+                #TODO: handle case if message is too big.
                 sock.send(self.make_block(self.flags))
-                
                 sock.send(self.make_block(self.code))
-                
-                log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'')
-
-                signal.alarm(0)
-
+                log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
                 self.run_time = time() - self.run_time
-                
-                sock.close()
                 done = True
-            except TimeoutError:
-                log = error_msg_time_out.encode("utf-8")
+            except socket.timeout:
+                log = error_msg_time_out
+                done = True
             except OSError:
-                self.max_time-=1
-                signal.alarm(int(self.max_time))
-                continue
+                conn_attempt += 1
+                log = error_msg_conn
+                sleep(1)
             except Exception as excep:
-                log = bytes("Something strange occurred!\n","utf-8")
-                log += bytes(str(excep),"utf-8")
+                log = "Something strange occurred!\n"
+                log += str(excep)
                 done = True
+
+        sock.close()
         return log
 
     def run_time_trial(self, reps = 10):
         """Measures the average time to handle a docker container.
-    
-        Spawns and executes a docker container. This process is done for
-        multiple repititions. The total time to complete all the repititions
-        is recorded and averaged, then returned.
 
         Args:
             reps (int): The number of repititions to call this objects
