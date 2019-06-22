@@ -7,7 +7,7 @@ from time import time, sleep
 class CodeHandler:
     """This class defines a CodeHandler object
 
-    Spawns docker containers in order to compile and execute code.
+    Conncects via socket to docker containers in order to compile and execute code.
 
     Attributes:
         code (str): The code that will be executed in the docker container.
@@ -31,6 +31,7 @@ class CodeHandler:
         self.max_time = 5.0
         self.conn_attempt = 0
         self.BLOCK_SIZE = 4096
+        self.has_lost_data = False
 
     def run(self):
         """Main driver function for the CodeHandler object"""
@@ -38,6 +39,9 @@ class CodeHandler:
 
     def make_block(self,msg):
         """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
+        if len(msg) > self.BLOCK_SIZE:
+            msg = msg[:self.BLOCK_SIZE]
+            self.has_lost_data = True
         return msg + bytes('\0' * (self.BLOCK_SIZE-len(msg)),"utf-8")
 
     def handle_connection(self):
