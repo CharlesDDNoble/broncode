@@ -4,7 +4,7 @@ docker stack rm broncode_service_c
 
 if [ "$?" -eq 0 ]
 then
-	echo "Stack stopped successfully!"
+    echo "Stack stopped successfully!"
 else
-	echo "There was a problem stopping the Stack!"
-fi	
+    echo "There was a problem stopping the Stack!"
+fi  
