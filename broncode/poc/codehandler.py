@@ -1,6 +1,5 @@
 import os
 import signal
-import docker
 import socket
 from time import time, sleep
 
