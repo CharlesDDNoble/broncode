@@ -68,9 +68,10 @@ class CodeHandler:
             except socket.timeout:
                 log = error_msg_time_out
                 done = True
-            except OSError:
+            except OSError as ose:
                 self.conn_attempt += 1
                 log = error_msg_conn
+                print(ose)
                 sleep(1)
             except Exception as excep:
                 log = "Something strange occurred!\n"
