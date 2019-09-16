@@ -1,6 +1,7 @@
 import os
 import signal
 import socket
+import docker
 from time import time, sleep
 
 class CodeHandler:
@@ -60,8 +61,8 @@ class CodeHandler:
                 sock.connect((self.host,self.port))
                 self.run_time = time()
                 #TODO: handle case if message is too big.
-                sock.send(self.make_block(self.flags))
-                sock.send(self.make_block(self.code))
+                sock.send(self.make_block(bytes(self.flags,"utf-8")))
+                sock.send(self.make_block(bytes(self.code,"utf-8")))
                 log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
                 self.run_time = time() - self.run_time
                 done = True
@@ -73,10 +74,10 @@ class CodeHandler:
                 log = error_msg_conn
                 log += str(ose)
                 sleep(1)
-            except Exception as excep:
-                log = "Something strange occurred!\n"
-                log += str(excep)
-                done = True
+            # except Exception as excep:
+            #     log = "Something strange occurred!\n"
+            #     log += str(excep)
+            #     done = True
 
         sock.close()
         return log

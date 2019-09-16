@@ -14,7 +14,14 @@ class CExecutor(codeexecutor.CodeExecutor):
         done_process = subprocess.run(
                     cmd_run, stdout = subprocess.PIPE, 
                     stderr = subprocess.PIPE)
-        return(done_process)
+        
+        return done_process
+
+    def parse_flags(self):
+        flag_file = open('flags.txt','r')
+        args = flag_file.readline().split()
+        self.flags += args
+        flag_file.close()
 
     def compile(self):
         cmd_compile  = ["gcc"] + self.flags + ["-o","code","code.c"]
@@ -28,15 +35,7 @@ class CExecutor(codeexecutor.CodeExecutor):
                 cmd_compile, stdout = subprocess.PIPE,
                 stderr = subprocess.PIPE)
         
-        return(done_process)
-
-    def parse_flags(self):
-        flag_file = open('flags.txt','r')
-        args = flag_file.readline().split()
-        for arg in args:
-            self.flags += args
-        flag_file.close()
-
+        return done_process
 
     def execute(self):
         #TODO: create timer on compilation/run to guard against inf loop

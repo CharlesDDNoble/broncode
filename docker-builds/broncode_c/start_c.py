@@ -12,7 +12,7 @@ def make_block(msg):
 
 def main():
     #Set alarm to exit program
-    max_time = 60
+    max_time = 180
     signal.signal(signal.SIGALRM, alarm_handler)
     signal.alarm(int(max_time))
 
@@ -29,20 +29,18 @@ def main():
         #block until a connection is made
         connection, address = serversocket.accept()
         
-        #reset alarm for 10 seconds
+        #time out in case of really long running programs
         signal.alarm(10)
 
         #get compiler flags and code, remove any null bytes from packing
-        for i in range(0,2):
-            msg += connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
-        
-        ind = msg.index('\n')
+        flags = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
+        code = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
 
         with open("flags.txt","w") as f:
-            f.write(msg[:ind])
+            f.write(flags)
 
         with open("code.c","w") as f:
-            f.write(msg[ind:])
+            f.write(code)
 
         codex = CExecutor()
         codex.execute()
