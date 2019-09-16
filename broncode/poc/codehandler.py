@@ -1,7 +1,6 @@
 import os
 import signal
 import socket
-import docker
 from time import time, sleep
 
 class CodeHandler:
