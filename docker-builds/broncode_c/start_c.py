@@ -6,14 +6,13 @@ from time import time, sleep
 from executors.codeexecutor import CodeExecutor
 from executors.cexecutor import CExecutor
 
-BLOCK_SIZE = 4096
-has_lost_data = False
-
 def alarm_handler(signum,frame):
     raise TimeoutError('Timeout!')
 
 def make_block(msg):
     """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
+    BLOCK_SIZE = 4096
+    has_lost_data = False
     if not isinstance(msg,bytes):
         msg = bytes(msg,"utf-8")
     if len(msg) > BLOCK_SIZE:
@@ -35,13 +34,13 @@ def main():
         serversocket.bind((host, port))
         serversocket.listen(1) # become a server socket, maximum 1 connections
         msg = ''
-        BLOCK_SIZE = 4096 #senc/recv message size
+        BLOCK_SIZE = 4096 #send/recv message size
 
         #block until a connection is made
         connection, address = serversocket.accept()
         
         #reset alarm to time out in case of really long running programs
-        signal.alarm(10)
+        signal.alarm(15)
 
         #get compiler flags and code, remove any null bytes from packing
         flags = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')

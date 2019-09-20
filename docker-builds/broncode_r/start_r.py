@@ -6,14 +6,13 @@ from time import time, sleep
 from executors.codeexecutor import CodeExecutor
 from executors.rexecutor import RExecutor
 
-BLOCK_SIZE = 4096
-has_lost_data = False
-
 def alarm_handler(signum,frame):
     raise TimeoutError('Timeout!')
 
 def make_block(msg):
     """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
+    BLOCK_SIZE = 4096
+    has_lost_data = False
     if not isinstance(msg,bytes):
         msg = bytes(msg,"utf-8")
     if len(msg) > BLOCK_SIZE:
@@ -41,15 +40,13 @@ def main():
         connection, address = serversocket.accept()
         
         #reset alarm to time out in case of really long running programs
-        signal.alarm(10)
+        signal.alarm(15)
 
         #get compiler flags and code, remove any null bytes from packing
         flags = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
         code = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
 
-        with open("flags.txt","w") as f:
-            f.write(flags)
-
+        #Write the code file to a file with the appropriate extension
         with open("code.c","w") as f:
             f.write(code)
 
@@ -60,7 +57,7 @@ def main():
         assert(isinstance(codex,CodeExecutor))
 
         codex.execute()
-        connection.send(make_block(codex.get_log()))
+        connection.send(make_block(codex.log))
     except TimeoutError:
         serversocket.close()
         raise SystemExit

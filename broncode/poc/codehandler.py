@@ -27,7 +27,7 @@ class CodeHandler:
         self.flags = flags
         self.log = ''
         self.run_time = 0
-        self.max_time = 12.0
+        self.max_time = 10.0
         self.conn_attempt = 0
         self.BLOCK_SIZE = 4096
         self.has_lost_data = False
@@ -65,6 +65,9 @@ class CodeHandler:
                 sock.send(self.make_block(self.flags))
                 sock.send(self.make_block(self.code))
                 log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+                #in case the server times out without sending anything
+                if log == '':
+                    log = error_msg_time_out
                 self.run_time = time() - self.run_time
                 done = True
             except socket.timeout:
