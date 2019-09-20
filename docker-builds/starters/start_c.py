@@ -40,7 +40,7 @@ def main():
         connection, address = serversocket.accept()
         
         #reset alarm to time out in case of really long running programs
-        signal.alarm(10)
+        signal.alarm(12)
 
         #get compiler flags and code, remove any null bytes from packing
         flags = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
