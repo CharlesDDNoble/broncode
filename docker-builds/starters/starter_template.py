@@ -59,7 +59,7 @@ def main():
         assert(isinstance(codex,CodeExecutor))
 
         codex.execute()
-        connection.send(make_block(codex.get_log()))
+        connection.send(make_block(codex.log))
     except TimeoutError:
         serversocket.close()
         raise SystemExit

@@ -46,9 +46,7 @@ def main():
         flags = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
         code = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
 
-        with open("flags.txt","w") as f:
-            f.write(flags)
-
+        #Write the code file to a file with the appropriate extension
         with open("code.c","w") as f:
             f.write(code)
 
@@ -59,7 +57,7 @@ def main():
         assert(isinstance(codex,CodeExecutor))
 
         codex.execute()
-        connection.send(make_block(codex.get_log()))
+        connection.send(make_block(codex.log))
     except TimeoutError:
         serversocket.close()
         raise SystemExit
