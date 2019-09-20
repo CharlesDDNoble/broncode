@@ -3,10 +3,10 @@ services:
   web:
     image: broncode_c
     deploy:
-      replicas: 5
+      replicas: 10
       resources:
         limits:
-          cpus: "0.1"
+          cpus: "0.05"
           memory: 50M
       restart_policy:
         condition: any

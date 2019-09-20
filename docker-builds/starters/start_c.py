@@ -1,35 +1,45 @@
-from executors.cexecutor import CExecutor
 import socket
 import signal
 import socket
 from time import time, sleep
 
+from executors.codeexecutor import CodeExecutor
+from executors.cexecutor import CExecutor
+
 def alarm_handler(signum,frame):
-        raise TimeoutError('Timeout!')
+    raise TimeoutError('Timeout!')
 
 def make_block(msg):
-    return msg + '\0' * (4096-len(msg))
+    """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
+    BLOCK_SIZE = 4096
+    has_lost_data = False
+    if not isinstance(msg,bytes):
+        msg = bytes(msg,"utf-8")
+    if len(msg) > BLOCK_SIZE:
+        msg = msg[:BLOCK_SIZE]
+        has_lost_data = True
+    return msg + bytes(('\0' * (BLOCK_SIZE-len(msg))),"utf-8")
 
 def main():
-    #Set alarm to exit program
+    #After this time elapses, the script will end and the container will exit
     max_time = 180
     signal.signal(signal.SIGALRM, alarm_handler)
     signal.alarm(int(max_time))
 
     try:
-        #set up socket
+        #set up server socket
         host = ''
         port = 4000
         serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serversocket.bind((host, port))
         serversocket.listen(1) # become a server socket, maximum 1 connections
         msg = ''
-        BLOCK_SIZE = 4096 #senc/recv message size
+        BLOCK_SIZE = 4096 #send/recv message size
 
         #block until a connection is made
         connection, address = serversocket.accept()
         
-        #time out in case of really long running programs
+        #reset alarm to time out in case of really long running programs
         signal.alarm(10)
 
         #get compiler flags and code, remove any null bytes from packing
@@ -42,9 +52,14 @@ def main():
         with open("code.c","w") as f:
             f.write(code)
 
+        #Use the appropriate CodeExecutor to compile (if necessary)
+        #and run the given code
         codex = CExecutor()
+
+        assert(isinstance(codex,CodeExecutor))
+
         codex.execute()
-        connection.send(bytes(codex.log,"utf-8"))
+        connection.send(make_block(codex.log))
     except TimeoutError:
         serversocket.close()
         raise SystemExit

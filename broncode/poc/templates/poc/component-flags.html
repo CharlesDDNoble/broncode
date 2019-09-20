@@ -16,10 +16,10 @@
     <textarea id="compiler-flags" name="compileFlags"> {{defaultFlags}} </textarea>
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById('compiler-flags'), {
-            mode: 'shell',
+            mode: "shell",
+            theme: 'base16-dark',
             lineNumbers: false,
             matchBrackets: false,
-
         });
         editor.setSize('100%', '100%');
     </script>

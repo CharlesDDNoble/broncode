@@ -4,7 +4,7 @@ import socket
 from time import time, sleep
 
 from executors.codeexecutor import CodeExecutor
-from executors.pythonexecutor import PythonExecutor
+#ADD IMPORT FOR THE CODE EXECUTOR FOR THIS LANGUAGE
 
 def alarm_handler(signum,frame):
     raise TimeoutError('Timeout!')
@@ -52,9 +52,9 @@ def main():
         with open("code.c","w") as f:
             f.write(code)
 
-        #Use the appropriate CodeExecutor to compile (if necessary)
-        #and run the given code
-        codex = PythonExecutor()
+        #CHANGE THIS OBJECT TO THE APPROPRIATE CODE EXECUTOR FOR THIS LANGUAGE
+        codex = CodeExecutor()
+
 
         assert(isinstance(codex,CodeExecutor))
 

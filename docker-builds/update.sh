@@ -2,5 +2,5 @@
 
 cd scripts
 
-./update_executors.sh
-./update_starters.sh
+sudo ./update_executors.sh
+sudo ./update_starters.sh
