@@ -38,7 +38,6 @@ class CExecutor(codeexecutor.CodeExecutor):
         return done_process
 
     def execute(self):
-        #TODO: create timer on compilation/run to guard against inf loop
         error_msg_comp = "Something went wrong compiling your code:\n"
         error_msg_run = "Something went wrong running your code:\n"
         msg_sucess = "Your code successfully compiled and ran, here's the output:\n"

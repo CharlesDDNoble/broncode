@@ -13,4 +13,4 @@ if __name__ == "__main__":
     
     handler = CodeHandler(host,port,code,flags)
     handler.run()
-    print(handler.log.decode("utf-8"))
+    print(handler.log)

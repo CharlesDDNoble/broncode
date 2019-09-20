@@ -1,0 +1,16 @@
+Messages - Simple
+1) Header - 64 bytes
+    a. 32 byte integer for flags size (0 if no flags)
+    b. 32 byte integer for code size
+2) flags - variable length
+3) code - variable length
+
+Messages - With Server-side ACK's
+1) Header - 64 bytes
+    a. 32 byte integer for flags size (0 if no flags)
+    b. 32 byte integer for code size
+2) Header ACK
+3) flags - variable length
+4) flags ACK
+5) code - variable length
+6) code ACK

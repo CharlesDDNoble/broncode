@@ -27,7 +27,7 @@ class CodeHandler:
         self.flags = flags
         self.log = ''
         self.run_time = 0
-        self.max_time = 5.0
+        self.max_time = 6.0
         self.conn_attempt = 0
         self.BLOCK_SIZE = 4096
         self.has_lost_data = False
@@ -38,17 +38,19 @@ class CodeHandler:
 
     def make_block(self,msg):
         """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
+        if not isinstance(msg,bytes):
+            msg = bytes(msg,"utf-8")
         if len(msg) > self.BLOCK_SIZE:
             msg = msg[:self.BLOCK_SIZE]
             self.has_lost_data = True
-        return msg + bytes('\0' * (self.BLOCK_SIZE-len(msg)),"utf-8")
+        return msg + bytes(('\0' * (self.BLOCK_SIZE-len(msg))),"utf-8")
 
     def handle_connection(self):
         """Handles the socket connection to a docker container."""
         error_msg_time_out = "Something went wrong running your code:\n" \
-                              "It took too long to execute, so we stopped it!\n"
+                             "It took too long to execute, so we stopped it!\n"
         error_msg_conn = "Something went wrong trying to connect to our code server!\n" \
-                          "Sorry for the inconvience, please try again later."
+                         "Sorry for the inconvience, please try again later."
         # Max time on all socket blocking actions
         socket.setdefaulttimeout(self.max_time)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -60,8 +62,8 @@ class CodeHandler:
                 sock.connect((self.host,self.port))
                 self.run_time = time()
                 #TODO: handle case if message is too big.
-                sock.send(self.make_block(bytes(self.flags,"utf-8")))
-                sock.send(self.make_block(bytes(self.code,"utf-8")))
+                sock.send(self.make_block(self.flags))
+                sock.send(self.make_block(self.code))
                 log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
                 self.run_time = time() - self.run_time
                 done = True
@@ -72,7 +74,7 @@ class CodeHandler:
                 self.conn_attempt += 1
                 log = error_msg_conn
                 log += str(ose)
-                sleep(1)
+                sleep(2)
             # except Exception as excep:
             #     log = "Something strange occurred!\n"
             #     log += str(excep)
