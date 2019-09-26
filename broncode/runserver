@@ -4,5 +4,5 @@
 # for nginx to serve them
 # sudo python3 ./manage.py collectstatic
 
-
-sudo python3 ./manage.py runserver 0.0.0.0:80
+source /home/sysadmin/broncode/dbcreds
+sudo -E python3 ./manage.py runserver 0.0.0.0:80
