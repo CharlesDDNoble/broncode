@@ -4,3 +4,10 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 }
+
+
+/* Navbar (override) */
+#navbar {
+    background-color: transparent;
+    box-shadow: none;
+}

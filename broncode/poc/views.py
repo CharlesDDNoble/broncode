@@ -8,6 +8,9 @@ import random
 import string
 
 def index(request):
+    # Renders the home page.
+    assert isinstance(request, HttpRequest)
+    
     # Render the 'index.html' page
     return render(
         request,
@@ -18,10 +21,25 @@ def index(request):
         }
     )
 
+def main(request):
+    # Renders the home page.
+    assert isinstance(request, HttpRequest)
+
+    # Render the 'index.html' page
+    return render(
+        request,
+        'poc/main.html',
+        {
+            'title': 'Broncode',
+            'year': datetime.now().year,
+        }
+    )
+
 
 def tutorial(request):
-    """Renders the home page."""
+    # Renders the home page.
     assert isinstance(request, HttpRequest)
+    
     # Grab sample code
     filename = finders.find('poc/samplefiles/testCode.c')
     fp = open(filename, 'r')
@@ -46,7 +64,7 @@ def tutorial(request):
     # Render the 'index.html' page
     return render(
         request,
-        'poc/tutorial-index.html',
+        'poc/tutorial.html',
         {
             'title': 'Broncode',
             'year': datetime.now().year,
