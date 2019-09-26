@@ -15,8 +15,8 @@ class Chapter(models.Model):
 class Lesson(models.Model):
     title = models.CharField(max_length=128)
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    example_code = models.CharField(max_length=CODE_MAXLEN)
-    compiler_flags = models.CharField(max_length=FLAGS_MAXLEN)
+    example_code = models.CharField(max_length=CODE_MAXLEN, blank=True)
+    compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
 
 class User(models.Model):
     username = models.CharField(max_length=64, primary_key=True)
