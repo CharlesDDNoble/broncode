@@ -21,7 +21,7 @@ class Lesson(models.Model):
 class User(models.Model):
     username = models.CharField(max_length=64, primary_key=True)
     password = models.CharField(max_length=128)
-    enrolled_in = models.ManyToManyField(Course)
+    enrolled_in = models.ManyToManyField(Course, null=True)
     owned = models.ManyToManyField(Course, related_name='owned_courses')
     completed_lessons = models.ManyToManyField(Lesson)
 
