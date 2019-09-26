@@ -1,10 +1,15 @@
 from django.contrib import admin
-import models
+from .models import Course
+from .models import Chapter
+from .models import Lesson
+from .models import User
+from .models import SolutionSet
+from .models import Submission
 
 # Register your models here.
-admin.site.register(models.Course)
-admin.site.register(models.Chapter)
-admin.site.register(models.Lesson)
-admin.site.register(models.User)
-admin.site.register(models.SolutionSet)
-admin.site.register(models.Submission)
+admin.site.register(Course)
+admin.site.register(Chapter)
+admin.site.register(Lesson)
+admin.site.register(User)
+admin.site.register(SolutionSet)
+admin.site.register(Submission)
