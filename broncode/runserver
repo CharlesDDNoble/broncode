@@ -5,4 +5,5 @@
 # sudo python3 ./manage.py collectstatic
 
 source /home/sysadmin/broncode/dbcreds
+# -E preserves environment variables.
 sudo -E python3 ./manage.py runserver 0.0.0.0:80
