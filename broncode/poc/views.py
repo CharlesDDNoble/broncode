@@ -8,6 +8,18 @@ import random
 import string
 
 def index(request):
+    # Render the 'index.html' page
+    return render(
+        request,
+        'poc/index.html',
+        {
+            'title': 'Broncode',
+            'year': datetime.now().year,
+        }
+    )
+
+
+def tutorial(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
     # Grab sample code
@@ -34,7 +46,7 @@ def index(request):
     # Render the 'index.html' page
     return render(
         request,
-        'poc/index.html',
+        'poc/tutorial-index.html',
         {
             'title': 'Broncode',
             'year': datetime.now().year,
