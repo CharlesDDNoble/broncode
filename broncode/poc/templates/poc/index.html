@@ -16,62 +16,10 @@
     
     <body>
         <header>
-            <nav id="navbar">
-                <div class="nav-wrapper">
-                    <a href="#!" class="brand-logo">Broncode</a>
-                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                    <ul class="right hide-on-med-and-down">
-                        <li><a href="#">Sass</a></li>
-                        <li><a href="#">Components</a></li>
-                        <li><a href="#">Javascript</a></li>
-                        <li><a href="#">Mobile</a></li>
-                    </ul>
-                </div>
-            </nav>
-            <ul class="sidenav" id="mobile-demo">
-                <li><a href="sass.html">Sass</a></li>
-                <li><a href="badges.html">Components</a></li>
-                <li><a href="collapsible.html">Javascript</a></li>
-                <li><a href="mobile.html">Mobile</a></li>
-            </ul>
+            {% block navbar %}
+            {% include 'poc/component-navbar.html' %}
+            {% endblock %}
         </header>
-        <!--A page of one major row-->
-        <div class="row" id="major-row">
-            <!--Column for instructions on the left-->
-            <div class="col s4" id="markdown-content">
-                {% block instructions %}
-                {% include 'poc/component-instructions.html' %}
-                {% endblock instructions%}
-            </div>
-            <!--Column for both the the compilerflags and codemirror-->
-            <div class="col s4" id="compiler-and-flags-col">
-                <!--A row to hold the compilerflags and codemirror-->
-                <div class="row" id="compiler-and-flags-row">
-                    <!--Start of form-->
-                    <form action="" method="post" id="major-form">
-                        {% csrf_token %}
-                        <!--Column for compilerflags-->
-                        <div class="col s12" id="compiler-flags-wrapper">
-                            {% block compilerFlags%}
-                            {% include 'poc/component-flags.html' %}
-                            {% endblock compilerFlags %}
-                        </div>
-                        <!--Column for codemirror-->
-                        <div class="col s12" id="codemirror-wrapper">
-                            {% block codemirror %}
-                            {% include 'poc/component-codemirror.html' %}
-                            {% endblock codemirror %}
-                        </div> 
-                    </form>
-                </div>
-            </div>
-            <!--Column for the results put on the far right-->
-            <div class="col s4" id="results">
-                {% block results %}
-                {% include 'poc/component-output.html' %}
-                {% endblock results %}
-            </div>
-        </div> 
         <footer>
             <!--JavaScript at end of body for optimized loading-->
             <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>

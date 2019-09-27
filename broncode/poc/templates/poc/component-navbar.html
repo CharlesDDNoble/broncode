@@ -1,0 +1,21 @@
+{% block navbar %}
+    {% load static %}
+    <!-- import css stylesheet for navbar -->
+    <link type="text/css" rel="stylesheet" href="{% static 'poc/css/component-navbar.css' %}">
+
+    <!-- Code of navbar -->
+    <nav id="navbar">
+        <div class="nav-wrapper">
+            <a href="/poc/" class="brand-logo">Broncode</a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a class="waves-effect waves-light" id="signup" href="#">New user?</a></li>
+                <li><a class="waves-effect waves-light btn-small deep-purple darken-3" id="login" href="#">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+    <ul class="sidenav" id="mobile-demo">
+        <li><a class="waves-effect waves-light" href="#">New user?</a></li>
+        <li><a class="waves-effect waves-light btn-small deep-purple darken-3" href="#">Login</a></li>   
+    </ul>
+{% endblock %}

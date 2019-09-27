@@ -14,9 +14,6 @@
     <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
     
     <textarea id="codemirror" name="codearea">{{codeText}}</textarea>
-    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-        <i class="material-icons right">send</i>
-    </button>
     <script>
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,
@@ -24,7 +21,7 @@
             mode: "text/x-csrc",
             theme: 'base16-dark'
         });
-        cEditor.setSize('100%', '90%');
+        cEditor.setSize('100%', '75vh');
         var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
         CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
     </script>

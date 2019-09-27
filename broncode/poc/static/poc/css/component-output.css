@@ -3,5 +3,6 @@
     /* Set height, width, borders, and global font properties here */
     font-family: monospace;
     height: auto;
+    color: white !important;
     direction: ltr;
 }
