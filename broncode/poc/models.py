@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-CODE_MAXLEN = 4096
+CODE_MAXLEN = 10000
 FLAGS_MAXLEN = 512
 
 class Course(models.Model):
