@@ -1,5 +1,19 @@
 /* Navbar */
 #navbar {
     height: 10vh;
-    padding: 0 4rem 0 4rem;
+    padding: 0 4rem;
+    box-shadow: none;
+}
+
+/* Media queries */
+@media screen and (min-height: 1000px) and (max-height: 1400px) {
+    #navbar {
+        padding: 1.2rem 4rem;
+    }
+}
+
+@media screen and (min-height: 1401px) {
+    #navbar {
+        padding: 3rem 4rem;
+    }
 }

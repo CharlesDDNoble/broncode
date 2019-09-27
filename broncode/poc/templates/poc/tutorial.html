@@ -23,13 +23,13 @@
         <!--A page of one major row-->
         <div class="row" id="major-row">
             <!--Column for instructions on the left-->
-            <div class="col s12 m4" id="markdown-content">
+            <div class="col s12 l4" id="markdown-content">
                 {% block instructions %}
                 {% include 'poc/component-instructions.html' %}
                 {% endblock instructions %}
             </div>
             <!--Column for both the the compilerflags and codemirror-->
-            <div class="col s12 m4" id="compiler-and-flags-col">
+            <div class="col s12 l4" id="compiler-and-flags-col">
                 <!--A row to hold the compilerflags and codemirror-->
                 <div class="row" id="compiler-and-flags-row">
                     <!--Start of form-->
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <!--Column for the results put on the far right-->
-            <div class="col s12 m4" id="results">
+            <div class="col s12 l4" id="results">
                 {% block results %}
                 {% include 'poc/component-output.html' %}
                 {% endblock results %}
