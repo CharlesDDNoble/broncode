@@ -12,7 +12,7 @@ function create_post() {
     $.ajax({
         url : "", // the endpoint
         type : "POST", // http method
-        data : { codearea : $('#codemirror').val()}, // data sent with the post request
+        data : { codearea : $('#codemirror').val(),compileFlags : $('#compiler-flags').val()}, // data sent with the post request
         //data: $('#codeaarea').val(),
         dataType: "json",
         // handle a successful response

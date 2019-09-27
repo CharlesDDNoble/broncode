@@ -42,6 +42,12 @@ def tutorial(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
     
+    # Grab sample code
+    filename = finders.find('poc/samplefiles/testCode.c')
+    fp = open(filename, 'r')
+    sampleCode = fp.read()
+
+
     if request.method == 'POST':
         print(request.POST)
         code = request.POST.get('codearea','na')
@@ -62,10 +68,7 @@ def tutorial(request):
             content_type="application/json"
         )
     else:
-        # Grab sample code
-        filename = finders.find('poc/samplefiles/testCode.c')
-        fp = open(filename, 'r')
-        sampleCode = fp.read()
+        
 
         # Get variable from template ('component/codemirror.html')
         code = request.POST.get('codearea','na')
