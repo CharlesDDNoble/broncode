@@ -2,7 +2,7 @@
 
 # Collect static files into a single location
 # for nginx to serve them
-sudo python3 ./manage.py collectstatic
+# sudo python3 ./manage.py collectstatic
 
 
 sudo python3 ./manage.py runserver 0.0.0.0:80
