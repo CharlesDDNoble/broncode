@@ -1,0 +1,15 @@
+/* Codemirror */
+/* Classes */
+.CodeMirror {
+    /* Set height, width, borders, and global font properties here */
+    font-family: monospace;
+    color: white;
+    direction: ltr;
+    background-color: transparent !important;
+}
+.CodeMirror-linenumbers {
+    background-color: rgb(31, 30, 46);
+}
+.CodeMirror-linenumber {
+    color: rgb(116, 116, 123) !important;
+}
