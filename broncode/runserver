@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Collect static files into a single location
-# for nginx to serve them
-sudo python3 ./manage.py collectstatic
+source /home/sysadmin/broncode/dbcreds
 
-sudo python3 ./manage.py runserver 0.0.0.0:8001
+# -E preserves environment variables.
+sudo -E python3 ./manage.py runserver 0.0.0.0:80
+
