@@ -16,7 +16,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # collect all static files for nginx
-
 STATIC_ROOT = os.path.join(BASE_DIR, "nginx_static/")
 
 
@@ -127,8 +126,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+# since we are using STATIC_ROOT, I do not believe this is necessary
+#    os.path.join(BASE_DIR, "static"),
 ]
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))

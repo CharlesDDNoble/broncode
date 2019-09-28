@@ -1,0 +1,67 @@
+/* General */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+/* Classes */
+.row {
+    margin: 0;
+    padding: 0;
+}
+/* IDs */
+#major-row {
+    margin: 0;
+    padding: 0;
+}
+#markdown-content {
+    min-height: 90vh;
+    max-height: 90vh;
+    background-color: rgb(235, 235, 235);
+    overflow: scroll;
+}
+#instructions {
+    overflow: scroll !important;
+}
+#compiler-and-flags-col {
+}
+#compiler-and-flags-row {
+}
+#major-form {
+}
+#compiler-flags-wrapper {
+    height: 5vh;
+    background-color: rgb(20, 20, 30);
+    /* padding: 0 1rem; */
+    margin: 0;
+}
+#codemirror-wrapper {
+    min-height: 80vh;
+    max-height: 80vh;
+    background-color: rgb(31, 30, 46);
+    padding: 0;
+}
+#btn-submit-wrapper {
+    min-height: 5vh;
+    max-height: 5vh;
+    background-color: rgb(31, 30, 46);
+}
+#btn-submit {
+    float: right;
+    box-shadow: none;
+}
+#results {
+    min-height: 90vh;
+    max-height: 90vh;
+    background-color: rgb(17, 16, 24);
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+
+
+/* Navbar (override) */
+#navbar {
+    background-color: rgb(20, 20, 30);
+}

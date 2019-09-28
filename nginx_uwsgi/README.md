@@ -11,6 +11,15 @@ sudo apt install uwsgi uwsgi-plugin-python3
 *Design Decription:*
 The production server for Broncode uses nginx as a reverse proxy for serving http requests with the Django server as a backend for scripting and database access. uWSGI is used as an interface between nginx and Django to allow each program to communicate.
 
+*Rough Explaination:*
+The design can be roughly summed up like so:
+    client <-> nginx <-> uWSGI <-> Django
+The nginx process will run in the background, listening on the port given in the broncode_nginx.conf file.
+It will serve requests for static files located in /broncode/nginx_static. For all non static requests,
+nginx passes the request to uWSGI via a unix file socket. uWSGI will then pass the request to the Django 
+application which will handle all requests and access database. The uWSGI process will run the Django 
+application itself, so there is no need to start the server using the ./runserver script. 
+
 *Tutorial For Setup:*
 https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
 
