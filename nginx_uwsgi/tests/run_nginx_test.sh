@@ -8,7 +8,10 @@ echo ""
 sleep 2
 
 # if nginx is using a web socket
-uwsgi --socket :8001 --wsgi-file test.py
+# uwsgi --socket :8001 --wsgi-file test.py
 
 # if nginx is using a unix socket
-# uwsgi --socket ./test.sock --wsgi-file test.py
+#uwsgi --socket ./test.sock --wsgi-file test.py
+
+# if permissions are a problem with the unix socket
+uwsgi --socket ./test.sock --wsgi-file test.py --chmod-socket=664
