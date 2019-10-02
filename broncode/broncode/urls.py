@@ -21,4 +21,5 @@ urlpatterns = [
     path('lessons/', include('lessons.urls')),
     path('poc/', include('poc.urls')),
     path('codemirror/', include('codemirror.urls')),
+    path('api/', include('api.urls'))
 ]
