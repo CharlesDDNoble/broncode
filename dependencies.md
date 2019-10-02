@@ -7,3 +7,6 @@ libpq-dev
 
 #pip3
 django
+djangorestframework
+djangorestframework-jwt
+
