@@ -10,7 +10,8 @@ from .codehandler import CodeHandler
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
-from poc.CustomUserCreationForm import CustomUserCreationForm
+from poc.customUserCreationForm import CustomUserCreationForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     # Renders the home page.
@@ -19,6 +20,7 @@ def index(request):
     # Render the 'index.html' page
     return render(request, 'poc/index.html')
 
+@login_required
 def main(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
@@ -54,6 +56,7 @@ def register(request):
     # Render the 'index.html' page
     return render(request, 'registration/register.html', context)
 
+@login_required
 def tutorial(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)

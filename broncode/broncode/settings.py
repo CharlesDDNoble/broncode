@@ -140,3 +140,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 APPEND_SLASH = True
 
 LOGIN_REDIRECT_URL = '/poc'
+LOGOUT_REDIRECT_URL = '/poc'
+
+
+AUTH_USER_MODEL = 'poc.CustomUser'
