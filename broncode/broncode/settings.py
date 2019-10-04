@@ -82,8 +82,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'broncode',
-        'USER': os.environ.get('BRONCODE_DB_USER', ''),
-        'PASSWORD': os.environ.get('BRONCODE_DB_PASS', ''),
+        'USER': 'alarfdah_user',
+        'PASSWORD': 'Shimotsuki!1',
+        # 'USER': os.environ.get('BRONCODE_DB_USER', ''),
+        # 'PASSWORD': os.environ.get('BRONCODE_DB_PASS', ''),
         'HOST': 'localhost'
     }
 }

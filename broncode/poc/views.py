@@ -38,6 +38,21 @@ def main(request):
     )
 
 
+def login(request):
+    # Renders the home page.
+    assert isinstance(request, HttpRequest)
+
+    # Render the 'index.html' page
+    return render(
+        request,
+        'poc/login.html',
+        {
+            'title': 'Broncode',
+            'year': datetime.now().year,
+        }
+    )
+
+
 def tutorial(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
