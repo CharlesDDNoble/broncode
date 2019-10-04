@@ -1,57 +1,58 @@
-from django.shortcuts import render
-from django.http import HttpRequest
-from django.contrib.staticfiles import finders
-from datetime import datetime
-from .codehandler import CodeHandler
-import os
 import random
 import string
-from django.http import HttpResponse
 import json
+
+from django.shortcuts import render, redirect
+from django.contrib.staticfiles import finders
+from django.http import HttpRequest
+from datetime import datetime
+from .codehandler import CodeHandler
+from django.http import HttpResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+from poc.CustomUserCreationForm import CustomUserCreationForm
 
 def index(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
     
     # Render the 'index.html' page
-    return render(
-        request,
-        'poc/index.html',
-        {
-            'title': 'Broncode',
-            'year': datetime.now().year,
-        }
-    )
+    return render(request, 'poc/index.html')
 
 def main(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
 
     # Render the 'index.html' page
-    return render(
-        request,
-        'poc/main.html',
-        {
-            'title': 'Broncode',
-            'year': datetime.now().year,
-        }
-    )
+    return render(request, 'poc/main.html')
 
-
-def login(request):
+def register(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
 
-    # Render the 'index.html' page
-    return render(
-        request,
-        'poc/login.html',
-        {
-            'title': 'Broncode',
-            'year': datetime.now().year,
-        }
-    )
+    if request.method != 'POST':
+        form = CustomUserCreationForm()
+    else:
+        form = CustomUserCreationForm(request.POST)
 
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            
+            # Authenticate user
+            user = authenticate(username=username, password=password)
+
+            # Login
+            login(request, user)
+            
+            # Return back
+            return redirect('/poc')
+    
+    context = {'form': form}
+
+    # Render the 'index.html' page
+    return render(request, 'registration/register.html', context)
 
 def tutorial(request):
     # Renders the home page.
