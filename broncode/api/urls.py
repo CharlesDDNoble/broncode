@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='broncode api'),
-    path('users/', views.ListUsersView, name='users-all')
+    path('users/', views.ListUsersView.as_view(), name='users-all')
 ]

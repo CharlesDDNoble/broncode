@@ -1,7 +1,8 @@
-from Django import HttpResponse
+from django.http import HttpResponse
 
 from rest_framework import generics
-from poc.models import User
+#from poc.models import User
+from django.contrib.auth.models import User
 from .serializers import UserSerializer
 
 def index(request):
