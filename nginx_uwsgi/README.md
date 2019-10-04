@@ -23,6 +23,14 @@ application itself, so there is no need to start the server using the ./runserve
 *Tutorial For Setup:*
 https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
 
+*For Tests:*
++ setup.sh: Moves broncode_uwsgi.ini and broncode_nginx.conf into the correct areas to run the tests
++ test_uwsgi.sh: Runs the test.py script at 127.0.0.1:8001 using uwsgi. This page should say "hello world".
++ test_nginx.sh: Runs the test.py script at 127.0.0.1:8000 using nginx and uwsgi. This page should say "hello world".
+
+*For Production:*
++ setup.sh: Moves broncode_uwsgi.ini and broncode_nginx.conf into the correct areas to run the server.
+
 *Good To Know*
 + nginx's group is www-data
 + Probably need to add www-data to all groups that own files on the server (for permission 

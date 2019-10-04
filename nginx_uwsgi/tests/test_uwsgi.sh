@@ -8,4 +8,4 @@ echo ""
 sleep 2
 
 # This will serve a page w/ Hello World on localhost:8001
-uwsgi --http :8001 --wsgi-file test.py
+uwsgi --plugin python3 --http-socket :8001 --wsgi-file test.py
