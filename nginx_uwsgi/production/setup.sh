@@ -12,9 +12,10 @@ cat $NGINX_CONF_TEMP | sed "s,BASE_DIR,$BASE_DIR,g" >& $NGINX_CONF
 
 # MOVING FILES
 sudo cp ./uwsgi_params /etc/nginx
-sudo cp ./broncode_nginx.conf /etc/nginx/sites-available/
-sudo rm -f /etc/nginx/sites-enabled/broncode_nginx.conf
-sudo ln -s /etc/nginx/sites-available/broncode_nginx.conf /etc/nginx/sites-enabled/
+sudo cp $NGINX_CONF /etc/nginx/sites-available/
+sudo cp $UWSGI_INI $BASE_DIR/broncode/
+sudo rm -f /etc/nginx/sites-enabled/$NGINX_CONF
+sudo ln -s /etc/nginx/sites-available/$NGINX_CONF /etc/nginx/sites-enabled/
 
 #restart nginx
 sudo /etc/init.d/nginx restart
