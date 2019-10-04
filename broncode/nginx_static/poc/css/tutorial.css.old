@@ -1,0 +1,78 @@
+/* General */
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+
+header {
+    height: 10%;
+}
+/* Classes */
+.row {
+    margin: 0%;
+    
+}
+/* IDs */
+#major-row {
+    height: 90%;
+    min-height: 90%;
+    max-height: 90%;
+}
+#markdown-content {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    background-color: rgb(235, 235, 235);
+    overflow: scroll;
+}
+#instructions {
+    overflow: scroll !important;
+}
+#compiler-and-flags-col {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+#compiler-and-flags-row {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+#major-form {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+}
+#compiler-flags-wrapper {
+    height: 10%;
+    min-height: 10%;
+    max-height: 10%;
+    background-color: rgb(20, 20, 30);
+    padding: 0 1rem;
+    margin: 0;
+}
+#codemirror-wrapper {
+    height: 90%;
+    min-height: 90%;
+    max-height: 90%;
+    background-color: rgb(31, 30, 46);
+    padding: 0;
+}
+#results {
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    background-color: rgb(17, 16, 24);
+    padding: 0 2rem 0 2rem;
+    color: white;
+}
