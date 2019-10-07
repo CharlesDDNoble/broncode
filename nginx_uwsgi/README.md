@@ -3,6 +3,7 @@
 *Dependencies:*
 nginx
 uwsgi
+uwsgi-plugin-python3
 
 *Install:*
 sudo apt install nginx
@@ -31,7 +32,13 @@ https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
 *For Production:*
 + setup.sh: Moves broncode_uwsgi.ini and broncode_nginx.conf into the correct areas to run the server.
 
-*Good To Know*
+*Starting the Server*:
+I've tried to make this as painless as possible. There are only two things you should have to do: run production/setup.sh and
+run broncode/runserver. Those two scripts should handle all the necessary file movements/updates/creation. If you need to modify
+broncode_nginx.conf or broncode_uwsgi.ini, **modify the templates then run setup.sh**; setup.sh will automatically fill in the
+absolute paths for the requried fields and create the corresponding file, then move it to the appropriate spot.
+
+*Good To Know:*
 + nginx's group is www-data
 + Probably need to add www-data to all groups that own files on the server (for permission 
   reasons).
@@ -43,3 +50,14 @@ https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
   otherwise)
 + Make sure uWSGI is running python3 (otherwise it may use python2.7 to run the Django 
   scripts)
+
+*Error's We've Encountered and What _You_ Can do to Fix Them:*
+**For Nginx:**
++ **Bad Gateway:** Nginx is probably having trouble connecting to uWSGI, check /var/log/nginx/error.log for the problem.
+                   If its socket connections, then check the permissions of the socket.
+**For uWSGI:**
++ **Module not found/Import error:** Check that all dependencies have been properly installed, especially Django related
+                                     dependencies.
+
+
+-- Written by Charles Noble 2019
