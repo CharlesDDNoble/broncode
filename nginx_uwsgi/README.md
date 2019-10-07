@@ -31,7 +31,7 @@ https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
 *For Production:*
 + setup.sh: Moves broncode_uwsgi.ini and broncode_nginx.conf into the correct areas to run the server.
 
-*Good To Know*
+*Good To Know:*
 + nginx's group is www-data
 + Probably need to add www-data to all groups that own files on the server (for permission 
   reasons).
@@ -43,3 +43,11 @@ https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
   otherwise)
 + Make sure uWSGI is running python3 (otherwise it may use python2.7 to run the Django 
   scripts)
+
+*Error's We've Encountered and What _You_ Can do to Fix Them:*
+**For Nginx:**
++ **Bad Gateway:** Nginx is probably having trouble connecting to uWSGI, check /var/log/nginx/error.log for the problem.
+                   If its socket connections, then check the permissions of the socket.
+**For uWSGI:**
++ **Module not found/Import error:** Check that all dependencies have been properly installed, especially Django related
+                                     dependencies.
