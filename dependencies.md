@@ -8,6 +8,7 @@
 + python3-dev
 + python3-psycopg2
 + libpq-dev
++ docker
 
 #pip3
 + django
