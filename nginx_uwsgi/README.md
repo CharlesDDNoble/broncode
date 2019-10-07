@@ -32,6 +32,12 @@ https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
 *For Production:*
 + setup.sh: Moves broncode_uwsgi.ini and broncode_nginx.conf into the correct areas to run the server.
 
+*Starting the Server*:
+I've tried to make this as painless as possible. There are only two things you should have to do: run production/setup.sh and
+run broncode/runserver. Those two scripts should handle all the necessary file movements/updates/creation. If you need to modify
+broncode_nginx.conf or broncode_uwsgi.ini, **modify the templates then run setup.sh**; setup.sh will automatically fill in the
+absolute paths for the requried fields and create the corresponding file, then move it to the appropriate spot.
+
 *Good To Know:*
 + nginx's group is www-data
 + Probably need to add www-data to all groups that own files on the server (for permission 
@@ -52,3 +58,6 @@ https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
 **For uWSGI:**
 + **Module not found/Import error:** Check that all dependencies have been properly installed, especially Django related
                                      dependencies.
+
+
+-- Written by Charles Noble 2019
