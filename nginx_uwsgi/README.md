@@ -3,6 +3,7 @@
 *Dependencies:*
 nginx
 uwsgi
+uwsgi-plugin-python3
 
 *Install:*
 sudo apt install nginx
