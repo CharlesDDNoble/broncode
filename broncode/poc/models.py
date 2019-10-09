@@ -6,7 +6,6 @@ FLAGS_MAXLEN = 512
 
 class Course(models.Model):
     title = models.CharField(max_length=256)
-    owners = models.ManyToManyField(User, blank=False, related_name='owned_courses')
 
     def __str__(self):
         return self.title
@@ -39,6 +38,7 @@ class User(models.Model):
     username = models.CharField(max_length=64, primary_key=True)
     password = models.CharField(max_length=128)
     enrolled_in = models.ManyToManyField(Course, blank=True, related_name='enrolled_users')
+    owned_courses = models.ManyToManyField(Course, blank=True, related_name='owners')
     completed_lessons = models.ManyToManyField(Lesson, blank=True)
 
 class SolutionSet(models.Model):
