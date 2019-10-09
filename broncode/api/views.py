@@ -4,7 +4,7 @@ from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
 
 #from django.contrib.auth.models import User
-from poc.models imoprt User
+from poc.models import User
 from .serializers import UserSerializer
 
 @api_view(['GET'])
