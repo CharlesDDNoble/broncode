@@ -54,15 +54,15 @@ class SubmissionViewSet(mixins.CreateModelMixin,
 
         print(request.data)
 
-        code = request.data['codearea']
-        compilerFlags = request.data['compileFlags']
+        code = request.data['code']
+        flags = request.data['compiler_flags']
         log = ''
         host = ''
         port = 4000
 
         # handle the code execution using docker
         if code != 'na':
-            handler = CodeHandler(host,port,code,compilerFlags)
+            handler = CodeHandler(host,port,code,flags)
             handler.run()
             log = handler.log
         else:
