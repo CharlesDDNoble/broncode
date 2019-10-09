@@ -70,20 +70,20 @@ def tutorial(request):
     else:
         
 
-        # Get variable from template ('component/codemirror.html')
-        code = request.POST.get('codearea','na')
+        # # Get variable from template ('component/codemirror.html')
+        # code = request.POST.get('codearea','na')
 
-        # Get variable from template ('component/flags.html')
-        compilerFlags = request.POST.get('compileFlags', 'na')
-        log = ''
-        host = ''
-        port = 4000
-        # handle the code execution using docker
-        if code != 'na':
-            handler = CodeHandler(host,port,code,compilerFlags)
-            handler.run()
-            log = handler.log
-            sampleCode = code
+        # # Get variable from template ('component/flags.html')
+        # compilerFlags = request.POST.get('compileFlags', 'na')
+        # log = ''
+        # host = ''
+        # port = 4000
+        # # handle the code execution using docker
+        # if code != 'na':
+        #     handler = CodeHandler(host,port,code,compilerFlags)
+        #     handler.run()
+        #     log = handler.log
+        #     sampleCode = code
     
         # Render the 'index.html' page
         return render(
