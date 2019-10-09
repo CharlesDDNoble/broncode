@@ -12,9 +12,15 @@ class CourseSerializerLite(serializers.ModelSerializer):
         model = Course
         fields = ("id", "title")
 
+class LessonSerializerLite(serializers.ModelSerializer):
+    class Meta:
+        model = Lesson
+        fields = ("id", "title", "number")
+
 class UserSerializer(serializers.ModelSerializer):
     enrolled_in = CourseSerializerLite(many=True, read_only=True)
     owned_courses = CourseSerializerLite(many=True, read_only=True)
+    completed_lessons = LessonSerializerLite(many=True, read_only=True)
 
     class Meta:
         model = User
@@ -31,11 +37,6 @@ class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ("id", "title", "number", "chapter", "example_code", "compiler_flags", "submissions")
-
-class LessonSerializerLite(serializers.ModelSerializer):
-    class Meta:
-        model = Lesson
-        fields = ("id", "title", "number")
 
 class ChapterSerializer(serializers.ModelSerializer):
     lessons = LessonSerializerLite(many=True, read_only=True)
