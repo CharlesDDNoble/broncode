@@ -53,7 +53,10 @@ class SubmissionViewSet(mixins.CreateModelMixin,
         """
         Run the code in docker and log it.
         """
-        print("Got code submission... running")
+        print("Got code submission... creating...")
+        super().create(request) # create submission in database
+        
+        print("Running...")
 
         code = request.data['code']
         flags = request.data['compiler_flags']
@@ -71,7 +74,6 @@ class SubmissionViewSet(mixins.CreateModelMixin,
         
         print(log)
 
-        super().create(request) # create submission in database
         # TODO: determine if the code passed or failed tests here
 
         return Response(data=log)
