@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ("username","enrolled_in","owned_courses","completed_lessons")
 
 class LessonSerializer(serializers.ModelSerializer):
-    chapter = serializers.PrimaryKeyRelatedField()
+    chapter = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Lesson
         fields = ("id", "title", "index", "chapter", "chapter_title", "example_code", "compiler_flags")
