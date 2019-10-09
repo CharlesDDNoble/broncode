@@ -61,7 +61,7 @@ def tutorial(request):
             handler = CodeHandler(host,port,code,compilerFlags)
             handler.run()
             log = handler.log
-        else :
+        else:
             print("dammit")
         return HttpResponse(
             content=json.dumps(log),

@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
 
@@ -22,6 +23,8 @@ from .serializers import SubmissionSerializer
 
 from poc.models import SolutionSet
 from .serializers import SolutionSetSerializer
+
+from poc.codehandler import CodeHandler
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -47,8 +50,26 @@ class SubmissionViewSet(mixins.CreateModelMixin,
     serializer_class = SubmissionSerializer
 
     def create(self, request):
-        print("Hooked onto create!")
-        return super().create(request)
+        print("Hooked into submission creation...")
+
+        print(request.data)
+
+        code = request.data['codearea']
+        compilerFlags = request.data['compileFlags']
+        log = ''
+        host = ''
+        port = 4000
+
+        # handle the code execution using docker
+        if code != 'na':
+            handler = CodeHandler(host,port,code,compilerFlags)
+            handler.run()
+            log = handler.log
+        else:
+            print("dammit")
+        return Response(data=log, status=status.HTTP_202_ACCEPTED)
+
+        # return super().create(request)
 
 class SolutionSetViewSet(viewsets.ModelViewSet):
     queryset = SolutionSet.objects.all()
