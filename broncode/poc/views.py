@@ -91,8 +91,8 @@ def tutorial(request):
             'poc/tutorial.html',
             {
                 'title': 'Broncode',
-                # 'year': datetime.now().year,
-                # 'codeText': sampleCode,
-                # 'defaultFlags': '-g -O3'
+                'year': datetime.now().year,
+                'codeText': sampleCode,
+                'defaultFlags': '-g -O3'
             }
         )
