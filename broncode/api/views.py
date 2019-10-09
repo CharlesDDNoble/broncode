@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework import api_view
+from rest_framework.decorators import api_view
 
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
