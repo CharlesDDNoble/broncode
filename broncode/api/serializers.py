@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username","enrolled_in","owned_courses","completed_lessons")
+        fields = ("username", "enrolled_in", "owned_courses", "completed_lessons", "submissions")
 
 class ChapterSerializerLite(serializers.ModelSerializer):
     course = CourseSerializerLite()
