@@ -32,25 +32,16 @@ class ChapterSerializerLite(serializers.ModelSerializer):
         model = Chapter
         fields = ("id", "title", "number", "course")
 
-class SubmissionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Submission
-        fields = ("username", "lesson", "code", "compiler_flags", "passed")
-
 class LessonSerializer(serializers.ModelSerializer):
-    chapter_info = ChapterSerializerLite(read_only=True)
-    submissions = SubmissionSerializer(read_only=True)
     class Meta:
         model = Lesson
         fields = (
             "id", 
             "title", 
             "number", 
-            "chapter", 
-            "chapter_info", 
+            "chapter",
             "example_code", 
-            "compiler_flags", 
-            "submissions"
+            "compiler_flags"
         )
 
 class ChapterSerializer(serializers.ModelSerializer):
@@ -66,3 +57,7 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ("id", "title", "chapters", "owners", "enrolled_users")
 
+class SubmissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Submission
+        fields = ("username", "lesson", "code", "compiler_flags", "passed")
