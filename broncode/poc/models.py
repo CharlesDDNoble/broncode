@@ -25,17 +25,17 @@ class User(models.Model):
     completed_lessons = models.ManyToManyField(Lesson, blank=True)
 
 class SolutionSet(models.Model):
-    # ordering:
-    # order that the tests will be run in.
+    # index:
+    # index/order that the tests will be run in.
     # this is here to enable the capability to say "you passed/failed test number 1"
     # and have it always refer to the same test
-    ordering = models.IntegerField
+    index = models.IntegerField
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     stdin = models.TextField()
     stdout = models.TextField()
 
     class Meta:
-        ordering = ['ordering']
+        ordering = ['index']
 
 class Submission(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
