@@ -74,10 +74,6 @@ class SubmissionViewSet(mixins.CreateModelMixin,
 
         print("Creating...")
 
-        # hijack the log - we don't care what was submitted, only what the docker
-        #  container returned to us.
-        request.data['log'] = log
-
         return super().create(request)
 
 class SolutionSetViewSet(viewsets.ModelViewSet):
