@@ -50,9 +50,10 @@ class SubmissionViewSet(mixins.CreateModelMixin,
     serializer_class = SubmissionSerializer
 
     def create(self, request):
-        print("Hooked into submission creation...")
-
-        print(request.data)
+        """
+        Run the code in docker and log it.
+        """
+        print("Got code submission... running")
 
         code = request.data['code']
         flags = request.data['compiler_flags']
@@ -61,15 +62,19 @@ class SubmissionViewSet(mixins.CreateModelMixin,
         port = 4000
 
         # handle the code execution using docker
-        if code != 'na':
+        if code != '':
             handler = CodeHandler(host,port,code,flags)
             handler.run()
             log = handler.log
         else:
-            print("dammit")
-        return Response(data=log, status=status.HTTP_202_ACCEPTED)
+            print("Code field was empty...")
+        
+        print(log)
 
-        # return super().create(request)
+        super().create(request) # create submission in database
+        # TODO: determine if the code passed or failed tests here
+
+        return Response(data=log)
 
 class SolutionSetViewSet(viewsets.ModelViewSet):
     queryset = SolutionSet.objects.all()
