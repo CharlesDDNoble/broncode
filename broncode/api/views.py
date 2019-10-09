@@ -74,6 +74,8 @@ class SubmissionViewSet(mixins.CreateModelMixin,
 
         print("Creating...")
 
+        self.get_serializer().save(log=log)
+
         return super().create(request)
 
 class SolutionSetViewSet(viewsets.ModelViewSet):
