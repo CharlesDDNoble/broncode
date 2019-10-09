@@ -9,11 +9,11 @@ The following is the structure of our apps REST api:
             POST
         register/
             POST
-    submit/
+    submissions/
         POST
         {id}/
             GET
-    course/
+    courses/
         GET
         POST
         {id}/
@@ -29,7 +29,7 @@ The following is the structure of our apps REST api:
             owners/
                 GET
                 POST
-    chapter/
+    chapters/
         GET
         POST
         {id}/
@@ -39,7 +39,7 @@ The following is the structure of our apps REST api:
             lessons/
                 GET
                 POST
-    lesson/
+    lessons/
         GET
         POST
         {id}/

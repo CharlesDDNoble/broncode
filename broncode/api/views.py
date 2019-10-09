@@ -16,6 +16,9 @@ from .serializers import ChapterSerializer
 from poc.models import Lesson
 from .serializers import LessonSerializer
 
+from poc.models import Submission
+from .serializers import SubmissionSerializer
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -32,3 +35,7 @@ class ChapterViewSet(viewsets.ModelViewSet):
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+class SubmissionViewSet(viewsets.ModelViewSet):
+    queryset = Submission.objects.all()
+    serializer_class = SubmissionSerializer
