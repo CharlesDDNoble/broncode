@@ -6,6 +6,7 @@ from poc.models import Course
 from poc.models import Chapter
 from poc.models import Lesson
 from poc.models import Submission
+from poc.models import SolutionSet
 
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
@@ -24,7 +25,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username", "enrolled_in", "owned_courses", "completed_lessons", "submissions")
+        fields = (
+            "username", 
+            "enrolled_in", 
+            "owned_courses", 
+            "completed_lessons", 
+            "submissions"
+        )
 
 class ChapterSerializerLite(serializers.ModelSerializer):
     course = CourseSerializerLite(read_only=True)
@@ -62,3 +69,8 @@ class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
         fields = ("username", "lesson", "code", "compiler_flags", "passed")
+
+class SolutionSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SolutionSet
+        fields = ("id", "number", "lesson", "stdin", "stdout")

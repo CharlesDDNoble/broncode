@@ -19,6 +19,9 @@ from .serializers import LessonSerializer
 from poc.models import Submission
 from .serializers import SubmissionSerializer
 
+from poc.models import SolutionSet
+from .serializers import SolutionSetSerializer
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -39,3 +42,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 class SubmissionViewSet(viewsets.ModelViewSet):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
+
+class SolutionSetViewSet(viewsets.ModelViewSet):
+    queryset = SolutionSet.objects.all()
+    serializer_class = SolutionSetSerializer
