@@ -46,6 +46,10 @@ class SubmissionViewSet(mixins.CreateModelMixin,
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
 
+    def create(self, request):
+        print("Hooked onto create!")
+        return super().create(request)
+
 class SolutionSetViewSet(viewsets.ModelViewSet):
     queryset = SolutionSet.objects.all()
     serializer_class = SolutionSetSerializer

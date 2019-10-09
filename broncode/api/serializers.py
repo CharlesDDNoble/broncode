@@ -68,7 +68,7 @@ class CourseSerializer(serializers.ModelSerializer):
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
-        fields = ("username", "lesson", "code", "compiler_flags", "passed")
+        fields = ("id", "username", "lesson", "code", "compiler_flags", "passed")
 
 class SolutionSetSerializer(serializers.ModelSerializer):
     class Meta:
