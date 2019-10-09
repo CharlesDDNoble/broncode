@@ -12,7 +12,7 @@ class Course(models.Model):
 
 class Chapter(models.Model):
     title = models.CharField(max_length=128)
-    index = models.IntegerField()
+    number = models.IntegerField()
     course = models.ForeignKey(Course, related_name='chapters', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -20,7 +20,7 @@ class Chapter(models.Model):
 
 class Lesson(models.Model):
     title = models.CharField(max_length=128)
-    index = models.IntegerField()
+    number = models.IntegerField()
     chapter = models.ForeignKey(Chapter, related_name='lessons', on_delete=models.CASCADE)
     example_code = models.TextField()
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
@@ -36,11 +36,11 @@ class User(models.Model):
     completed_lessons = models.ManyToManyField(Lesson, blank=True)
 
 class SolutionSet(models.Model):
-    # index:
-    # index/order that the tests will be run in.
+    # number:
+    # order that the tests will be run in.
     # this is here to enable the capability to say "you passed/failed test number 1"
     # and have it always refer to the same test
-    index = models.IntegerField()
+    number = models.IntegerField()
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     stdin = models.TextField()
     stdout = models.TextField()
