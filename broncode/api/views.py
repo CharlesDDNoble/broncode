@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
@@ -12,11 +12,6 @@ def api_root(request):
         'users': reverse('user-list', request=request)
     })
 
-class UserList(generics.ListCreateAPIView):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = 'username'
