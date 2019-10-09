@@ -46,7 +46,6 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class ChapterSerializer(serializers.ModelSerializer):
     lessons = LessonSerializerLite(many=True, read_only=True)
-    course = CourseSerializerLite(read_only=True)
     class Meta:
         model = Chapter
         fields = ("id", "title", "number", "lessons", "course")
