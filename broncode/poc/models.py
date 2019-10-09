@@ -37,8 +37,8 @@ class Lesson(models.Model):
 class User(models.Model):
     username = models.CharField(max_length=64, primary_key=True)
     password = models.CharField(max_length=128)
-    enrolled_in = models.ManyToManyField(Course, blank=True)
-    owned_courses = models.ManyToManyField(Course, blank=True, related_name='owned_courses')
+    enrolled_in = models.ManyToManyField(Course, blank=True, related_name='enrolled_users')
+    owned_courses = models.ManyToManyField(Course, blank=True, related_name='owners')
     completed_lessons = models.ManyToManyField(Lesson, blank=True)
 
 class SolutionSet(models.Model):
