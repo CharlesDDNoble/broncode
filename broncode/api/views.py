@@ -74,7 +74,9 @@ class SubmissionViewSet(mixins.CreateModelMixin,
 
         print("Creating...")
 
-        self.get_serializer().save(log=log)
+        self.get_serializer(log=log)
+        self.get_serializer().is_valid()
+        self.get_serializer().save()
 
         return super().create(request)
 
