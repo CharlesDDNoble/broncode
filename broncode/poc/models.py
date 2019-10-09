@@ -5,12 +5,18 @@ from django.db import models
 FLAGS_MAXLEN = 512
 
 class Course(models.Model):
-    title = models.CharField(max_length=256, related_name='course_title')
+    title = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.title
 
 class Chapter(models.Model):
-    title = models.CharField(max_length=128, related_name='chapter_title')
+    title = models.CharField(max_length=128)
     index = models.IntegerField()
     course = models.ForeignKey(Course, related_name='chapters', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
 
 class Lesson(models.Model):
     title = models.CharField(max_length=128)
@@ -18,6 +24,9 @@ class Lesson(models.Model):
     chapter = models.ForeignKey(Chapter, related_name='lessons', on_delete=models.CASCADE)
     example_code = models.TextField()
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
+
+    def __str__(self):
+        return self.title
 
 class User(models.Model):
     username = models.CharField(max_length=64, primary_key=True)

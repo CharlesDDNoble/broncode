@@ -12,8 +12,8 @@ class CourseSerializerLite(serializers.ModelSerializer):
         fields = ("id", "title")
 
 class UserSerializer(serializers.ModelSerializer):
-    enrolled_in = LightCourseSerializerLite(many=True, read_only=True)
-    owned_courses = LightCourseSerializerLite(many=True, read_only=True)
+    enrolled_in = CourseSerializerLite(many=True, read_only=True)
+    owned_courses = CourseSerializerLite(many=True, read_only=True)
 
     class Meta:
         model = User
@@ -21,7 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     chapter = serializers.PrimaryKeyRelatedField()
-    chapter_title = serializers.StringRelatedField()
     class Meta:
         model = Lesson
         fields = ("id", "title", "index", "chapter", "chapter_title", "example_code", "compiler_flags")
@@ -33,7 +32,6 @@ class LessonSerializerLite(serializers.ModelSerializer):
 
 class ChapterSerializer(serializers.ModelSerializer):
     lessons = LessonSerializerLite(many=True, read_only=True)
-    course_title = serializers.StringRelatedField()
     class Meta:
         model = Chapter
         fields = ("id", "title", "index", "lessons", "course_title")

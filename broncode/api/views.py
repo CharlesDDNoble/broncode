@@ -23,7 +23,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
-    serializer_class = LessonSerialzer
+    serializer_class = LessonSerializer
 
 class ChapterViewSet(viewsets.ModelViewSet):
     queryset = Chapter.objects.all()
