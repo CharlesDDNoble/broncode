@@ -47,7 +47,7 @@ class SolutionSet(models.Model):
     # this is here to enable the capability to say "you passed/failed test number 1"
     # and have it always refer to the same test
     number = models.IntegerField()
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="solution_sets")
     stdin = models.TextField()
     stdout = models.TextField()
 

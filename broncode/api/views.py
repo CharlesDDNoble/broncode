@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
@@ -39,10 +40,8 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-class SubmissionViewSet(viewsets.ModelViewSet):
+class SubmissionViewSet(mixins.CreateModelMixin,
+                        mixins.RetrieveModelMixin,
+                        viewsets.GenericViewSet):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
-
-class SolutionSetViewSet(viewsets.ModelViewSet):
-    queryset = SolutionSet.objects.all()
-    serializer_class = SolutionSetSerializer

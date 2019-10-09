@@ -9,6 +9,20 @@ The following is the structure of our apps REST api:
             POST
         register/
             POST
+    users/
+        POST
+        {username}/
+            GET
+            DELETE
+            enrolled/
+                GET
+                PUT
+            owned/
+                GET
+                PUT
+            completed/
+                GET
+                PUT
     submissions/
         POST
         {id}/
@@ -18,7 +32,7 @@ The following is the structure of our apps REST api:
         POST
         {id}/
             GET
-            POST
+            PUT
             DELETE
             chapters/
                 GET
@@ -30,23 +44,26 @@ The following is the structure of our apps REST api:
                 GET
                 POST
     chapters/
-        GET
         POST
         {id}/
             GET
-            POST
+            PUT
             DELETE
             lessons/
                 GET
-                POST
+                PUT
     lessons/
-        GET
         POST
         {id}/
             GET
-            solutions/
+            solutionsets/
                 GET
                 POST
+            submissions/
+                GET
+                PUT
+                {username}
+                    GET
 ```
 
 Example usage:
