@@ -60,4 +60,4 @@ class Submission(models.Model):
     code = models.TextField(blank=False)
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
     passed = models.BooleanField(default=False)
-    log = models.TextField()
+    log = models.TextField(blank=True)
