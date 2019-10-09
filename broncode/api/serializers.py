@@ -23,23 +23,23 @@ class LessonSerializer(serializers.ModelSerializer):
     chapter = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Lesson
-        fields = ("id", "title", "index", "chapter", "chapter_title", "example_code", "compiler_flags")
+        fields = ("id", "title", "number", "chapter", "chapter_title", "example_code", "compiler_flags")
 
 class LessonSerializerLite(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ("id", "title")
+        fields = ("id", "title", "number")
 
 class ChapterSerializer(serializers.ModelSerializer):
     lessons = LessonSerializerLite(many=True, read_only=True)
     class Meta:
         model = Chapter
-        fields = ("id", "title", "index", "lessons", "course_title")
+        fields = ("id", "title", "number", "lessons", "course_title")
 
 class ChapterSerializerLite(serializers.ModelSerializer):
     class Meta:
         model = Chapter
-        fields = ("id", "title")
+        fields = ("id", "title", "number")
 
 class CourseSerializer(serializers.ModelSerializer):
     owners = UserSerializer(many=True, read_only=True)
