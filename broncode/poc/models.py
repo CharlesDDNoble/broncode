@@ -16,7 +16,7 @@ class Chapter(models.Model):
     course = models.ForeignKey(Course, related_name='chapters', on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ['id', 'number']
+        unique_together = ['course', 'number']
 
     def __str__(self):
         return self.title
@@ -29,7 +29,7 @@ class Lesson(models.Model):
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
 
     class Meta:
-        unique_together = ['id', 'number']
+        unique_together = ['chapter', 'number']
 
     def __str__(self):
         return self.title
