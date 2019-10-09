@@ -14,7 +14,7 @@ class UserList(APIView):
     """
     def get(self, request):
         users = User.objects.all()
-        serializer = UserSerializer(users)
+        serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
     def post(self, request):
