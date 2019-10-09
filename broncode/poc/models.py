@@ -57,6 +57,6 @@ class SolutionSet(models.Model):
 class Submission(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE, related_name="submissions")
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="submissions")
-    code = models.TextField()
-    compiler_flags = models.CharField(max_length=FLAGS_MAXLEN)
+    code = models.TextField(blank=False)
+    compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
     passed = models.BooleanField(default=False)
