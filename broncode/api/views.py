@@ -19,7 +19,7 @@ from .serializers import LessonSerializer
 from poc.models import Submission
 from .serializers import SubmissionSerializer
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = "username"
