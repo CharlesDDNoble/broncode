@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.http import Http404
+
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
 
@@ -30,7 +32,7 @@ class UserDetail(APIView):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            raise Http404
 
     def get(self, request, username):
         user = self.get_object(username)
