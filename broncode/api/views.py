@@ -45,3 +45,7 @@ class SubmissionViewSet(mixins.CreateModelMixin,
                         viewsets.GenericViewSet):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
+
+class SolutionSetViewSet(viewsets.ModelViewSet):
+    queryset = SolutionSet.objects.all()
+    serializer_class = SolutionSetSerializer
