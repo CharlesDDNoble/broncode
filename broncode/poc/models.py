@@ -34,9 +34,6 @@ class SolutionSet(models.Model):
     stdin = models.TextField()
     stdout = models.TextField()
 
-    class Meta:
-        ordering = ['-index']
-
 class Submission(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
