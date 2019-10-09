@@ -23,7 +23,7 @@ function create_post() {
         success : function(json) {
             console.log(json);
             console.log("success"); // another sanity check
-           $('#output-box').text(json);
+           $('#output-box').text(json['log']);
         },
 
         // handle a non-successful response

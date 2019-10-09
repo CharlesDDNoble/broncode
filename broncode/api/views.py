@@ -53,8 +53,6 @@ class SubmissionViewSet(mixins.CreateModelMixin,
         """
         Run the code in docker and log it.
         """
-        print("Got code submission... creating...")
-        super().create(request) # create submission in database
         
         print("Running...")
 
@@ -70,13 +68,17 @@ class SubmissionViewSet(mixins.CreateModelMixin,
             handler.run()
             log = handler.log
         else:
-            print("Code field was empty...")
-        
-        print(log)
+            log = "Code field was empty...\n"
 
         # TODO: determine if the code passed or failed tests here
 
-        return Response(data=log)
+        print("Creating...")
+
+        # hijack the log - we don't care what was submitted, only what the docker
+        #  container returned to us.
+        request.data['log'] = log
+
+        return super().create(request)
 
 class SolutionSetViewSet(viewsets.ModelViewSet):
     queryset = SolutionSet.objects.all()

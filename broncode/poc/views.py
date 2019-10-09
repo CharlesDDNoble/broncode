@@ -37,7 +37,6 @@ def main(request):
         }
     )
 
-
 def tutorial(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
