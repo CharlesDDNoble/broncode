@@ -10,7 +10,7 @@ $('#major-form').on('submit', function(event){
 function create_post() {
     console.log("create post is working!") // sanity check
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:8080/api/submissions", // the endpoint
+        url : "http://broncode.cs.wmich.edu:8080/api/submissions/", // the endpoint
         type : "POST", // http method
         data : { 
             user : 1, // TODO: Replace with real values
