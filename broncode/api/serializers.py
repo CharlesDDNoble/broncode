@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from django.contrib.auth.models import User
-from .poc.models import Course
+from poc.models import Course
 
 class UserSerializer(serializers.ModelSerializer):
     owned_courses = CourseSerializer(read_only=True, many=True)
