@@ -15,3 +15,4 @@ def api_root(request):
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    lookup_field = "username"
