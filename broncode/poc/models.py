@@ -15,6 +15,9 @@ class Chapter(models.Model):
     number = models.IntegerField()
     course = models.ForeignKey(Course, related_name='chapters', on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ['id', 'number']
+
     def __str__(self):
         return self.title
 
@@ -24,6 +27,9 @@ class Lesson(models.Model):
     chapter = models.ForeignKey(Chapter, related_name='lessons', on_delete=models.CASCADE)
     example_code = models.TextField()
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
+
+    class Meta:
+        unique_together = ['id', 'number']
 
     def __str__(self):
         return self.title
@@ -44,6 +50,9 @@ class SolutionSet(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     stdin = models.TextField()
     stdout = models.TextField()
+
+    class Meta:
+        unique_together = ['lesson', 'number']
 
 class Submission(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
