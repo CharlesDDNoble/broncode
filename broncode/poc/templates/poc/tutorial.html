@@ -32,23 +32,26 @@
             <div class="col s12 l4" id="compiler-and-flags-col">
                 <!--A row to hold the compilerflags and codemirror-->
                 <div class="row" id="compiler-and-flags-row">
-                    <!--Column for compilerflags-->
-                    <div class="col s12" id="compiler-flags-wrapper">
-                        {% block compilerFlags%}
-                        {% include 'poc/component-flags.html' %}
-                        {% endblock compilerFlags %}
-                    </div>
-                    <!--Column for codemirror-->
-                    <div class="col s12" id="codemirror-wrapper">
-                        {% block codemirror %}
-                        {% include 'poc/component-codemirror.html' %}
-                        {% endblock codemirror %}
-                    </div>
-                    <div class="col s12" id="btn-submit-wrapper">
-                        <button class="btn waves-effect waves-light" id="btn-submit" name="action" onclick="submitCode()">Submit
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
+                    <!--Start of form-->
+                    <form action="" method="post" id="major-form">
+                        {% csrf_token %}
+                        <!--Column for compilerflags-->
+                        <div class="col s12" id="compiler-flags-wrapper">
+                            {% block compilerFlags%}
+                            {% include 'poc/component-flags.html' %}
+                            {% endblock compilerFlags %}
+                        </div>
+                        <!--Column for codemirror-->
+                        <div class="col s12" id="codemirror-wrapper">
+                            {% block codemirror %}
+                            {% include 'poc/component-codemirror.html' %}
+                            {% endblock codemirror %}
+                        </div>
+                        <div class="col s12" id="btn-submit-wrapper">
+                            <button class="btn waves-effect waves-light" type="submit" id="btn-submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
