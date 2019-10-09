@@ -10,7 +10,7 @@ from poc.models import Submission
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ("id", "title")
+        fields = ("id", "title", "owners")
 
 class LessonSerializerLite(serializers.ModelSerializer):
     class Meta:
@@ -52,6 +52,8 @@ class ChapterSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     chapters = ChapterSerializerLite(many=True, read_only=True)
+    owners = UserSerializer(many=True, read_only=True)
+    enrolled_users = UserSerializer(many=True, read_only=True)
     class Meta:
         model = Course
         fields = ("id", "title", "chapters", "owners", "enrolled_users")
