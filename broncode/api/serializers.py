@@ -68,7 +68,13 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ("id", "title", "chapters", "owners", "enrolled_users")
 
 class SubmissionSerializer(serializers.ModelSerializer):
+    log = serializers.CharField(read_only=True)
+    passed = serializers.BooleanField(read_only=True)
 
+    class Meta:
+        model = Submission
+        fields = ("id", "username", "lesson", "code", "compiler_flags", "log", "passed")
+    
     def save(self):
         """
         Run the code in docker and log it.
@@ -94,11 +100,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
         print("Creating...")
 
         return super().save(log=log)
-
-    class Meta:
-        model = Submission
-        fields = ("id", "username", "lesson", "code", "compiler_flags")
-        read_only_fields = ("log", "passed")
 
 class SolutionSetSerializer(serializers.ModelSerializer):
     class Meta:
