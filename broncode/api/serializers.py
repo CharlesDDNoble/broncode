@@ -78,8 +78,14 @@ class SubmissionSerializer(serializers.ModelSerializer):
     def save(self):
         """
         Run the code in docker and log it.
+
+        How this works: in Django REST framework, data is passed to the view,
+        (in this case SubmissionViewSet) which catches the data, validates it, and
+        then passes it to the SubmissionSeializer (this class) to save. By overwriting
+        the save method, we can inject data (the output log, and whether or not
+        the code passed tests) into the model before was call the create/save function.
         """
-        print("Running...")
+        print("Running code...")
 
         code = self.validated_data['code']
         flags = self.validated_data['compiler_flags']
@@ -97,8 +103,11 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
         # TODO: determine if the code passed or failed tests here
 
-        print("Creating...")
+        print("Creating submission object {}...".format(self.validated_data['id']))
 
+        # you can add additional data to serializers by calling save(newdata=data)
+        # so after running the code and getting the necessary data, we just call
+        # the default implementation of save given to us by ModelSerializer
         return super().save(log=log)
 
 class SolutionSetSerializer(serializers.ModelSerializer):
