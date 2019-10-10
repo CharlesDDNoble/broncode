@@ -25,6 +25,7 @@ class Lesson(models.Model):
     title = models.CharField(max_length=128)
     number = models.IntegerField()
     chapter = models.ForeignKey(Chapter, related_name='lessons', on_delete=models.CASCADE)
+    text = models.TextField()
     example_code = models.TextField()
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
 
