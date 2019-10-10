@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'broncode.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'broncode',
+        'NAME': 'broncode_josh',
         'USER': os.environ.get('BRONCODE_DB_USER', ''),
         'PASSWORD': os.environ.get('BRONCODE_DB_PASS', ''),
         'HOST': 'localhost'
