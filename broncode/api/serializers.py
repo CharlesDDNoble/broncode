@@ -8,6 +8,8 @@ from poc.models import Lesson
 from poc.models import Submission
 from poc.models import SolutionSet
 
+from poc.codehandler import CodeHandler
+
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
         model = Course
@@ -66,6 +68,33 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ("id", "title", "chapters", "owners", "enrolled_users")
 
 class SubmissionSerializer(serializers.ModelSerializer):
+
+    def save(self):
+        """
+        Run the code in docker and log it.
+        """
+        print("Running...")
+
+        code = self.validated_data['code']
+        flags = self.validated_data['compiler_flags']
+        log = ''
+        host = ''
+        port = 4000
+
+        # handle the code execution using docker
+        if code != '':
+            handler = CodeHandler(host,port,code,flags)
+            handler.run()
+            log = handler.log
+        else:
+            log = "No code to run...\n"
+
+        # TODO: determine if the code passed or failed tests here
+
+        print("Creating...")
+
+        return super().save(log=log)
+
     class Meta:
         model = Submission
         fields = ("id", "username", "lesson", "code", "compiler_flags", "log", "passed")

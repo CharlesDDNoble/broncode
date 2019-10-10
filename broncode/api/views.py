@@ -24,8 +24,6 @@ from .serializers import SubmissionSerializer
 from poc.models import SolutionSet
 from .serializers import SolutionSetSerializer
 
-from poc.codehandler import CodeHandler
-
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -48,37 +46,6 @@ class SubmissionViewSet(mixins.CreateModelMixin,
                         viewsets.GenericViewSet):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
-
-    def create(self, request):
-        """
-        Run the code in docker and log it.
-        """
-        
-        print("Running...")
-
-        code = request.data['code']
-        flags = request.data['compiler_flags']
-        log = ''
-        host = ''
-        port = 4000
-
-        # handle the code execution using docker
-        if code != '':
-            handler = CodeHandler(host,port,code,flags)
-            handler.run()
-            log = handler.log
-        else:
-            log = "Code field was empty...\n"
-
-        # TODO: determine if the code passed or failed tests here
-
-        print("Creating...")
-
-        self.get_serializer(log=log)
-        self.get_serializer().is_valid()
-        self.get_serializer().save()
-
-        return super().create(request)
 
 class SolutionSetViewSet(viewsets.ModelViewSet):
     queryset = SolutionSet.objects.all()
