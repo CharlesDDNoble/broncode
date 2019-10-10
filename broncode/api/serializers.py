@@ -97,7 +97,8 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Submission
-        fields = ("id", "username", "lesson", "code", "compiler_flags", "log", "passed")
+        fields = ("id", "username", "lesson", "code", "compiler_flags")
+        read_only_fields = ("log", "passed")
 
 class SolutionSetSerializer(serializers.ModelSerializer):
     class Meta:
