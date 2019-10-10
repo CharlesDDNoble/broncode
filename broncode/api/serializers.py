@@ -103,7 +103,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
         # TODO: determine if the code passed or failed tests here
 
-        print("Creating submission object {}...".format(self.validated_data['id']))
+        print("Creating submission object...")
 
         # you can add additional data to serializers by calling save(newdata=data)
         # so after running the code and getting the necessary data, we just call
