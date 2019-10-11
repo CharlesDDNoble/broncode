@@ -56,7 +56,7 @@ class SolutionSet(models.Model):
         unique_together = ['lesson', 'number']
 
 class Submission(models.Model):
-    username = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="submissions")
+    user_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="submissions")
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="submissions")
     code = models.TextField(blank=False)
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)

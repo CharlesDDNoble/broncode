@@ -73,7 +73,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Submission
-        fields = ("id", "username", "lesson", "code", "compiler_flags", "log", "passed")
+        fields = ("id", "user_id", "lesson", "code", "compiler_flags", "log", "passed")
     
     def save(self):
         """

@@ -13,7 +13,7 @@ function create_post() {
         url : "http://broncode.cs.wmich.edu:8080/api/submissions/", // the endpoint
         type : "POST", // http method
         data : { 
-            username : "joshii", // TODO: Replace with real values
+            username : 2, // TODO: Replace with real values
             lesson : 1, // TODO: Replace with real values
             code : $('#codemirror').val(), 
             compiler_flags : $('#compiler-flags').val()
