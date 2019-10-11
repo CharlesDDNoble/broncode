@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -18,12 +19,17 @@ class Lesson(models.Model):
     example_code = models.CharField(max_length=CODE_MAXLEN, blank=True)
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
 
-class User(models.Model):
-    username = models.CharField(max_length=64, primary_key=True)
-    password = models.CharField(max_length=128)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=128, default='')
+    last_name = models.CharField(max_length=128, default='')
+    email = models.EmailField(max_length=254, default='')
     enrolled_in = models.ManyToManyField(Course, blank=True)
     owned = models.ManyToManyField(Course, blank=True, related_name='owned_courses')
     completed_lessons = models.ManyToManyField(Lesson, blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 class SolutionSet(models.Model):
     ordering = models.IntegerField
@@ -32,7 +38,7 @@ class SolutionSet(models.Model):
     stdout = models.CharField(max_length=2048)
 
 class Submission(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     code = models.CharField(max_length=CODE_MAXLEN)
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN)

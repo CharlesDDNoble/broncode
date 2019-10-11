@@ -1,0 +1,36 @@
+/* General */
+html {
+    min-height: 100%; /* needed to make the background fit on mac */
+}
+
+body {
+    min-height: 100%; /* needed to make the background fit on mac */
+    background-image: url("../images/login-5.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+/* Navbar (override) */
+#navbar {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+/* Classes */
+.row {
+    margin: 0;
+}
+
+/* IDs */
+#row-login {
+    padding: 2rem 0 0 0;
+}
+
+
+#form-login {
+    padding: 2rem;
+    background: rgb(120, 50, 60, 1);
+    border-radius: 2px;
+    
+}

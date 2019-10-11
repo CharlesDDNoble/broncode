@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 
 from rest_framework import generics
-from poc.models import User
+from poc.models import UserProfile
 from .serializers import UserSerializer
 
 def index(request):
@@ -11,6 +11,6 @@ class ListUsersView(generics.ListAPIView):
     """
     Provides a get method handler.
     """
-    queryset = User.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
 
