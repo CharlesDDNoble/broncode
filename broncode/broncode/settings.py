@@ -35,7 +35,6 @@ ALLOWED_HOSTS = ['broncode.cs.wmich.edu', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'poc.apps.PocConfig',
-    'codemirror.apps.CodemirrorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
