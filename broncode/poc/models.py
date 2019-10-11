@@ -27,10 +27,6 @@ class UserProfile(models.Model):
     enrolled_in = models.ManyToManyField(Course, blank=True)
     owned = models.ManyToManyField(Course, blank=True, related_name='owned_courses')
     completed_lessons = models.ManyToManyField(Lesson, blank=True)
-    
-
-    class Meta:
-        db_table = "poc_userprofile"
 
     def __str__(self):
         return self.user.username
