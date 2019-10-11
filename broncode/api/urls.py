@@ -1,9 +1,15 @@
-from django.urls import path
-
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 from . import views
 
-urlpatterns = [
-    path('', views.index, name='broncode api'),
-    path('users/', views.ListUsersView.as_view(), name='users-all')
-]
+router = DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'courses', views.CourseViewSet)
+router.register(r'chapters', views.ChapterViewSet)
+router.register(r'lessons', views.LessonViewSet)
+router.register(r'submissions', views.SubmissionViewSet)
+router.register(r'solutionsets', views.SolutionSetViewSet)
 
+urlpatterns = [
+    path('', include(router.urls))
+]

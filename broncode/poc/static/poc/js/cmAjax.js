@@ -10,16 +10,20 @@ $('#major-form').on('submit', function(event){
 function create_post() {
     console.log("create post is working!") // sanity check
     $.ajax({
-        url : "", // the endpoint
+        url : "http://broncode.cs.wmich.edu:8080/api/submissions/", // the endpoint
         type : "POST", // http method
-        data : { codearea : $('#codemirror').val(),compileFlags : $('#compiler-flags').val()}, // data sent with the post request
-        //data: $('#codeaarea').val(),
+        data : { 
+            username : "josh", // TODO: Replace with real values
+            lesson : 1, // TODO: Replace with real values
+            code : $('#codemirror').val(), 
+            compiler_flags : $('#compiler-flags').val()
+        }, // data sent with the post request
         dataType: "json",
         // handle a successful response
         success : function(json) {
             console.log(json);
             console.log("success"); // another sanity check
-           $('#output-box').text(json);
+           $('#output-box').text(json['log']);
         },
 
         // handle a non-successful response
@@ -30,8 +34,6 @@ function create_post() {
         }
     });
 };
-
-
 
 $(function() {
 

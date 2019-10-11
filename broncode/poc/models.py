@@ -3,20 +3,31 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-CODE_MAXLEN = 10000
 FLAGS_MAXLEN = 512
 
 class Course(models.Model):
     title = models.CharField(max_length=256)
 
+    def __str__(self):
+        return self.title
+
 class Chapter(models.Model):
     title = models.CharField(max_length=128)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    number = models.IntegerField()
+    course = models.ForeignKey(Course, related_name='chapters', on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['course', 'number']
+
+    def __str__(self):
+        return self.title
 
 class Lesson(models.Model):
     title = models.CharField(max_length=128)
-    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    example_code = models.CharField(max_length=CODE_MAXLEN, blank=True)
+    number = models.IntegerField()
+    chapter = models.ForeignKey(Chapter, related_name='lessons', on_delete=models.CASCADE)
+    text = models.TextField()
+    example_code = models.TextField()
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
 
 class UserProfile(models.Model):
@@ -25,21 +36,29 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=128, default='')
     email = models.EmailField(max_length=254, default='')
     enrolled_in = models.ManyToManyField(Course, blank=True)
-    owned = models.ManyToManyField(Course, blank=True, related_name='owned_courses')
+    owned_courses = models.ManyToManyField(Course, blank=True, related_name='owners')
     completed_lessons = models.ManyToManyField(Lesson, blank=True)
 
     def __str__(self):
         return self.user.username
 
 class SolutionSet(models.Model):
-    ordering = models.IntegerField
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    stdin = models.CharField(max_length=2048)
-    stdout = models.CharField(max_length=2048)
+    # number:
+    # order that the tests will be run in.
+    # this is here to enable the capability to say "you passed/failed test number 1"
+    # and have it always refer to the same test
+    number = models.IntegerField()
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="solution_sets")
+    stdin = models.TextField()
+    stdout = models.TextField()
+
+    class Meta:
+        unique_together = ['lesson', 'number']
 
 class Submission(models.Model):
-    username = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    code = models.CharField(max_length=CODE_MAXLEN)
-    compiler_flags = models.CharField(max_length=FLAGS_MAXLEN)
+    username = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="submissions")
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="submissions")
+    code = models.TextField(blank=False)
+    compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
     passed = models.BooleanField(default=False)
+    log = models.TextField(blank=True)
