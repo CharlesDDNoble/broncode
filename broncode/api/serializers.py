@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = (
-            "username", 
+            "user", 
             "enrolled_in", 
             "owned_courses", 
             "completed_lessons", 
@@ -73,7 +73,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Submission
-        fields = ("id", "user_id", "lesson", "code", "compiler_flags", "log", "passed")
+        fields = ("id", "user", "lesson", "code", "compiler_flags", "log", "passed")
     
     def save(self):
         """
