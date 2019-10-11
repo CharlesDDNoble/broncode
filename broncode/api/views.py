@@ -25,7 +25,7 @@ from poc.models import SolutionSet
 from .serializers import SolutionSetSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
     lookup_field = "username"
 
