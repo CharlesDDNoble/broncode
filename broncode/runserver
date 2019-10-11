@@ -6,4 +6,3 @@ source /home/sysadmin/broncode/dbcreds
 
 # -E preserves environment variables.
 sudo -E python3 ./manage.py runserver 0.0.0.0:8080
-
