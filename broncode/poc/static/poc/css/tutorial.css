@@ -60,6 +60,7 @@ html, body {
 }
 #output-box {
     padding: 0 2rem !important;
+    white-space: pre-wrap;
 }
 
 

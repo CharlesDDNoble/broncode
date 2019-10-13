@@ -21,6 +21,7 @@ function create_post() {
         dataType: "json",
         // handle a successful response
         success : function(json) {
+	    //json.log = json.log.replace(/\n/g,"<br />")	
             console.log(json);
             console.log("success"); // another sanity check
            $('#output-box').text(json['log']);
