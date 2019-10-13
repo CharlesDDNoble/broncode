@@ -6,3 +6,7 @@
     color: white !important;
     direction: ltr;
 }
+
+#output-box {
+    padding: 0 2rem !important;
+}
