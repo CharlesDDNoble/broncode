@@ -65,7 +65,7 @@ def register(request):
     # Render the 'index.html' page
     return render(request, 'registration/register.html', context)
 
-def tutorial(request):
+def lesson(request, lesson_id):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
     
@@ -82,6 +82,7 @@ def tutorial(request):
             'title': 'Broncode',
             'year': datetime.now().year,
             'codeText': sampleCode,
-            'defaultFlags': '-g -O3'
+            'defaultFlags': '-g -O3',
+            'lesson_id': lesson_id
         }
     )
