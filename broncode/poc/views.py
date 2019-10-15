@@ -65,6 +65,7 @@ def register(request):
     # Render the 'index.html' page
     return render(request, 'registration/register.html', context)
 
+@login_required
 def lesson(request, lesson_id):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
@@ -83,6 +84,7 @@ def lesson(request, lesson_id):
             'year': datetime.now().year,
             'codeText': sampleCode,
             'defaultFlags': '-g -O3',
-            'lesson_id': lesson_id
+            'lesson_id': lesson_id,
+            'user_id': request.user.id
         }
     )
