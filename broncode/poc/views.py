@@ -41,14 +41,8 @@ def register(request):
         profile_form = UserProfileForm(request.POST)
 
         if form.is_valid() and profile_form.is_valid():
-            user = form.save(commit=False)
-            profile = profile_form.save(commit=False)
-            
-            user.userprofile = profile
-            profile.user = user
-            
-            user.save()
-            profile.save()
+            user = form.save()
+            profile_form.save(user=user)
 
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
