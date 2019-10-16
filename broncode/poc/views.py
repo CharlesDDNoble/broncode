@@ -41,11 +41,13 @@ def register(request):
         profile_form = UserProfileForm(request.POST)
 
         if form.is_valid() and profile_form.is_valid():
-            user = form.save()
-            
+            user = form.save(commit=False)
             profile = profile_form.save(commit=False)
+            
+            user.userprofile = profile
             profile.user = user
             
+            user.save()
             profile.save()
 
             username = form.cleaned_data['username']
@@ -58,11 +60,11 @@ def register(request):
             login(request, user)
             
             # Return back
-            return redirect('/poc')
+            return redirect('')
     
     context = {'form': form, 'profile_form': profile_form}
 
-    # Render the 'index.html' page
+    # Render the 'register.html' page
     return render(request, 'registration/register.html', context)
 
 @login_required
@@ -85,6 +87,6 @@ def lesson(request, lesson_id):
             'codeText': sampleCode,
             'defaultFlags': '-g -O3',
             'lesson_id': lesson_id,
-            'user_id': request.user.id
+            'user': request.user
         }
     )
