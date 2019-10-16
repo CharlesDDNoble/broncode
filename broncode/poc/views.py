@@ -62,7 +62,7 @@ def register(request):
             login(request, user)
             
             # Return back
-            return redirect('')
+            return redirect('/')
     
     context = {'form': form, 'profile_form': profile_form}
 
