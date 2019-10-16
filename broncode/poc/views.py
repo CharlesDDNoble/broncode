@@ -48,10 +48,6 @@ def register(request):
             profile.user = user
             profile = profile.save()
 
-            user=User.objects.get(username=form.cleaned_data['username'])
-            user.userprofile = profile
-            user.save()
-
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             
