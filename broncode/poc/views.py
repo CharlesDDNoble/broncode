@@ -14,6 +14,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserProfileForm
+from .models import Lesson
 
 def index(request):
     # Renders the home page.
@@ -69,6 +70,10 @@ def register(request):
 def lesson(request, lesson_id):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
+
+    # make sure the lesson exists
+    if not Lesson.objects.filter(id=lesson_id).exists():
+        raise "Lesson does not exist"
     
     # Grab sample code
     filename = finders.find('poc/samplefiles/testCode.c')
