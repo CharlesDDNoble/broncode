@@ -11,6 +11,7 @@ from .codehandler import CodeHandler
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserProfileForm
 
@@ -41,13 +42,14 @@ def register(request):
         profile_form = UserProfileForm(request.POST)
 
         if form.is_valid() and profile_form.is_valid():
+            user = form.save()
+            
             profile = profile_form.save(commit=False)
-            user = form.save(commit=False)
-            
             profile.user = user
+            profile = profile.save()
+
+            user=User(username=form.cleaned_data['username'])
             user.userprofile = profile
-            
-            profile.save()
             user.save()
 
             username = form.cleaned_data['username']
