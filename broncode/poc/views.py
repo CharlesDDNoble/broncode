@@ -85,6 +85,6 @@ def lesson(request, lesson_id):
             'codeText': sampleCode,
             'defaultFlags': '-g -O3',
             'lesson_id': lesson_id,
-            'user': request.user
+            'profile': request.user.userprofile
         }
     )
