@@ -31,7 +31,7 @@ class Lesson(models.Model):
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(max_length=128, default='')
     last_name = models.CharField(max_length=128, default='')
     email = models.EmailField(max_length=254, default='')
