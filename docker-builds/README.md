@@ -15,11 +15,11 @@ docker service, which listens on a specified port and handles requests.
 In order to simplify the process of creating containers to handle new
 languages, we have generalized the process of receiving and running code into two sections: starters and executors.
 
-##Starters##
+**Starters**
 All docker start scripts are contained in the *starters* folder, these
 scripts handle the socket communication to recieve code and the timeout conditions for the docker container. 
 
-##Executors##
+**Executors**
 The compiling/running/processing of code within a container is all handled by a CodeExecutor (an abstract class specified in 
 codeexecutor.py) python object; each language should have its own 
 CodeExecutor to handle the specifics of executing code for that language. 
