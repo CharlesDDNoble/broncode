@@ -1,24 +1,34 @@
-﻿
+﻿<!--To be put in a form-->
 {% block codemirror %}
     {% load static %}
+    <!--Codemirror general stylesheet-->
     <link rel="stylesheet" type="text/css" href="{% static 'poc/codemirror/lib/codemirror.css' %}">
+    <!--Codemirror hint system stylesheet-->
     <link rel="stylesheet" type="text/css" href="{% static 'poc/codemirror/addon/hint/show-hint.css' %}">
+    <!--Codemirror theme stylesheet-->
     <link rel="stylesheet" type="text/css" href="{% static 'poc/codemirror/theme/base16-dark.css' %}">
+    <!--Codemirror general style stylesheet-->
     <link rel="stylesheet" type="text/css" href="{% static 'poc/css/component-codemirror.css' %}">
 
+    <!--Codemirror deps-->
     <script src="{% static 'poc/codemirror/lib/codemirror.js' %}"></script>
     <script src="{% static 'poc/codemirror/addon/edit/matchbrackets.js' %}"></script>
     <script src="{% static 'poc/codemirror/addon/hint/show-hint.js' %}"></script>
 
+    <!-- imports script for C-like languages. Must be swapped out for other languages -->
     <script src="{% static 'poc/codemirror/mode/clike/clike.js' %}"></script>
+    <!--TODO:remove unused-->
     <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
     
+    <!--Part that will be passed around in POST request-->
     <textarea id="codemirror" name="codearea">{{codeText}}</textarea>
+
+    <!--Codemirror scripting for highlighting textarea-->
     <script>
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,
             matchBrackets: true,
-            mode: "text/x-csrc",
+            mode: "text/x-csrc",//must be changed for editing other languages
             theme: 'base16-dark'
         });
         cEditor.setSize('100%', '75vh');
