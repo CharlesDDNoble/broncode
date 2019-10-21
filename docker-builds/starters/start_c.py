@@ -46,15 +46,15 @@ def main():
         flags = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
         code = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
 
-        with open("flags.txt","w") as f:
-            f.write(flags)
+        # with open("flags.txt","w") as f:
+        #     f.write(flags)
 
-        with open("code.c","w") as f:
-            f.write(code)
+        # with open("code.c","w") as f:
+        #     f.write(code)
 
         #Use the appropriate CodeExecutor to compile (if necessary)
         #and run the given code
-        codex = CExecutor()
+        codex = CExecutor(code,flags)
 
         assert(isinstance(codex,CodeExecutor))
 
