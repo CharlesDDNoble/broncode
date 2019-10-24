@@ -15,6 +15,7 @@ class CodeServer():
         self.host = host
         self.port = port
         self.Executor = Executor
+        self.max_time = 10
 
     def make_block(self,msg):
         """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
@@ -48,7 +49,7 @@ class CodeServer():
             inp = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
 
             #reset alarm to time out in case of really long running programs
-            signal.alarm(15)
+            signal.alarm(self.max_time)
 
             codex = self.Executor(code,flags,inp)
 

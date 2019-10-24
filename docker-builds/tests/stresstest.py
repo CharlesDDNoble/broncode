@@ -35,14 +35,14 @@ inf_exp  =  "Something went wrong running your code:\n" \
 
 
 # returns tuple of total handler elapsed time and program runtime
-def test_execution(code, exp, is_threaded = False,tests=None,index=None,wait=0):
+def run_test(code, exp, is_threaded = False,tests=None,index=None,wait=0):
     sleep(wait)
 
     host = ''
     port = 4000
     flags = " -o3 \n" 
 
-    start_time = math.floor(time()) 
+    start_time = time()
     
     handler = CodeHandler(host,port,code,flags)
     handler.run()
@@ -88,14 +88,14 @@ def print_report(test_name,tests,is_random=False,seed=0):
         print("WARNING: The tests list has an index with None!")
     
     if is_random:
-        print("Random Seed used:            "+str(seed))
+        print("Random Seed used: "+str(seed))
 
     print("TOTALS")
     print("\tTotal tests run:               "+str(total))
     print("\tTotal test time:               "+str(sum_total_test_time))
     print("\tTotal connection and run time: "+str(sum_total_run_time))
-    print("\tAvg. time of test:             "+str(sum_total_test_time/pass_count))
-    print("\tAvg. time to connect and run:  "+str(sum_total_run_time/pass_count))
+    print("\tAvg. time of test:             "+str(sum_total_test_time/total))
+    print("\tAvg. time to connect and run:  "+str(sum_total_run_time/total))
 
     if passes:
         print("PASSES")
@@ -135,26 +135,23 @@ def has_max_replicas(service_name):
 
     return (count == total)
 
-def run_test(service_name,test_name,code,exp,total,interval):
+def run_tests(service_name,test_name,code,exp,total,interval):
     while not has_max_replicas(service_name):
         sleep(1)
 
-    seed = time()
-    Random.seed(seed)
-
     tests = []
     for i in range(total):
-        test = test_execution(code,exp)
+        test = run_test(code,exp)
         tests += [test]
         sleep(interval)
 
     print_report(test_name,tests)
 
-def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=False):
+def run_threaded_tests(service_name,test_name,code,exp,total,interval,is_random=False):
     while not has_max_replicas(service_name):
         sleep(1)
 
-    seed = time()
+    seed = math.floor(time())
     random.seed(seed)
 
     tests = [None] * total
@@ -167,7 +164,7 @@ def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=F
         else:
             wait = interval * i
 
-        thread = Thread(target=test_execution,args=(code,exp,True,tests,i,wait))
+        thread = Thread(target=run_test,args=(code,exp,True,tests,i,wait))
         threads[i] = thread
 
     for i in range(total):
@@ -189,7 +186,7 @@ def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=F
 
 def main():
     service_name = "broncode_service_c_web"
-    reps = 25
+    reps = 60
     inputs = [  (bad_code,bad_exp),
                 (good_code,good_exp),
                 (inf_code,inf_exp)  ]
@@ -201,29 +198,29 @@ def main():
     # BAD CODE
     # code, exp = inputs[0]
 
-    # run_test(service_name,"Bad Code 5-interval",code,exp,reps,5)
+    # run_tests(service_name,"Bad Code 5-interval",code,exp,reps,5)
 
-    # run_test(service_name,"Bad Code 3-interval",code,exp,reps,3)
+    # run_tests(service_name,"Bad Code 3-interval",code,exp,reps,3)
 
-    # run_test(service_name,"Bad Code 1-interval",code,exp,reps,1)
+    # run_tests(service_name,"Bad Code 1-interval",code,exp,reps,1)
 
     # # GOOD CODE
     # code, exp = inputs[1]
 
-    # run_test(service_name,"Good Code 5-interval",code,exp,reps,5)
+    # run_tests(service_name,"Good Code 5-interval",code,exp,reps,5)
 
-    # run_test(service_name,"Good Code 3-interval",code,exp,reps,3)
+    # run_tests(service_name,"Good Code 3-interval",code,exp,reps,3)
     
-    # run_test(service_name,"Good Code 1-interval",code,exp,reps,1)
+    # run_tests(service_name,"Good Code 1-interval",code,exp,reps,1)
 
     # # INF CODE
     # code, exp = inputs[2]
     
-    # run_test(service_name,"Infinite Code 5-interval",code,exp,reps,5)
+    # run_tests(service_name,"Infinite Code 5-interval",code,exp,reps,5)
 
-    # run_test(service_name,"Infinite Code 3-interval",code,exp,reps,3)
+    # run_tests(service_name,"Infinite Code 3-interval",code,exp,reps,3)
     
-    # run_test(service_name,"Infinite Code 1-interval",code,exp,reps,1)
+    # run_tests(service_name,"Infinite Code 1-interval",code,exp,reps,1)
 
     # ======================== THREADED TESTS - Regular Interval ========================
     # Start a thread every INTERVAL seconds that sends code to the given service for 
@@ -232,29 +229,29 @@ def main():
     # BAD CODE
     # code, exp = inputs[0]
 
-    # run_threaded_test(service_name,"Bad Code Threaded 5-interval",code,exp,reps,5)
+    # run_threaded_tests(service_name,"Bad Code Threaded 5-interval",code,exp,reps,5)
 
-    # run_threaded_test(service_name,"Bad Code Threaded 3-interval",code,exp,reps,3)
+    # run_threaded_tests(service_name,"Bad Code Threaded 3-interval",code,exp,reps,3)
 
-    # run_threaded_test(service_name,"Bad Code Threaded 1-interval",code,exp,reps,1)
+    # run_threaded_tests(service_name,"Bad Code Threaded 1-interval",code,exp,reps,1)
 
     # # GOOD CODE
     # code, exp = inputs[1]
 
-    # run_threaded_test(service_name,"Good Code Threaded 5-interval",code,exp,reps,5)
+    # run_threaded_tests(service_name,"Good Code Threaded 5-interval",code,exp,reps,5)
 
-    # run_threaded_test(service_name,"Good Code Threaded 3-interval",code,exp,reps,3)
+    # run_threaded_tests(service_name,"Good Code Threaded 3-interval",code,exp,reps,3)
 
-    # run_threaded_test(service_name,"Good Code Threaded 1-interval",code,exp,reps,1)
+    # run_threaded_tests(service_name,"Good Code Threaded 1-interval",code,exp,reps,1)
 
     # # INF CODE
     # code, exp = inputs[0]
 
-    # run_threaded_test(service_name,"Infinite Code Threaded 5-interval",code,exp,reps,5)
+    # run_threaded_tests(service_name,"Infinite Code Threaded 5-interval",code,exp,reps,5)
 
-    # run_threaded_test(service_name,"Infinite Code Threaded 3-interval",code,exp,reps,3)
+    # run_threaded_tests(service_name,"Infinite Code Threaded 3-interval",code,exp,reps,3)
 
-    # run_threaded_test(service_name,"Infinite Code Threaded 1-interval",code,exp,reps,1)
+    # run_threaded_tests(service_name,"Infinite Code Threaded 1-interval",code,exp,reps,1)
 
     # ======================== THREADED TESTS - Random Interval ========================
     # Start a REPS threads and assign a random wait time within INTERVAL for the thread
@@ -263,17 +260,17 @@ def main():
     # BAD CODE
     code, exp = inputs[0]
 
-    run_threaded_test(service_name,"Bad Code Threaded Random 30-interval",code,exp,reps,10,True)
+    run_threaded_tests(service_name,"Bad Code Threaded Random 180-interval 60-Repitions",code,exp,reps,180,True)
 
     # # GOOD CODE
     # code, exp = inputs[1]
 
-    # run_threaded_test(service_name,"Good Code Threaded Random 30-interval",code,exp,reps,30,True)
+    # run_threaded_tests(service_name,"Good Code Threaded Random 30-interval",code,exp,reps,30,True)
 
     # # INF CODE
     # code, exp = inputs[0]
 
-    # run_threaded_test(service_name,"Infinite Code Threaded Random 30-interval",code,exp,reps,30,True)
+    # run_threaded_tests(service_name,"Infinite Code Threaded Random 30-interval",code,exp,reps,30,True)
 
 
 if __name__ == "__main__":
