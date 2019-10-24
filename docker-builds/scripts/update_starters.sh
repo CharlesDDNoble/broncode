@@ -7,7 +7,8 @@ WORKDIR=`pwd`
 update_starter() {
     echo "Updating starter in $WORKDIR/$1"
     rm -r -f "$WORKDIR/$1/start_${1:9}.py"
-    cp "$WORKDIR/starters/start_${1:9}.py" "$WORKDIR/$1" 
+    cp "$WORKDIR/starters/start_${1:9}.py" "$WORKDIR/$1"
+    cp "$WORKDIR/starters/codeserver.py" "$WORKDIR/$1"
 }
 
 for FILE in "$WORKDIR/"*

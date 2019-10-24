@@ -18,16 +18,19 @@ class CodeHandler:
         max_time (float): The maximum time allowed to wait for container to exit.
     """
 
-    def __init__(self, host = '', port = 4000, code = '', flags = ''):
+    def __init__(self, host = '', port = 4000, code = '', flags = '', inp = ''):
         """Constructor for the CodeHandler class."""
         #TODO: consider logging inputs and outputs
         self.host = host
         self.port = port
         self.code = code
         self.flags = flags
+        self.inp = inp
         self.log = ''
         self.run_time = 0
         self.max_time = 10.0
+        self.max_connection_attempts = 4
+        self.conn_wait_time = 2
         self.conn_attempt = 0
         self.BLOCK_SIZE = 4096
         self.has_lost_data = False
@@ -57,31 +60,36 @@ class CodeHandler:
         log = ''
         done = False
 
-        while not done and self.conn_attempt <= 3:
+        while not done and self.conn_attempt < self.max_connection_attempts:
             try:
                 sock.connect((self.host,self.port))
                 self.run_time = time()
                 #TODO: handle case if message is too big.
                 sock.send(self.make_block(self.flags))
                 sock.send(self.make_block(self.code))
+                sock.send(self.make_block(self.inp))
                 log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
                 #in case the server times out without sending anything
-                if log == '':
+                if not log:
                     log = error_msg_time_out
                 self.run_time = time() - self.run_time
                 done = True
             except socket.timeout:
+                self.run_time = time() - self.run_time
                 log = error_msg_time_out
                 done = True
             except OSError as ose:
                 self.conn_attempt += 1
                 log = error_msg_conn
                 log += str(ose)
-                sleep(2)
+                sleep(self.conn_wait_time)
             # except Exception as excep:
             #     log = "Something strange occurred!\n"
             #     log += str(excep)
             #     done = True
+            finally:
+                if self.conn_attempt >= self.max_connection_attempts:
+                    self.run_time = self.conn_attempt * self.conn_wait_time
 
         sock.close()
         return log

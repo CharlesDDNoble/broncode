@@ -19,6 +19,8 @@ class CExecutorTest(unittest.TestCase):
     good_exp  = "Parsing gcc flags...\n" \
                 "Compiling code...\n" \
                 "gcc -o3 -o code code.c\n" \
+                "Executing program...\n" \
+                "./code\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
                 "Hello!\n"
     # inf_code = "int main(int argc,char** argv){while(1);return 0;}\n"

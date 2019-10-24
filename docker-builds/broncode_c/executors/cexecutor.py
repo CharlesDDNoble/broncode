@@ -5,15 +5,28 @@ from . import codeexecutor
 
 class CExecutor(codeexecutor.CodeExecutor):
     
-    def __init__(self, code, flags):
+    def __init__(self, code, flags, inp = ''):
         with open("code.c","w") as f:
             f.write(code)
+
+        if inp:
+            with open("input.txt","w") as f:
+                f.write(code)
+            self.in_file = open("input.txt","w")
+        else:
+            self.in_file = None
 
         self.flags = flags.split()
 
 
     def run(self):
-        cmd_run = ["./code"]
+        if self.in_file:
+            cmd_run = ["./code", "input"]
+        else:
+            cmd_run = ["./code"]
+
+        self.log_command(cmd_run)
+
         done_process = subprocess.run(
                     cmd_run, stdout = subprocess.PIPE, 
                     stderr = subprocess.PIPE)
@@ -23,10 +36,7 @@ class CExecutor(codeexecutor.CodeExecutor):
     def compile(self):
         cmd_compile  = ["gcc"] + self.flags + ["-o","code","code.c"]
 
-        self.log += cmd_compile[0]
-        for tok in cmd_compile[1:]:
-            self.log += " "+tok
-        self.log += "\n"
+        self.log_command(cmd_compile)
                 
         done_process = subprocess.run(
                 cmd_compile, stdout = subprocess.PIPE,
@@ -39,12 +49,14 @@ class CExecutor(codeexecutor.CodeExecutor):
         self.log += "Parsing gcc flags...\n"
 
         self.log += "Compiling code...\n"
+
         done_process = self.compile()
 
         #if there were errors in comp
         if done_process.returncode:
             self.log += self.error_msg_comp
         else:
+            self.log += "Executing program...\n"
             done_process = self.run()
             self.log += self.msg_sucess
             
