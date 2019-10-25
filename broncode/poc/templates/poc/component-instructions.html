@@ -2,6 +2,6 @@
 {% load static %}
 	<script src="{% static 'poc/js/showdown.min.js' %}"></script>
 	<script src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
-	<div id="instructions">{{ lesson_text }}</div>
+	<div id="instructions">{{ lesson_text }}</div> <!-- needs to be one line! -->
 	<script>$(document).ready(renderMarkdown())</script>
 {% endblock %}
