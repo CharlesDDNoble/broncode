@@ -11,8 +11,11 @@ from .codehandler import CodeHandler
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserProfileForm
+from .models import Lesson
+from django.core.exceptions import ObjectDoesNotExist
 
 def index(request):
     # Renders the home page.
@@ -45,8 +48,7 @@ def register(request):
             
             profile = profile_form.save(commit=False)
             profile.user = user
-            
-            profile.save()
+            profile = profile.save()
 
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
@@ -58,21 +60,29 @@ def register(request):
             login(request, user)
             
             # Return back
-            return redirect('/poc')
+            return redirect('/')
     
     context = {'form': form, 'profile_form': profile_form}
 
-    # Render the 'index.html' page
+    # Render the 'register.html' page
     return render(request, 'registration/register.html', context)
 
-def tutorial(request):
+@login_required
+def lesson(request, lesson_id):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
+
+    # make sure the lesson exists
+    if not Lesson.objects.filter(id=lesson_id).exists():
+        raise ObjectDoesNotExist
+
+    lesson_obj = Lesson.objects.get(id=lesson_id)
+
+    # grab lesson text
+    lesson_text = lesson_obj.markdown
     
     # Grab sample code
-    filename = finders.find('poc/samplefiles/testCode.c')
-    fp = open(filename, 'r')
-    sampleCode = fp.read()
+    lesson_code = lesson_obj.example_code
 
     # Render the 'index.html' page
     return render(
@@ -81,7 +91,10 @@ def tutorial(request):
         {
             'title': 'Broncode',
             'year': datetime.now().year,
-            'codeText': sampleCode,
-            'defaultFlags': '-g -O3'
+            'lesson_code': lesson_code,
+            'defaultFlags': '-g -O3',
+            'lesson_id': lesson_id,
+            'lesson_text': lesson_text,
+            'profile': request.user.userprofile
         }
     )
