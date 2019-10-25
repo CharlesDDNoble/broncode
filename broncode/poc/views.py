@@ -76,7 +76,7 @@ def lesson(request, lesson_id):
     if not Lesson.objects.filter(id=lesson_id).exists():
         raise ObjectDoesNotExist
 
-    lesson_obj = Lesson.objects.filter(id=lesson_id)
+    lesson_obj = Lesson.objects.get(id=lesson_id)
 
     # grab lesson text
     lesson_text = lesson_obj.markdown
