@@ -75,11 +75,14 @@ def lesson(request, lesson_id):
     # make sure the lesson exists
     if not Lesson.objects.filter(id=lesson_id).exists():
         raise ObjectDoesNotExist
+
+    lesson_obj = Lesson.objects.filter(id=lesson_id)
+
+    # grab lesson text
+    lesson_text = lesson_obj.markdown
     
     # Grab sample code
-    filename = finders.find('poc/samplefiles/testCode.c')
-    fp = open(filename, 'r')
-    sampleCode = fp.read()
+    lesson_code = lesson_obj.example_code
 
     # Render the 'index.html' page
     return render(
@@ -88,9 +91,10 @@ def lesson(request, lesson_id):
         {
             'title': 'Broncode',
             'year': datetime.now().year,
-            'codeText': sampleCode,
+            'lesson_code': lesson_code,
             'defaultFlags': '-g -O3',
             'lesson_id': lesson_id,
+            'lesson_text': lesson_text,
             'profile': request.user.userprofile
         }
     )
