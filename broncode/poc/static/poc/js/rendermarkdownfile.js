@@ -4,5 +4,5 @@ function renderMarkdown() {
     showdown.setFlavor('github');
     let converter = new showdown.Converter();
 
-    container.innerHTML = converter.makeHtml(text);
+    container.innerHTML = converter.makeHtml(container.innerHTML);
 }
