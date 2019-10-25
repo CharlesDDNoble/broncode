@@ -12,6 +12,9 @@
 
         <!--Import thepage.css-->
         <link type="text/css" rel="stylesheet" href="{% static 'poc/css/tutorial.css' %}">
+
+        <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
+        <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
     </head>
     
     <body>
@@ -63,9 +66,6 @@
             </div>
         </div> 
         <footer>
-            <!--JavaScript at end of body for optimized loading-->
-            <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
-            <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
             <script>
                 $(document).ready(function(){
                     $('.sidenav').sidenav();
