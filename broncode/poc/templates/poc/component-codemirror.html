@@ -20,10 +20,7 @@
     <!--TODO:remove unused-->
     <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
     
-    <!--Part that will be passed around in POST request-->
-    <textarea id="codemirror" name="codearea">{{codeText}}</textarea>
-
-    <!--Codemirror scripting for highlighting textarea-->
+    <textarea id="codemirror" name="codearea">{{ lesson_code }}</textarea>
     <script>
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,

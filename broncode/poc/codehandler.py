@@ -18,13 +18,14 @@ class CodeHandler:
         max_time (float): The maximum time allowed to wait for container to exit.
     """
 
-    def __init__(self, host = '', port = 4000, code = '', flags = ''):
+    def __init__(self, host = '', port = 4000, code = '', flags = '', inp = ''):
         """Constructor for the CodeHandler class."""
         #TODO: consider logging inputs and outputs
         self.host = host
         self.port = port
         self.code = code
         self.flags = flags
+        self.inp = inp
         self.log = ''
         self.run_time = 0
         self.max_time = 10.0
@@ -64,6 +65,7 @@ class CodeHandler:
                 #TODO: handle case if message is too big.
                 sock.send(self.make_block(self.flags))
                 sock.send(self.make_block(self.code))
+                sock.send(self.make_block(self.inp))
                 log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
                 #in case the server times out without sending anything
                 if log == '':
