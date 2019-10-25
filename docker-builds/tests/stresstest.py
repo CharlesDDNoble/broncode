@@ -33,6 +33,9 @@ inf_code =  "int main(int argc,char** argv){while(1);return 0;}\n"
 inf_exp  =  "Something went wrong running your code:\n" \
             "It took too long to execute, so we stopped it!\n"
 
+inputs = [  (bad_code,bad_exp),
+            (good_code,good_exp),
+            (inf_code,inf_exp)  ]
 
 # returns tuple of total handler elapsed time and program runtime
 def run_test(code, exp, is_threaded = False,tests=None,index=None,wait=0):
@@ -182,14 +185,50 @@ def run_threaded_tests(service_name,test_name,code,exp,total,interval,is_random=
 
     print_report(test_name,tests,is_random,seed)
 
+def simulate_student(tests,index,time_limit,max_wait):
+    start_time = time()
+    
+    random.seed(start_time)
+    
+    next_execution = random.random() * max_wait
+
+    tests[index] = []
+
+    while time() - start_time < time_limit:
+        if next_execution <= 0:
+            inp = math.floor(random.random() * len(inputs))
+            code, exp = inputs[inp]
+            tests[index] += [run_test(code, exp)]
+            next_execution = 5 + random.random() * max_wait
+        else:
+            next_execution -= 1
+            sleep(1)
+
+def run_student_tests(service_name,test_name,total,time_limit,max_wait):
+    while not has_max_replicas(service_name):
+        sleep(1)
+
+    tests = [None] * total
+    threads = [None] * total
+
+    for i in range(total):
+        threads[i] = Thread(target=simulate_student,args=(tests,i,time_limit,max_wait))
+        threads[i].start()
+
+    for i in range(total):
+        threads[i].join(time_limit + 10)
+
+    collected_tests = []
+
+    for i in range(total):
+        collected_tests += tests[i]
+
+    print_report(test_name,collected_tests)
 
 
 def main():
     service_name = "broncode_service_c_web"
     reps = 60
-    inputs = [  (bad_code,bad_exp),
-                (good_code,good_exp),
-                (inf_code,inf_exp)  ]
 
     # ======================== NON THREADED TESTS ========================
     # Every INTERVAL seconds, send code to the given service for compiling and running.
@@ -258,9 +297,9 @@ def main():
     # to begin execution, namely sending a code to the given service for compiling and running.
 
     # BAD CODE
-    code, exp = inputs[0]
+    # code, exp = inputs[0]
 
-    run_threaded_tests(service_name,"Bad Code Threaded Random 180-interval 60-Repitions",code,exp,reps,180,True)
+    # run_threaded_tests(service_name,"Bad Code Threaded Random 180-interval 60-Repitions",code,exp,reps,180,True)
 
     # # GOOD CODE
     # code, exp = inputs[1]
@@ -271,6 +310,10 @@ def main():
     # code, exp = inputs[0]
 
     # run_threaded_tests(service_name,"Infinite Code Threaded Random 30-interval",code,exp,reps,30,True)
+
+    # ======================== SIMULATED STUDENT TESTS ========================
+
+    run_student_tests(service_name,"Simulated Student Test 60-limit",15,60,20)
 
 
 if __name__ == "__main__":

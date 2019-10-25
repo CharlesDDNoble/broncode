@@ -29,7 +29,7 @@ class CodeHandler:
         self.log = ''
         self.run_time = 0
         self.max_time = 10.0
-        self.max_connection_attempts = 5
+        self.max_connection_attempts = 2
         self.conn_wait_time = 4
         self.conn_attempt = 0
         self.BLOCK_SIZE = 4096
