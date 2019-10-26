@@ -5,4 +5,4 @@ source /home/sysadmin/broncode/dbcreds
 #uwsgi --ini broncode_uwsgi.ini
 
 # -E preserves environment variables.
-sudo -E python3 ./manage.py runserver 0.0.0.0:8080
+sudo -E python3 ./manage.py runserver 0.0.0.0:1209
