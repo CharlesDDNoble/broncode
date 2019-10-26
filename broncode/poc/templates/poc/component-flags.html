@@ -17,8 +17,7 @@
     <!-- imports script for shell script used for compiler flags -->
     <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
 
-    <!--Part that will be passed around in POST request-->
-    <textarea id="compiler-flags" name="compileFlags"> {{defaultFlags}} </textarea>
+    <textarea id="compiler-flags" name="compileFlags"> {{ lesson_flags }} </textarea>
 
     <!--Codemirror scripting for highlighting textarea-->
     <script>
