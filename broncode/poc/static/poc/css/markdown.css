@@ -31,6 +31,7 @@
     margin: auto;
     padding: 1em;
     background-color: #1f1e2e;
+    overflow: hidden
 }
 
 /* inline code blocks */
