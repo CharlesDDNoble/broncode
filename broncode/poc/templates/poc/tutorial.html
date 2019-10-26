@@ -52,7 +52,10 @@
                             {% endblock codemirror %}
                         </div>
                         <div class="col s12" id="btn-submit-wrapper">
-                            <button class="btn waves-effect waves-light" type="submit" id="btn-submit" name="action">Submit
+                            <button class="btn waves-effect waves-light" type="button" id="btn-reset" name="action" onclick="resetExampleCode()">Reset Code
+                                <i class="material-icons right">cached</i>
+                            </button>
+                            <button class="btn waves-effect waves-light" type="submit" id="btn-submit" name="action">Submit Code
                                 <i class="material-icons right">send</i>
                             </button>
                         </div>
@@ -75,5 +78,5 @@
         </footer>
     </body>
     <script src="{% static 'poc/js/cmAjax.js' %}"></script>
-    <script>load_dynamic_data({{ profile.id }}, {{ lesson_id }});</script>
+    <script>loadDynamicData({{ profile.id }}, {{ lesson_id }});</script>
 </html>
