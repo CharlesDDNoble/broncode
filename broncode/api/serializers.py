@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User as DjangoUser
 from poc.models import UserProfile
 from poc.models import Course
 from poc.models import Chapter
@@ -20,15 +20,21 @@ class LessonSerializerLite(serializers.ModelSerializer):
         model = Lesson
         fields = ("id", "title", "number")
 
+class DjangoUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DjangoUser
+        fields = ("id", "username", "email")
+
 class UserSerializer(serializers.ModelSerializer):
     enrolled_in = CourseSerializerLite(many=True, read_only=True)
     owned_courses = CourseSerializerLite(many=True, read_only=True)
     completed_lessons = LessonSerializerLite(many=True, read_only=True)
+    user = DjangoUserSerializer(read_only=True)
 
     class Meta:
         model = UserProfile
         fields = (
-            "user", 
+            "user",
             "enrolled_in", 
             "owned_courses", 
             "completed_lessons", 
