@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import unittest
 from tests.executorstest import CExecutorTest
 from tests.codeclienttest import CodeClientTest

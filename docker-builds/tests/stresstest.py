@@ -5,6 +5,8 @@ from os import path
 from copy import deepcopy
 from threading import Thread, Timer
 from time import time, sleep
+import json
+
 from codeclient import CodeClient
 import plotly.graph_objects as PGraph
 
@@ -90,7 +92,8 @@ def log_data(test_name,test,file_name="test_data.log",should_append=True):
     with open(file_name,mode) as f:
         print(test_name+"\n")
         for data in test:
-            f.write(str(data.to_dict())+"\n")
+            json.dump
+            f.write(json.dumps(data.to_dict())+"\n")
 
 
 def is_passing(test):
@@ -379,9 +382,9 @@ def main():
 
     sim_tests = []
 
-    sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",5,30,10)
-    sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",10,30,10)
-    sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",20,30,10)
+    # sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",5,30,10)
+    # sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",10,30,10)
+    sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",30,20,10)
 
     print_report("Simulated Student Tests",sim_tests)
 

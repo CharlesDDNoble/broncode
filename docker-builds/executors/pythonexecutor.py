@@ -1,7 +1,7 @@
 import os
 import time
 import subprocess
-from . import codeexecutor
+from codeexecutor import CodeExecutor
 
 class PythonExecutor(codeexecutor.CodeExecutor):
     
