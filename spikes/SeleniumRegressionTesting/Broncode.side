@@ -55,6 +55,19 @@
         ["xpath=//button", "xpath:position"]
       ],
       "value": ""
+    }, {
+      "id": "ed85f1f0-d783-4656-97ea-a073baca4d95",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=output-box",
+      "targets": [
+        ["id=output-box", "id"],
+        ["css=#output-box", "css:finder"],
+        ["xpath=//p[@id='output-box']", "xpath:attributes"],
+        ["xpath=//div[@id='results']/p", "xpath:idRelative"],
+        ["xpath=//div[3]/p", "xpath:position"]
+      ],
+      "value": "Parsing gcc flags...\\nCompiling code...\\ngcc -o code code.c\\nExecuting program...\\n./code\\nYour code successfully compiled and ran, here's the output:\\nHello, world!"
     }]
   }, {
     "id": "42f26e20-690a-4869-9be2-189a4ef7db32",
@@ -112,6 +125,19 @@
       "target": "id=btn-submit",
       "targets": [],
       "value": ""
+    }, {
+      "id": "19b0ffb2-a0f4-42c7-9980-cfecd6ec98dd",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=output-box",
+      "targets": [
+        ["id=output-box", "id"],
+        ["css=#output-box", "css:finder"],
+        ["xpath=//p[@id='output-box']", "xpath:attributes"],
+        ["xpath=//div[@id='results']/p", "xpath:idRelative"],
+        ["xpath=//div[3]/p", "xpath:position"]
+      ],
+      "value": "Parsing gcc flags...\\nCompiling code...\\ngcc -o code code.c\\nSomething went wrong compiling your code:\\ncode.c: In function 'main':\\ncode.c:4:4: error: 'ret' undeclared (first use in this function); did you mean 'getw'?\\n    ret\"ERROR\"urn 0;\\n    ^~~\\n    getw\\ncode.c:4:4: note: each undeclared identifier is reported only once for each function it appears in\\ncode.c:4:7: error: expected ';' before string constant\\n    ret\"ERROR\"urn 0;\\n       ^~~~~~~"
     }]
   }, {
     "id": "2e08f322-01ef-4169-a995-ffaffd28a0ef",
@@ -168,6 +194,20 @@
       "target": "id=btn-submit",
       "targets": [],
       "value": ""
+    }, {
+      "id": "1e4d48a8-6e95-48ca-94f6-06e8f5e26497",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=output-box",
+      "targets": [
+        ["id=output-box", "id"],
+        ["css=#output-box", "css:finder"],
+        ["xpath=//p[@id='output-box']", "xpath:attributes"],
+        ["xpath=//div[@id='results']/p", "xpath:idRelative"],
+        ["xpath=//div[3]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'Something went wrong running your code:\nIt took too long to execute, so we stopped it!\n')]", "xpath:innerText"]
+      ],
+      "value": "Something went wrong running your code:\\nIt took too long to execute, so we stopped it!"
     }]
   }],
   "suites": [{
