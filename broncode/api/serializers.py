@@ -23,7 +23,7 @@ class LessonSerializerLite(serializers.ModelSerializer):
 class DjangoUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = DjangoUser
-        fields = ("id", "username", "email")
+        fields = ("id", "username")
 
 class UserSerializer(serializers.ModelSerializer):
     enrolled_in = CourseSerializerLite(many=True, read_only=True)
