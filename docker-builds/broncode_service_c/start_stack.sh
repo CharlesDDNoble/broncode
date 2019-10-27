@@ -2,7 +2,8 @@
 
 
 docker swarm init >& /dev/null
-LOG=`docker stack deploy -c docker-compose.yml broncode_service_c`
+
+docker stack deploy -c docker-compose.yml broncode
 
 if [ "$?" -eq 0 ]
 then

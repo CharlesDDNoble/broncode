@@ -1,9 +1,12 @@
 import subprocess
 import math
 import random
+from os import path
+from copy import deepcopy
 from threading import Thread, Timer
 from time import time, sleep
-from codehandler import CodeHandler
+from codeclient import CodeClient
+import plotly.graph_objects as PGraph
 
 host = ''
 port = 4000
@@ -37,90 +40,150 @@ inputs = [  (bad_code,bad_exp),
             (good_code,good_exp),
             (inf_code,inf_exp)  ]
 
-# returns tuple of total handler elapsed time and program runtime
-def run_test(code, exp, is_threaded = False,tests=None,index=None,wait=0):
-    sleep(wait)
+class TestData():
 
-    host = ''
-    port = 4000
-    flags = " -o3 \n" 
+    def to_dict(self):
+        return {"is_success" : self.is_success,
+                "test_time" : self.test_time,
+                "out" : self.out,
+                "exp" : self.exp,
+                "handler" : self.handler.to_dict(),
+                "failure_reason" : self.failure_reason}
 
-    start_time = time()
-    
-    handler = CodeHandler(host,port,code,flags)
-    handler.run()
-    
-    elapsed_time = time() - start_time
 
-    out = handler.log.replace('‘','\'').replace('’','\'')
+    def __init__(self,test_time,out,exp,handler):
+        self.is_success = (out == exp)
+        self.test_time = test_time
+        self.out = out
+        self.exp = exp
+        self.handler = handler
+        if self.is_success:
+            self.failure_reason = "none"
+        elif self.out == inf_exp:
+            self.failure_reason = "timeout"
+        else:
+            self.failure_reason = "wrong"
 
-    is_success = (out == exp)
+    def print(self):
+        print("is_success: "+str(self.is_success))
+        print("test_time: "+str(self.test_time))
+        print("out: "+self.out.replace("\n","\\n"))
+        print("exp: "+self.exp.replace("\n","\\n"))
+        print("handler: "+str(self.handler))
 
-    if is_threaded:
-        tests[index] = (is_success,elapsed_time,handler.run_time)
-        return
+    def get_data_string(self):
+        return  str(self.is_success) + "," \
+                + str(self.test_time) + "," \
+                + str("\'"+self.out.replace("\n","\\n")+"\'") + "," \
+                + str("\'"+self.exp.replace("\n","\\n")+"\'") + "," \
+                + str(self.failure_reason) + "," \
+                + str(self.handler.run_time) + "," \
+                + str(self.handler.send_time) + "," \
+                + str(self.handler.recv_time) + "," \
+                + str(self.handler.conn_attempt)
 
-    return (is_success,elapsed_time,handler.run_time)
+def log_data(test_name,test,file_name="test_data.log",should_append=True):
+    if should_append:
+        mode = "a"
+    else:
+        mode = "w"
+    with open(file_name,mode) as f:
+        print(test_name+"\n")
+        for data in test:
+            f.write(str(data.to_dict())+"\n")
 
 
 def is_passing(test):
-    return test[0]
+    return test.is_success
 
 def is_failing(test):
-    return not test[0]
+    return not test.is_success
 
-def print_report(test_name,tests,is_random=False,seed=0):
-    total = len(tests)
-    sum_total_test_time = sum(e for s, e, r in tests)
-    sum_total_run_time = sum(r for s, e, r in tests)
+def print_stats(all_data):
+    sum_test_time = sum(data.test_time for data in all_data)
+    sum_run_time = sum(data.test_time for data in all_data)
+    count = len(all_data)
+    print("\tTotal test time:               "+str(sum_test_time))
+    print("\tTotal connection and run time: "+str(sum_run_time))
+    print("\tAvg. time of request:          "+str(sum_test_time/count))
+    print("\tAvg. time to connect and run:  "+str(sum_run_time/count))
 
-    passes = list(filter(is_passing,tests))
-    pass_count = len(passes)
-    sum_pass_test_time = sum(e for s, e, r in passes)
-    sum_pass_run_time = sum(r for s, e, r in passes)
+def print_report(test_name,test,is_random=False,seed=0):
+    passes = list(filter(is_passing,test))
+    fails = list(filter(is_failing,test))
 
-    fails = list(filter(is_failing,tests))
-    fail_count = len(fails)
-    sum_fails_test_time = sum(e for s, e, r in fails)
-    sum_fails_run_time = sum(r for s, e, r in fails)
-
-    print("===================================================")
+    print("=============================================================")
     print(test_name+" Test Report:")
 
-    if None in tests:
-        print("WARNING: The tests list has an index with None!")
+    if None in test:
+        print("WARNING: The test list has an index with None!")
     
     if is_random:
         print("Random Seed used: "+str(seed))
 
     print("TOTALS")
-    print("\tTotal tests run:               "+str(total))
-    print("\tTotal test time:               "+str(sum_total_test_time))
-    print("\tTotal connection and run time: "+str(sum_total_run_time))
-    print("\tAvg. time of test:             "+str(sum_total_test_time/total))
-    print("\tAvg. time to connect and run:  "+str(sum_total_run_time/total))
-
+    print_stats(test)
+    
     if passes:
         print("PASSES")
-        print("\tPasses/Total:                  "+str(pass_count)+"/"+str(total))
-        print("\tTotal test time:               "+str(sum_pass_test_time))
-        print("\tTotal connection and run time: "+str(sum_pass_run_time))
-        print("\tAvg. time of test:             "+str(sum_pass_test_time/pass_count))
-        print("\tAvg. time to connect and run:  "+str(sum_pass_run_time/pass_count))
+        print("\tPasses/Total:                  "+str(len(passes))+"/"+str(len(test)))
+        print_stats(passes)
+
     else:
-        print("NO PASSING TESTS")
+        print("WARNING: NO PASSING TESTS")
 
     if fails:
         print("FAILS")
-        print("\tFails/Total:                   "+str(fail_count)+"/"+str(total))
-        print("\tTotal test time:               "+str(sum_fails_test_time))
-        print("\tTotal connection and run time: "+str(sum_fails_run_time))
-        print("\tAvg. time to test:             "+str(sum_fails_test_time/fail_count))
-        print("\tAvg. time to connect and run:  "+str(sum_fails_run_time/fail_count))
+        print("\tFails/Total:                   "+str(len(fails))+"/"+str(len(test)))
+        print_stats(fails)
     else:
         print("NO FAILING TESTS")
 
-    print("===================================================")
+    print("=============================================================")
+
+    log_data(test_name,test)
+
+def make_scatter_plot(test_name,tests):
+    fig = PGraph.Figure({
+        "data": [{"type": "scatter",
+                  "x": [0, 1, 2, 3],
+                  "y": [100, 100, 50, 0]}],
+        "layout": {
+            "title": {"text": "Student Simulation with 20 sec Max Wait"},
+            "xaxis": {
+                "title": {"text": "Number of Students"},
+                "range": [0,100]
+            },
+            "yaxis": {
+                "title": {"text": "Percent of Executions with Runtime < 8 Sec "},
+                "range": [0,100]
+            },
+        }
+    })
+
+# returns tuple of total handler elapsed time and program runtime
+def execute_request(code,exp,tests,index,wait=0):
+    sleep(wait)
+
+    test_time = time()
+
+    host = ''
+    port = 4000
+    flags = " -o3 \n" 
+    
+    handler = CodeClient(host,port,code,flags)
+    handler.run()
+    
+
+    out = handler.log.replace('‘','\'').replace('’','\'')
+
+    test_time = time() - test_time
+
+    data = TestData(test_time,out,exp,handler)
+
+
+    tests[index] = data
+
 
 def has_max_replicas(service_name):
     command = ["docker", "service", "ls", "--filter", "name="+service_name, "--format", "{{.Replicas}}"]
@@ -138,26 +201,30 @@ def has_max_replicas(service_name):
 
     return (count == total)
 
-def run_tests(service_name,test_name,code,exp,total,interval):
+def run_test(service_name,test_name,code,exp,total,interval,should_print=False):
     while not has_max_replicas(service_name):
         sleep(1)
 
-    tests = []
+    test = [None] * total
+
     for i in range(total):
-        test = run_test(code,exp)
-        tests += [test]
-        sleep(interval)
+        execute_request(code,exp,test,i,interval)
 
-    print_report(test_name,tests)
+    if should_print and test:
+        print_report(test_name,test)
+    elif not collected_tests:
+        print("No test data collected")
 
-def run_threaded_tests(service_name,test_name,code,exp,total,interval,is_random=False):
+    return test
+
+def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=False,should_print=False):
     while not has_max_replicas(service_name):
         sleep(1)
 
     seed = math.floor(time())
     random.seed(seed)
 
-    tests = [None] * total
+    test = [None] * total
     threads = [None] * total
 
     for i in range(total):
@@ -167,7 +234,7 @@ def run_threaded_tests(service_name,test_name,code,exp,total,interval,is_random=
         else:
             wait = interval * i
 
-        thread = Thread(target=run_test,args=(code,exp,True,tests,i,wait))
+        thread = Thread(target=execute_request,args=(code,exp,test,i,wait))
         threads[i] = thread
 
     for i in range(total):
@@ -183,7 +250,12 @@ def run_threaded_tests(service_name,test_name,code,exp,total,interval,is_random=
     for i in range(total):
         threads[i].join(wait)
 
-    print_report(test_name,tests,is_random,seed)
+    if should_print and test:
+        print_report(test_name,test,is_random,seed)
+    elif not collected_tests:
+        print("No test data collected")
+
+    return test
 
 def simulate_student(tests,index,time_limit,max_wait):
     start_time = time()
@@ -192,42 +264,58 @@ def simulate_student(tests,index,time_limit,max_wait):
     
     next_execution = random.random() * max_wait
 
-    tests[index] = []
+    test = []
+    count = 0
 
     while time() - start_time < time_limit:
         if next_execution <= 0:
             inp = math.floor(random.random() * len(inputs))
             code, exp = inputs[inp]
-            tests[index] += [run_test(code, exp)]
+            test += [None]
+            execute_request(code, exp, test, count)
+            count += 1
             next_execution = 5 + random.random() * max_wait
         else:
             next_execution -= 1
             sleep(1)
 
-def run_student_tests(service_name,test_name,total,time_limit,max_wait):
+    tests[index] = test
+
+def run_student_test(service_name,test_name,student_count,time_limit,max_wait,should_print=False):
     while not has_max_replicas(service_name):
         sleep(1)
 
-    tests = [None] * total
-    threads = [None] * total
+    tests = [None] * student_count
+    threads = [None] * student_count
 
-    for i in range(total):
+    for i in range(student_count):
         threads[i] = Thread(target=simulate_student,args=(tests,i,time_limit,max_wait))
         threads[i].start()
 
-    for i in range(total):
+    for i in range(student_count):
         threads[i].join(time_limit + 10)
 
     collected_tests = []
 
-    for i in range(total):
-        collected_tests += tests[i]
+    for i in range(student_count):
+        if tests[i]:
+            collected_tests += tests[i]
 
-    print_report(test_name,collected_tests)
+    if should_print and collected_tests:
+        print_report(test_name,collected_tests)
+    elif not collected_tests:
+        print("WARNING: No test data collected")
 
+    return collected_tests
+
+def prepare_percentile_data(tests):
+    data = [[0] * 2]
+    for test in tests:
+        count = len(tests)
+        passes = len(list(filter(is_passing,tests)))
 
 def main():
-    service_name = "broncode_service_c_web"
+    service_name = "broncode_c_service"
     reps = 60
 
     # ======================== NON THREADED TESTS ========================
@@ -239,27 +327,15 @@ def main():
 
     # run_tests(service_name,"Bad Code 5-interval",code,exp,reps,5)
 
-    # run_tests(service_name,"Bad Code 3-interval",code,exp,reps,3)
-
-    # run_tests(service_name,"Bad Code 1-interval",code,exp,reps,1)
-
     # # GOOD CODE
     # code, exp = inputs[1]
 
     # run_tests(service_name,"Good Code 5-interval",code,exp,reps,5)
 
-    # run_tests(service_name,"Good Code 3-interval",code,exp,reps,3)
-    
-    # run_tests(service_name,"Good Code 1-interval",code,exp,reps,1)
-
     # # INF CODE
     # code, exp = inputs[2]
     
     # run_tests(service_name,"Infinite Code 5-interval",code,exp,reps,5)
-
-    # run_tests(service_name,"Infinite Code 3-interval",code,exp,reps,3)
-    
-    # run_tests(service_name,"Infinite Code 1-interval",code,exp,reps,1)
 
     # ======================== THREADED TESTS - Regular Interval ========================
     # Start a thread every INTERVAL seconds that sends code to the given service for 
@@ -270,27 +346,15 @@ def main():
 
     # run_threaded_tests(service_name,"Bad Code Threaded 5-interval",code,exp,reps,5)
 
-    # run_threaded_tests(service_name,"Bad Code Threaded 3-interval",code,exp,reps,3)
-
-    # run_threaded_tests(service_name,"Bad Code Threaded 1-interval",code,exp,reps,1)
-
     # # GOOD CODE
     # code, exp = inputs[1]
 
     # run_threaded_tests(service_name,"Good Code Threaded 5-interval",code,exp,reps,5)
 
-    # run_threaded_tests(service_name,"Good Code Threaded 3-interval",code,exp,reps,3)
-
-    # run_threaded_tests(service_name,"Good Code Threaded 1-interval",code,exp,reps,1)
-
     # # INF CODE
     # code, exp = inputs[0]
 
     # run_threaded_tests(service_name,"Infinite Code Threaded 5-interval",code,exp,reps,5)
-
-    # run_threaded_tests(service_name,"Infinite Code Threaded 3-interval",code,exp,reps,3)
-
-    # run_threaded_tests(service_name,"Infinite Code Threaded 1-interval",code,exp,reps,1)
 
     # ======================== THREADED TESTS - Random Interval ========================
     # Start a REPS threads and assign a random wait time within INTERVAL for the thread
@@ -313,7 +377,16 @@ def main():
 
     # ======================== SIMULATED STUDENT TESTS ========================
 
-    run_student_tests(service_name,"Simulated Student Test 60-limit",15,60,20)
+    sim_tests = []
+
+    sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",5,30,10)
+    sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",10,30,10)
+    sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",20,30,10)
+
+    print_report("Simulated Student Tests",sim_tests)
+
+
+
 
 
 if __name__ == "__main__":

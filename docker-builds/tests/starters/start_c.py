@@ -1,13 +1,11 @@
-from executors.pythonexecutor import PythonExecutor
+from executors.cexecutor import CExecutor
 from codeserver import CodeServer
 
 
 def main():
-    # Modify these variables for the specific language
     host = ''
     port = 4000
-    Executor = PythonExecutor
-    
+    Executor = CExecutor
     server = CodeServer(host,port,Executor)
     server.handle_connection()
 

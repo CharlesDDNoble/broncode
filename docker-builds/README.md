@@ -1,7 +1,8 @@
 # Docker Builds for Broncode
 
 *Dependencies:*
-docker 1.5.x
+docker 1.5.x [apt]
+plotly [pip]
 
 *Install:*
 follow instructions [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/)

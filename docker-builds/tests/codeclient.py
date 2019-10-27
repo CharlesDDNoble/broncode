@@ -3,8 +3,8 @@ import signal
 import socket
 from time import time, sleep
 
-class CodeHandler:
-    """This class defines a CodeHandler object
+class CodeClient():
+    """This class defines a CodeClient object
 
     Conncects via socket to docker containers in order to compile and execute code.
 
@@ -18,6 +18,23 @@ class CodeHandler:
         max_time (float): The maximum time allowed to wait for container to exit.
     """
 
+    def to_dict(self):
+        return {"host" : self.host,
+                "port" : self.port,
+                "code" : self.code,
+                "flags" : self.flags,
+                "inp" : self.inp,
+                "log" : self.log,
+                "send_time" : self.send_time,
+                "recv_time" : self.recv_time,
+                "run_time" : self.run_time,
+                "max_time" : self.max_time,
+                "max_connection_attempts" : self.max_connection_attempts,
+                "conn_wait_time" : self.conn_wait_time,
+                "conn_attempt" : self.conn_attempt,
+                "BLOCK_SIZE" : self.BLOCK_SIZE,
+                "has_lost_data" : self.has_lost_data}
+
     def __init__(self, host = '', port = 4000, code = '', flags = '', inp = ''):
         """Constructor for the CodeHandler class."""
         #TODO: consider logging inputs and outputs
@@ -27,6 +44,8 @@ class CodeHandler:
         self.flags = flags
         self.inp = inp
         self.log = ''
+        self.send_time = 0
+        self.recv_time = 0
         self.run_time = 0
         self.max_time = 10.0
         self.max_connection_attempts = 2
@@ -59,23 +78,33 @@ class CodeHandler:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         log = ''
         done = False
+        self.run_time = time()
 
         while not done and self.conn_attempt < self.max_connection_attempts:
             try:
                 sock.connect((self.host,self.port))
-                self.run_time = time()
+
+                self.send_time = time()
+
                 #TODO: handle case if message is too big.
                 sock.send(self.make_block(self.flags))
                 sock.send(self.make_block(self.code))
                 sock.send(self.make_block(self.inp))
+                
+                self.send_time = time() - self.send_time
+
+                self.recv_time = time()
+
                 log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+
+                self.recv_time = time() - self.recv_time
+
                 #in case the server times out without sending anything
                 if not log:
                     log = error_msg_time_out
-                self.run_time = time() - self.run_time
+
                 done = True
             except socket.timeout:
-                self.run_time = time() - self.run_time
                 log = error_msg_time_out
                 done = True
             except OSError as ose:
@@ -83,30 +112,11 @@ class CodeHandler:
                 log = error_msg_conn
                 log += str(ose)
                 sleep(self.conn_wait_time)
-            # except Exception as excep:
-            #     log = "Something strange occurred!\n"
-            #     log += str(excep)
-            #     done = True
-            finally:
-                if self.conn_attempt >= self.max_connection_attempts:
-                    self.run_time = self.conn_attempt * self.conn_wait_time
+            except Exception as excep:
+                log = "Something strange occurred!\n"
+                log += str(excep)
+                done = True
 
+        self.run_time = time() - self.run_time
         sock.close()
         return log
-
-    def run_time_trial(self, reps = 10):
-        """Measures the average time to handle a docker container.
-
-        Args:
-            reps (int): The number of repititions to call this objects
-                run() method.
-
-        Returns:
-            float: The average time in seconds to spawn and run a docker
-                container.
-        """
-        start_time = time()
-        for i in range(0,reps):
-            self.run()
-        elapsed_time = time() - start_time
-        return elap/reps

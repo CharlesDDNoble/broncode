@@ -1,13 +1,13 @@
-from codehandler import CodeHandler
+from .codeclient import CodeClient
 import unittest
 import os
 
-class CodeHandlerTest(unittest.TestCase):
+class CodeClientTest(unittest.TestCase):
     def setUp(self):
         pass
 
     def test_make_block(self):
-        handler = CodeHandler(host = '', port = 4000, code = '', flags = '')
+        handler = CodeClient(host = '', port = 4000, code = '', flags = '')
         
         # NO MESSAGE
         inp = b''
@@ -54,7 +54,7 @@ class CodeHandlerTest(unittest.TestCase):
               " int main(int argc,char** argv){error;return 0;}\n" \
               "                                ^~~~~\n" \
               "code.c:1:32: note: each undeclared identifier is reported only once for each function it appears in\n"
-        handler = CodeHandler(host,port,code,flags)
+        handler = CodeClient(host,port,code,flags)
         handler.run()
         # GCC seems to use the curly quotes ‘’ instead of regular quote ''
         out = handler.log.replace('‘','\'').replace('’','\'')
@@ -69,7 +69,7 @@ class CodeHandlerTest(unittest.TestCase):
                 "./code\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
                 "Hello!\n"
-        handler = CodeHandler(host,port,code,flags)
+        handler = CodeClient(host,port,code,flags)
         handler.run()
         out = handler.log.replace('‘','\'').replace('’','\'')
         self.assertEqual(out,exp)
@@ -78,7 +78,7 @@ class CodeHandlerTest(unittest.TestCase):
         code = "int main(int argc,char** argv){while(1);return 0;}\n"
         exp = "Something went wrong running your code:\n" \
               "It took too long to execute, so we stopped it!\n"
-        handler = CodeHandler(host,port,code,flags)
+        handler = CodeClient(host,port,code,flags)
         handler.max_time = 2
         handler.run()
         out = handler.log.replace('‘','\'').replace('’','\'')

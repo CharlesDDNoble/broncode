@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker stack rm broncode_service_c
+docker stack rm broncode
 
 if [ "$?" -eq 0 ]
 then
