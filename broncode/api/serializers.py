@@ -59,7 +59,8 @@ class LessonSerializer(serializers.ModelSerializer):
             "chapter",
             "markdown",
             "example_code", 
-            "compiler_flags"
+            "compiler_flags",
+            "language"
         )
 
 class ChapterSerializer(serializers.ModelSerializer):
@@ -94,13 +95,18 @@ class SubmissionSerializer(serializers.ModelSerializer):
         the save method, we can inject data (the output log, and whether or not
         the code passed tests) into the model before was call the create/save function.
         """
-        print("Running code...")
 
         code = self.validated_data['code']
         flags = self.validated_data['compiler_flags']
         log = ''
         host = ''
-        port = 4000
+        lesson = self.validated_data['lesson']
+        if lesson.language == "C":
+            port = 4000
+        elif lesson.language == "Python3":
+            port = 4001
+        else:
+            print("Unknown lesson type: {}".format(lesson.language))
 
         try:
             solution_set = SolutionSet.objects.get(lesson=self.validated_data['lesson'])
