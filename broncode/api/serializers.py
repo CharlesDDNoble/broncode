@@ -10,6 +10,8 @@ from poc.models import SolutionSet
 
 from poc.codeclient import CodeClient
 
+from django.core.exceptions import ObjectDoesNotExist
+
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
         model = Course
@@ -100,13 +102,19 @@ class SubmissionSerializer(serializers.ModelSerializer):
         host = ''
         port = 4000
 
-        solution_set = SolutionSet.objects.get(lesson=self.validated_data['lesson'])
+        try:
+            solution_set = SolutionSet.objects.get(lesson=self.validated_data['lesson'])
+        except ObjectDoesNotExist:
+            solution_set = None
 
-        print("Using stdin: ", solution_set.stdin)
+        if solution_set:
+            passed_stdin = solution_set.stdin
+        else:
+            passed_stdin = ""
 
         # handle the code execution using docker
         if code != '':
-            handler = CodeClient(host,port,code,flags,solution_set.stdin)
+            handler = CodeClient(host,port,code,flags,passed_stdin)
             handler.run()
             log = handler.log
         else:
@@ -116,9 +124,10 @@ class SubmissionSerializer(serializers.ModelSerializer):
         code_output = "\n".join(log.split('\n')[6:])
         # code output is now the output of the program
 
-        passed_test = code_output == solution_set.stdout
-
-        print(passed_test)
+        if solution_set:
+            passed_test = (code_output == solution_set.stdout)
+        else:
+            passed_test = True
 
         print("Creating submission object...")
 
