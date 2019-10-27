@@ -1,18 +1,16 @@
 #!/bin/bash
 update_executor() {
-    echo "Updating executor in $WORKDIR/$1/env"
+    echo "Updating executors in $WORKDIR/$1/env"
 
-    LOG1=`cp "$WORKDIR/executors/${1:9}executor.py" "$WORKDIR/$1/env"`
-    RES=0
-
-    LOG2=`cp "$WORKDIR/executors/codeexecutor.py" "$WORKDIR/$1/env"`
-    RES=$(($RES|$?))
+    LOG1=`cp -r "$WORKDIR/executors" "$WORKDIR/$1/env"`
+    RES=$?
 
     if [ "$RES" -ne "0" ]
     then
         echo "\tERROR:"
         echo "\t\t$LOG1"
         echo "\t\t$LOG2"
+        echo "\t\t$LOG3"
     fi
 }
 
@@ -52,15 +50,5 @@ do
     fi
 
 done
-
-
-
-rm -r tests/executors
-rm -r tests/starters
-cp -r starters tests/starters
-cp -r executors tests/executors
-
-echo "Updated executors and starters in tests"
-
 
 exit 0

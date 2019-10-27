@@ -1,6 +1,6 @@
 import unittest
 import os
-from executors.cexecutor import CExecutor
+from .cexecutor import CExecutor
 
 class CExecutorTest(unittest.TestCase):
     flags = "-o3"

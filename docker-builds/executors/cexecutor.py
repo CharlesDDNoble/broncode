@@ -1,9 +1,10 @@
 import os
 import time
 import subprocess
-from codeexecutor import CodeExecutor
+import sys
+from .codeexecutor import CodeExecutor
 
-class CExecutor(codeexecutor.CodeExecutor):
+class CExecutor(CodeExecutor):
     
     def __init__(self, code, flags, inp = ''):
         with open("code.c","w") as f:
