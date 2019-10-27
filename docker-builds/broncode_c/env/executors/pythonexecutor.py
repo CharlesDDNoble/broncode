@@ -1,44 +1,51 @@
 import os
 import time
 import subprocess
-from codeexecutor import CodeExecutor
+from .codeexecutor import CodeExecutor
 
-class PythonExecutor(codeexecutor.CodeExecutor):
+class PythonExecutor(CodeExecutor):
     
-    def __init__(self):
-        self._log = ""
+    def __init__(self, code, flags, inp = ''):
+        with open("code.py","w") as f:
+            f.write(code)
+
+        if inp:
+            with open("input.txt","w") as f:
+                f.write(code)
+            self.in_file = open("input.txt","r")
+        else:
+            self.in_file = None
+
+        self.flags = flags.split()
 
     def run(self):
         cmd_run = ["python3", "code.py"]
+
         done_process = subprocess.run(
-                        cmd_run, stdout = subprocess.PIPE,
-                        stderr = subprocess.PIPE)
-        return(done_process)
+                    cmd_run, 
+                    stdout=subprocess.PIPE, 
+                    stderr=subprocess.PIPE,
+                    stdin=self.in_file)
+        
+        if self.in_file:
+            cmd_run += ["input.txt"]
+            self.in_file.close()
+
+        self.log_command(cmd_run)
+
+        
+        return done_process
 
     def execute(self):
-        #TODO: create timer on compilation/run to guard against inf loop
-        error_msg_run = "Something went wrong running your code:\n"
-
         done_process = self.run()
-
-        #if there were errors in executing code
-        if done_process.returncode:
-            self._log += error_msg_run
-
-        #add the logs of the returned process to this object's log
-        self._log += done_process.stdout.decode("utf-8")
-        self._log += done_process.stderr.decode("utf-8") 
-    
-    def execute(self):
-        error_msg_run = "Something went wrong running your code:\n"
-        msg_sucess = "Your code successfully ran, here's the output:\n"
-
-        done_process = self.run()
-        self._log += msg_sucess
+        if done_process.stderr:
+            self.log += self.error_msg_run
+        else:
+            self.log += self.msg_sucess
             
         #add the _logs of the returned process to this object's _log
-        self._log += done_process.stdout.decode("utf-8")
-        self._log += done_process.stderr.decode("utf-8")
+        self.log += done_process.stdout.decode("utf-8")
+        self.log += done_process.stderr.decode("utf-8")
 
         
 

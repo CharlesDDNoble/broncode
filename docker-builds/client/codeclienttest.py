@@ -38,7 +38,7 @@ class CodeClientTest(unittest.TestCase):
         self.assertEqual(out,exp)
 
     # ToDo: Set this test up to use mock object for socket connection
-    def test_run(self):
+    def test_run_c(self):
         host = ''
         port = 4000
         flags = " -o3 \n" 
@@ -80,6 +80,46 @@ class CodeClientTest(unittest.TestCase):
               "It took too long to execute, so we stopped it!\n"
         handler = CodeClient(host,port,code,flags)
         handler.max_time = 2
+        handler.run()
+        out = handler.log.replace('‘','\'').replace('’','\'')
+        self.assertEqual(out,exp)
+
+    def test_run_python(self):
+        host = ''
+        port = 4001
+        flags = "" 
+
+        #Testing code input with a compilation error in it
+
+        code =  "print(Erro World!)"
+        exp =   "python3 code.py\n" \
+                "Something went wrong running your code:\n" \
+                "  File \"code.py\", line 1\n" \
+                "    print(Erro World!)\n" \
+                "                   ^\n" \
+                "SyntaxError: invalid syntax\n"
+
+        handler = CodeClient(host,port,code,flags)
+        handler.run()
+        out = handler.log
+        self.assertEqual(out,exp)
+
+        #Testing code input that is correct (it should compile and run successfully)
+        code = "print(\"Hello World!\")"
+        exp =  "python3 code.py\n" \
+                "Your code successfully compiled and ran, here's the output:\n" \
+                "Hello World!\n"
+        handler = CodeClient(host,port,code,flags)
+        handler.run()
+        out = handler.log
+        self.assertEqual(out,exp)
+
+        #Testing code input that is an infinite loop (this should cause a timeout)
+        code = "while True:\n\tpass\n"
+        exp = "Something went wrong running your code:\n" \
+              "It took too long to execute, so we stopped it!\n"
+        handler.max_time = 2
+        handler = CodeClient(host,port,code,flags)
         handler.run()
         out = handler.log.replace('‘','\'').replace('’','\'')
         self.assertEqual(out,exp)

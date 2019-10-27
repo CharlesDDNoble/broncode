@@ -5,6 +5,7 @@ import executors
 import client
 
 from executors.executorstest import CExecutorTest
+from executors.executorstest import PythonExecutorTest
 from client.codeclienttest import CodeClientTest
 
 if __name__ == '__main__':

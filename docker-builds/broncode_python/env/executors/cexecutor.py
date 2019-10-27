@@ -1,7 +1,6 @@
 import os
 import time
 import subprocess
-import sys
 from .codeexecutor import CodeExecutor
 
 class CExecutor(CodeExecutor):
@@ -13,35 +12,38 @@ class CExecutor(CodeExecutor):
         if inp:
             with open("input.txt","w") as f:
                 f.write(code)
-            self.in_file = open("input.txt","w")
+            self.in_file = open("input.txt","r")
         else:
             self.in_file = None
 
         self.flags = flags.split()
 
-
     def run(self):
+        cmd_run = ["./code"]
+
+        done_process = subprocess.run(
+                    cmd_run, 
+                    stdout=subprocess.PIPE, 
+                    stderr=subprocess.PIPE,
+                    stdin=self.in_file)
+
         if self.in_file:
-            cmd_run = ["./code", "input"]
-        else:
-            cmd_run = ["./code"]
+            cmd_run += ["<","input.txt"]
+            self.in_file.close()
 
         self.log_command(cmd_run)
 
-        done_process = subprocess.run(
-                    cmd_run, stdout = subprocess.PIPE, 
-                    stderr = subprocess.PIPE)
-        
         return done_process
 
     def compile(self):
         cmd_compile  = ["gcc"] + self.flags + ["-o","code","code.c"]
-
-        self.log_command(cmd_compile)
                 
         done_process = subprocess.run(
-                cmd_compile, stdout = subprocess.PIPE,
-                stderr = subprocess.PIPE)
+                        cmd_compile, 
+                        stdout = subprocess.PIPE,
+                        stderr = subprocess.PIPE)
+
+        self.log_command(cmd_compile)
         
         return done_process
 
