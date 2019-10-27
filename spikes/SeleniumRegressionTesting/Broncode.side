@@ -2,7 +2,7 @@
   "id": "50c8bacd-018e-42f7-94dc-7ef3f30386ee",
   "version": "2.0",
   "name": "Broncode",
-  "url": "http://broncode.cs.wmich.edu:8080/poc/tutorial/",
+  "url": "http://broncode.cs.wmich.edu:1209/lesson/4/",
   "tests": [{
     "id": "697f49d3-829f-4bbd-9da1-2ee9de07e873",
     "name": "Tutorial Success",
@@ -10,7 +10,7 @@
       "id": "8f05a1c5-1b11-4e52-b5fb-1ff983d50c29",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu:8080/poc/tutorial/",
+      "target": "http://broncode.cs.wmich.edu:1209/lesson/4/",
       "targets": [],
       "value": ""
     }, {
@@ -63,19 +63,19 @@
       "id": "82da9b9d-2fc0-4a5c-9c44-4861f0c4e9d9",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu:8080/poc/tutorial/",
+      "target": "http://broncode.cs.wmich.edu:1209/lesson/4/",
       "targets": [],
       "value": ""
     }, {
       "id": "f61bdac8-27a7-4791-ad6b-03f8181f96a5",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(5) > .CodeMirror-line:nth-child(2)",
+      "target": "css=div:nth-child(4) > .CodeMirror-line > span",
       "targets": [
-        ["css=div:nth-child(5) > .CodeMirror-line:nth-child(2)", "css:finder"],
-        ["xpath=//div[@id='codemirror-wrapper']/div/div[6]/div/div/div/div/div[5]/div[5]/pre", "xpath:idRelative"],
-        ["xpath=//div[5]/div[5]/pre", "xpath:position"],
-        ["xpath=//pre[contains(.,'  printf(\"Hello, world!\\n\");')]", "xpath:innerText"]
+        ["css=div:nth-child(4) > .CodeMirror-line > span", "css:finder"],
+        ["xpath=//div[@id='codemirror-wrapper']/div/div[6]/div/div/div/div/div[5]/div[4]/pre/span", "xpath:idRelative"],
+        ["xpath=//div[4]/pre/span", "xpath:position"],
+        ["xpath=//span[contains(.,'   return 0;')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
@@ -120,18 +120,18 @@
       "id": "33671c64-f258-4716-8b2f-53fc6087b02c",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu:8080/poc/tutorial/",
+      "target": "http://broncode.cs.wmich.edu:1209/lesson/4/",
       "targets": [],
       "value": ""
     }, {
       "id": "8253acf4-e4b6-4de1-ade1-57d41c3620c3",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(5) > .CodeMirror-line .cm-variable",
+      "target": "css=.cm-variable:nth-child(1)",
       "targets": [
-        ["css=div:nth-child(5) > .CodeMirror-line .cm-variable", "css:finder"],
-        ["xpath=//div[@id='codemirror-wrapper']/div/div[6]/div/div/div/div/div[5]/div[5]/pre/span/span", "xpath:idRelative"],
-        ["xpath=//div[5]/div[5]/pre/span/span", "xpath:position"]
+        ["css=.cm-variable:nth-child(1)", "css:finder"],
+        ["xpath=//div[@id='codemirror-wrapper']/div/div[6]/div/div/div/div/div[5]/div[3]/pre/span/span", "xpath:idRelative"],
+        ["xpath=//div[3]/pre/span/span", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -178,6 +178,6 @@
     "timeout": 300,
     "tests": []
   }],
-  "urls": ["http://broncode.cs.wmich.edu:8080/", "http://broncode.cs.wmich.edu:8080/poc/tutorial/"],
+  "urls": ["http://broncode.cs.wmich.edu:8080/", "http://broncode.cs.wmich.edu:8080/poc/tutorial/", "http://broncode.cs.wmich.edu:1209/lesson/4/"],
   "plugins": []
 }
