@@ -64,6 +64,7 @@ html, body {
     font-family: 'IBM Plex Mono', monospace;
     padding: 0 2rem !important;
     white-space: pre-wrap;
+    overflow: auto;
 }
 
 /* Navbar (override) */
