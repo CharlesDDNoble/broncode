@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.contrib.staticfiles import finders
 from datetime import datetime
-from .codehandler import CodeHandler
+from .codeclient import CodeClient
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm

@@ -8,7 +8,7 @@ from poc.models import Lesson
 from poc.models import Submission
 from poc.models import SolutionSet
 
-from poc.codehandler import CodeHandler
+from poc.codeclient import CodeClient
 
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
@@ -102,7 +102,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
         # handle the code execution using docker
         if code != '':
-            handler = CodeHandler(host,port,code,flags)
+            handler = CodeClient(host,port,code,flags)
             handler.run()
             log = handler.log
         else:
