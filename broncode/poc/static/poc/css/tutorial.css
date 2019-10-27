@@ -1,3 +1,6 @@
+/* fonts */
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono|Open+Sans|Cabin&display=swap');
+
 /* General */
 html, body {
     height: 100%;
@@ -18,11 +21,10 @@ html, body {
     min-height: 90vh;
     max-height: 90vh;
     background-color: rgb(235, 235, 235);
-    overflow: scroll;
+    overflow: hidden;
+    overflow-y: scroll;
 }
-#instructions {
-    overflow: scroll !important;
-}
+
 #compiler-and-flags-col {
 }
 #compiler-and-flags-row {
@@ -59,10 +61,10 @@ html, body {
     color: white;
 }
 #output-box {
+    font-family: 'IBM Plex Mono', monospace;
     padding: 0 2rem !important;
     white-space: pre-wrap;
 }
-
 
 /* Navbar (override) */
 #navbar {

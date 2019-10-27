@@ -1,0 +1,48 @@
+/* CSS that renders the markdown in the instructions section of the tutorial page */
+
+/* fonts */
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono|Open+Sans|Cabin&display=swap');
+
+/* global settings for the instructions panel */
+#instructions {
+    font-family: 'Open Sans', sans-serif;
+}
+
+#instructions h1,
+#instructions h2,
+#instructions h3,
+#instructions h4,
+#instructions h5,
+#instructions h6
+{
+    font-weight: bold;
+    font-family: 'Cabin', sans-serif;
+}
+
+#instructions code {
+    font-family: 'IBM Plex Mono', monospace;
+    background-color: #1f1e2e;
+    color: #ffffff;
+}
+
+/* dedicated code blocks */
+#instructions pre {
+    width: 95%;
+    margin: auto;
+    padding: 1em;
+    background-color: #1f1e2e;
+    overflow: hidden;
+    overflow-x: scroll
+}
+
+/* inline code blocks */
+#instructions p>code,
+#instructions li>code
+{
+    padding-left: .5em;
+    padding-right: .5em;
+}
+
+#instructions strong {
+    font-weight: bold;
+}
