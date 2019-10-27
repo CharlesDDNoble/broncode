@@ -29,6 +29,7 @@ class Lesson(models.Model):
     markdown = models.TextField()
     example_code = models.TextField()
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
+    language = models.CharField(max_length=16)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
