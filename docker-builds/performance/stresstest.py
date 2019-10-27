@@ -84,6 +84,17 @@ class TestData():
                 + str(self.handler.recv_time) + "," \
                 + str(self.handler.conn_attempt)
 
+class Test():
+
+    def __init__(self,name,test_type,count,interval,time_limit,data = []):
+        self.name = name
+        self.test_type = test_type
+        self.count = count
+        self.interval = interval
+        self.time_limit = time_limit
+        self.data = data
+
+
 def log_data(test_name,test,file_name="test_data.log",should_append=True):
     if should_append:
         mode = "a"
@@ -111,12 +122,12 @@ def print_stats(all_data):
     print("\tAvg. time of request:          "+str(sum_test_time/count))
     print("\tAvg. time to connect and run:  "+str(sum_run_time/count))
 
-def print_report(test_name,test,is_random=False,seed=0):
+def print_report(test,is_random=False,seed=0):
     passes = list(filter(is_passing,test))
     fails = list(filter(is_failing,test))
 
     print("=============================================================")
-    print(test_name+" Test Report:")
+    print(test.name+" Test Report:")
 
     if None in test:
         print("WARNING: The test list has an index with None!")
@@ -146,11 +157,17 @@ def print_report(test_name,test,is_random=False,seed=0):
 
     log_data(test_name,test)
 
-def make_scatter_plot(test_name,tests):
+def make_student_scatter_plot(test_name,tests):
+    x = []
+    y = []
+    for test in tests:
+        count = len(test)
+
+
     fig = PGraph.Figure({
         "data": [{"type": "scatter",
-                  "x": [0, 1, 2, 3],
-                  "y": [100, 100, 50, 0]}],
+                  "x": x,
+                  "y": y}],
         "layout": {
             "title": {"text": "Student Simulation with 20 sec Max Wait"},
             "xaxis": {
@@ -164,8 +181,8 @@ def make_scatter_plot(test_name,tests):
         }
     })
 
-# returns tuple of total handler elapsed time and program runtime
-def execute_request(code,exp,tests,index,wait=0):
+# returns a TestData object corresponding to the results of the trial
+def execute_request(code,exp,trials,index,wait=0):
     sleep(wait)
 
     test_time = time()
@@ -185,7 +202,7 @@ def execute_request(code,exp,tests,index,wait=0):
     data = TestData(test_time,out,exp,handler)
 
 
-    tests[index] = data
+    trials[index] = data
 
 
 def has_max_replicas(service_name):
@@ -208,14 +225,16 @@ def run_test(service_name,test_name,code,exp,total,interval,should_print=False):
     while not has_max_replicas(service_name):
         sleep(1)
 
-    test = [None] * total
+    trials = [None] * total
 
     for i in range(total):
-        execute_request(code,exp,test,i,interval)
+        execute_request(code,exp,trials,i,interval)
 
-    if should_print and test:
-        print_report(test_name,test)
-    elif not collected_tests:
+    test = Test(test_name,"Single-Thread",total,interval,interval,trials)
+
+    if should_print and trials:
+        print_report(test)
+    elif not trials:
         print("No test data collected")
 
     return test
@@ -227,7 +246,7 @@ def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=F
     seed = math.floor(time())
     random.seed(seed)
 
-    test = [None] * total
+    trials = [None] * total
     threads = [None] * total
 
     for i in range(total):
@@ -237,7 +256,7 @@ def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=F
         else:
             wait = interval * i
 
-        thread = Thread(target=execute_request,args=(code,exp,test,i,wait))
+        thread = Thread(target=execute_request,args=(code,exp,trials,i,wait))
         threads[i] = thread
 
     for i in range(total):
@@ -250,45 +269,48 @@ def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=F
     else:
         wait = interval * total + 10
 
+
     for i in range(total):
         threads[i].join(wait)
 
-    if should_print and test:
-        print_report(test_name,test,is_random,seed)
-    elif not collected_tests:
+    test = Test(test_name,"Multi-Thread",total,interval,interval,trials)
+ 
+    if should_print and trials:
+        print_report(test,is_random,seed)
+    elif not trials:
         print("No test data collected")
 
     return test
 
-def simulate_student(tests,index,time_limit,max_wait):
+def simulate_student(trials,index,time_limit,max_wait):
     start_time = time()
     
     random.seed(start_time)
     
     next_execution = random.random() * max_wait
 
-    test = []
+    my_trials = []
     count = 0
 
     while time() - start_time < time_limit:
         if next_execution <= 0:
             inp = math.floor(random.random() * len(inputs))
             code, exp = inputs[inp]
-            test += [None]
-            execute_request(code, exp, test, count)
+            my_trials += [None]
+            execute_request(code, exp, my_trials, count)
             count += 1
             next_execution = 5 + random.random() * max_wait
         else:
             next_execution -= 1
             sleep(1)
 
-    tests[index] = test
+    trials[index] = my_trials
 
 def run_student_test(service_name,test_name,student_count,time_limit,max_wait,should_print=False):
     while not has_max_replicas(service_name):
         sleep(1)
 
-    tests = [None] * student_count
+    trials = [None] * student_count
     threads = [None] * student_count
 
     for i in range(student_count):
@@ -298,18 +320,20 @@ def run_student_test(service_name,test_name,student_count,time_limit,max_wait,sh
     for i in range(student_count):
         threads[i].join(time_limit + 10)
 
-    collected_tests = []
+    collected_trials = []
 
     for i in range(student_count):
-        if tests[i]:
-            collected_tests += tests[i]
+        if trials[i]:
+            collected_trials += trials[i]
 
-    if should_print and collected_tests:
-        print_report(test_name,collected_tests)
-    elif not collected_tests:
+    test = Test(test_name,"Student",total,time_limit,max_wait,collected_trials)
+
+    if should_print and collected_trials:
+        print_report(test_name,test)
+    elif not collected_trials:
         print("WARNING: No test data collected")
 
-    return collected_tests
+    return test
 
 def prepare_percentile_data(tests):
     data = [[0] * 2]
@@ -382,9 +406,14 @@ def main():
 
     sim_tests = []
 
-    # sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",5,30,10)
-    # sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",10,30,10)
-    sim_tests += run_student_test(service_name,"Simulated Student Test 10-limit",30,20,10)
+    data = run_student_test(service_name,"Simulated Student Test 10-limit",30,10,10)
+    sim_tests += Test("Simulated 10-Student Test 10-limit 10-wait",10,10,10,data)
+
+    data = run_student_test(service_name,"Simulated Student Test 10-limit",30,10,10)
+    sim_tests += Test("Simulated 20-Student Test 10-limit 10-wait",20,10,10,data)
+    
+    data = run_student_test(service_name,"Simulated Student Test 10-limit",30,10,10)
+    sim_tests += Test("Simulated 30-Student Test 10-limit 10-wait",30,10,10,data)
 
     print_report("Simulated Student Tests",sim_tests)
 
