@@ -100,22 +100,32 @@ class SubmissionSerializer(serializers.ModelSerializer):
         host = ''
         port = 4000
 
+        solution_set = SolutionSet.objects.get(lesson=self.validated_data['lesson'])
+
+        print("Using stdin: ", solution_set.stdin)
+
         # handle the code execution using docker
         if code != '':
-            handler = CodeClient(host,port,code,flags)
+            handler = CodeClient(host,port,code,flags,solution_set.stdin)
             handler.run()
             log = handler.log
         else:
             log = "No code to run...\n"
 
-        # TODO: determine if the code passed or failed tests here
+        # hack: code output will be after the first 6 lines
+        code_output = "\n".join(log.split('\n')[6:])
+        # code output is now the output of the program
+
+        passed_test = code_output == solution_set.stdout
+
+        print(passed_test)
 
         print("Creating submission object...")
 
         # you can add additional data to serializers by calling save(newdata=data)
         # so after running the code and getting the necessary data, we just call
         # the default implementation of save given to us by ModelSerializer
-        return super().save(log=log)
+        return super().save(log=log, passed=passed_test)
 
 class SolutionSetSerializer(serializers.ModelSerializer):
     class Meta:
