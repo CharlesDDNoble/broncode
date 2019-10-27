@@ -2,7 +2,7 @@
   "id": "50c8bacd-018e-42f7-94dc-7ef3f30386ee",
   "version": "2.0",
   "name": "Broncode",
-  "url": "http://broncode.cs.wmich.edu:1209/lesson/4/",
+  "url": "http://broncode.cs.wmich.edu:1209/lesson/2/",
   "tests": [{
     "id": "697f49d3-829f-4bbd-9da1-2ee9de07e873",
     "name": "Tutorial Success",
@@ -10,7 +10,7 @@
       "id": "8f05a1c5-1b11-4e52-b5fb-1ff983d50c29",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu:1209/lesson/4/",
+      "target": "http://broncode.cs.wmich.edu:1209/lesson/2/",
       "targets": [],
       "value": ""
     }, {
@@ -76,7 +76,7 @@
       "id": "82da9b9d-2fc0-4a5c-9c44-4861f0c4e9d9",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu:1209/lesson/4/",
+      "target": "http://broncode.cs.wmich.edu:1209/lesson/2/",
       "targets": [],
       "value": ""
     }, {
@@ -146,7 +146,7 @@
       "id": "33671c64-f258-4716-8b2f-53fc6087b02c",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu:1209/lesson/4/",
+      "target": "http://broncode.cs.wmich.edu:1209/lesson/2/",
       "targets": [],
       "value": ""
     }, {
