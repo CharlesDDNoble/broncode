@@ -31,7 +31,8 @@
     margin: auto;
     padding: 1em;
     background-color: #1f1e2e;
-    overflow: hidden
+    overflow: hidden;
+    overflow-x: scroll
 }
 
 /* inline code blocks */
