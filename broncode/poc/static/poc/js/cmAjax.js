@@ -2,7 +2,7 @@
 var d_user_id = -1 // django_user_id
 var d_lesson_id = -1 // django_lesson_id
 
-function load_dynamic_data(user, lesson) {
+function loadDynamicData(user, lesson, code) {
     d_user_id = user;
     d_lesson_id = lesson;
 }
@@ -16,7 +16,7 @@ $('#major-form').on('submit', function(event){
 // AJAX for posting
 function create_post() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:8080/api/submissions/", // the endpoint
+        url : "http://broncode.cs.wmich.edu:1209/api/submissions/", // the endpoint
         type : "POST", // http method
         data : { 
             user : d_user_id,
@@ -40,6 +40,22 @@ function create_post() {
         }
     });
 };
+
+function resetExampleCode() {
+    $.ajax({
+        url : "http://broncode.cs.wmich.edu:1209/api/lessons/" + d_lesson_id,
+        type : "GET",
+        success : function(json) {	
+            // cEditor is the codemirror object
+            cEditor.setValue(json.example_code)
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
 
 $(function() {
 

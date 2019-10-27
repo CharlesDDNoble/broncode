@@ -1,5 +1,12 @@
+#!/usr/bin/python3
+
 import unittest
-from tests.executorstest import CExecutorTest
+import executors
+import client
+
+from executors.executorstest import CExecutorTest
+from executors.executorstest import PythonExecutorTest
+from client.codeclienttest import CodeClientTest
 
 if __name__ == '__main__':
     unittest.main()

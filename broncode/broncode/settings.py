@@ -135,5 +135,5 @@ STATICFILES_DIRS = [
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-LOGIN_REDIRECT_URL = '/poc'
-LOGOUT_REDIRECT_URL = '/poc'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

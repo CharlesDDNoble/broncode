@@ -12,6 +12,7 @@
 
         <!--Import thepage.css-->
         <link type="text/css" rel="stylesheet" href="{% static 'poc/css/tutorial.css' %}">
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/markdown.css' %}">
 
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
@@ -51,6 +52,9 @@
                             {% endblock codemirror %}
                         </div>
                         <div class="col s12" id="btn-submit-wrapper">
+                            <button class="btn waves-effect waves-light" type="button" id="btn-reset" name="action" onclick="resetExampleCode()">Reset
+                                <i class="material-icons right">cached</i>
+                            </button>
                             <button class="btn waves-effect waves-light" type="submit" id="btn-submit" name="action">Submit
                                 <i class="material-icons right">send</i>
                             </button>
@@ -74,5 +78,5 @@
         </footer>
     </body>
     <script src="{% static 'poc/js/cmAjax.js' %}"></script>
-    <script>load_dynamic_data({{ profile.id }}, {{ lesson_id }});</script>
+    <script>loadDynamicData({{ profile.id }}, {{ lesson_id }});</script>
 </html>

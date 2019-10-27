@@ -27,7 +27,7 @@ from .serializers import SolutionSetSerializer
 class UserViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserSerializer
-    lookup_field = "username"
+    lookup_field = "user"
 
 class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()

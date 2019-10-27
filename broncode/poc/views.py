@@ -81,7 +81,10 @@ def lesson(request, lesson_id):
     # grab lesson text
     lesson_text = lesson_obj.markdown
     
-    # Grab sample code
+    # grab compiler flags
+    lesson_flags = lesson_obj.compiler_flags
+
+    # grab sample code
     lesson_code = lesson_obj.example_code
 
     # Render the 'index.html' page
@@ -91,10 +94,11 @@ def lesson(request, lesson_id):
         {
             'title': 'Broncode',
             'year': datetime.now().year,
-            'lesson_code': lesson_code,
             'defaultFlags': '-g -O3',
             'lesson_id': lesson_id,
             'lesson_text': lesson_text,
+            'lesson_flags' : lesson_flags,
+            'lesson_code': lesson_code,
             'profile': request.user.userprofile
         }
     )

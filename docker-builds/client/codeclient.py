@@ -1,0 +1,122 @@
+import os
+import signal
+import socket
+from time import time, sleep
+
+class CodeClient():
+    """This class defines a CodeClient object
+
+    Conncects via socket to docker containers in order to compile and execute code.
+
+    Attributes:
+        code (str): The code that will be executed in the docker container.
+        flags (str): Compiler/Interpreter flags that the code will be executed with.
+        code_file_name (str): The name of file that the code will be written to.
+        log (str): The out log containing the error messages, stdout, and stderr
+            generated from running the given code.
+        time (float): The time it took for the container to spawn, run, and exit.
+        max_time (float): The maximum time allowed to wait for container to exit.
+    """
+
+    def to_dict(self):
+        return {"host" : self.host,
+                "port" : self.port,
+                "code" : self.code,
+                "flags" : self.flags,
+                "inp" : self.inp,
+                "log" : self.log,
+                "send_time" : self.send_time,
+                "recv_time" : self.recv_time,
+                "run_time" : self.run_time,
+                "max_time" : self.max_time,
+                "max_connection_attempts" : self.max_connection_attempts,
+                "conn_wait_time" : self.conn_wait_time,
+                "conn_attempt" : self.conn_attempt,
+                "BLOCK_SIZE" : self.BLOCK_SIZE,
+                "has_lost_data" : self.has_lost_data}
+
+    def __init__(self, host = '', port = 4000, code = '', flags = '', inp = ''):
+        """Constructor for the CodeHandler class."""
+        #TODO: consider logging inputs and outputs
+        self.host = host
+        self.port = port
+        self.code = code
+        self.flags = flags
+        self.inp = inp
+        self.log = ''
+        self.send_time = 0
+        self.recv_time = 0
+        self.run_time = 0
+        self.max_time = 10.0
+        self.max_connection_attempts = 2
+        self.conn_wait_time = 4
+        self.conn_attempt = 0
+        self.BLOCK_SIZE = 4096
+        self.has_lost_data = False
+
+    def run(self):
+        """Main driver function for the CodeHandler object"""
+        self.log = self.handle_connection()
+
+    def make_block(self,msg):
+        """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
+        if not isinstance(msg,bytes):
+            msg = bytes(msg,"utf-8")
+        if len(msg) > self.BLOCK_SIZE:
+            msg = msg[:self.BLOCK_SIZE]
+            self.has_lost_data = True
+        return msg + bytes(('\0' * (self.BLOCK_SIZE-len(msg))),"utf-8")
+
+    def handle_connection(self):
+        """Handles the socket connection to a docker container."""
+        error_msg_time_out = "Something went wrong running your code:\n" \
+                             "It took too long to execute, so we stopped it!\n"
+        error_msg_conn = "Something went wrong trying to connect to our code server!\n" \
+                         "Sorry for the inconvience, please try again later."
+        # Max time on all socket blocking actions
+        socket.setdefaulttimeout(self.max_time)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        log = ''
+        done = False
+        self.run_time = time()
+
+        while not done and self.conn_attempt < self.max_connection_attempts:
+            try:
+                sock.connect((self.host,self.port))
+
+                self.send_time = time()
+
+                #TODO: handle case if message is too big.
+                sock.send(self.make_block(self.flags))
+                sock.send(self.make_block(self.code))
+                sock.send(self.make_block(self.inp))
+                
+                self.send_time = time() - self.send_time
+
+                self.recv_time = time()
+
+                log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+
+                self.recv_time = time() - self.recv_time
+
+                #in case the server times out without sending anything
+                if not log:
+                    log = error_msg_time_out
+
+                done = True
+            except socket.timeout:
+                log = error_msg_time_out
+                done = True
+            except OSError as ose:
+                self.conn_attempt += 1
+                log = error_msg_conn
+                log += str(ose)
+                sleep(self.conn_wait_time)
+            except Exception as excep:
+                log = "Something strange occurred!\n"
+                log += str(excep)
+                done = True
+
+        self.run_time = time() - self.run_time
+        sock.close()
+        return log
