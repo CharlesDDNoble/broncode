@@ -77,6 +77,21 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ("id", "title", "chapters", "owners", "enrolled_users")
 
+def extract_code_output(log, language):
+    # takes the unedited output log of a program and extracts the actual program
+    # output from it. this is different from the log because there are some extra
+    # informational lines printed in the log such as "Executing program..." etc
+
+    # hack: code output will be after the first x lines
+    # x depends on the language (or more precisely, the docker container backend) that is used
+    code_output = ""
+    if language == "C":
+        code_output = "\n".join(log.split('\n')[6:])
+    elif language == "Python3":
+        code_output = "\n".join(log.split('\n')[3:])
+
+    return code_output
+
 class SubmissionSerializer(serializers.ModelSerializer):
     log = serializers.CharField(read_only=True)
     passed = serializers.BooleanField(read_only=True)
@@ -126,9 +141,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
         else:
             log = "No code to run...\n"
 
-        # hack: code output will be after the first 6 lines
-        code_output = "\n".join(log.split('\n')[6:])
-        # code output is now the output of the program
+        code_output = extract_code_output(log, lesson.language)
 
         if solution_set:
             passed_test = (code_output == solution_set.stdout)
