@@ -143,6 +143,9 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
         code_output = extract_code_output(log, lesson.language)
 
+        print("code_output: ", code_output)
+        print("vs: ", solution_set.stdout)
+
         if solution_set:
             passed_test = (code_output == solution_set.stdout)
         else:
