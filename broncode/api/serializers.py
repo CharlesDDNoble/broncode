@@ -88,11 +88,12 @@ def extract_code_output(log, language):
     if language == "C":
         code_output = "\n".join(log.split('\n')[6:])
     elif language == "Python3":
-        # hack: in python, print statements automatically put a newline character
-        # onto the output. it's difficult to enter that last newline character into
-        # the stdout field of solution sets, so we'll just take the very last one
-        # off before giving it back for comparison.
-        code_output = "\n".join(log.split('\n')[2:])[:-1]
+        code_output = "\n".join(log.split('\n')[2:])
+    
+    # hack: upon inputing a stdout sample when creating a testcase in the django
+    # admin panel, django will trim any excess whitespace. we should do that to
+    # our code output too.
+    code_output = code_output.rstrip()
 
     return code_output
 
@@ -146,9 +147,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
             log = "No code to run...\n"
 
         code_output = extract_code_output(log, lesson.language)
-
-        print("code_output: ", code_output)
-        print("vs: ", solution_set.stdout)
 
         if solution_set:
             passed_test = (code_output == solution_set.stdout)
