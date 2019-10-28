@@ -88,7 +88,7 @@ def extract_code_output(log, language):
     if language == "C":
         code_output = "\n".join(log.split('\n')[6:])
     elif language == "Python3":
-        code_output = "\n".join(log.split('\n')[3:])
+        code_output = "\n".join(log.split('\n')[2:])
 
     return code_output
 
@@ -142,9 +142,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
             log = "No code to run...\n"
 
         code_output = extract_code_output(log, lesson.language)
-
-        print("code_output: ", code_output)
-        print("vs: ", solution_set.stdout)
 
         if solution_set:
             passed_test = (code_output == solution_set.stdout)
