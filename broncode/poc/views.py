@@ -105,3 +105,18 @@ def lesson(request, lesson_id):
 
     # Render the 'index.html' page
     return render(request, 'poc/tutorial.html', context)
+
+
+def createLessons(request):
+
+    # initialize context
+    context = {}
+
+    return render(request, 'poc/lesson.html', context)
+
+def createCourse(request):
+
+    # initialize context
+    context = {}
+    
+    return render(request, 'poc/course.html', context)
