@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from .forms import CustomUserCreationForm, UserProfileForm
-from .models import Lesson, Course
+from .models import Lesson, Chapter
 from .codeclient import CodeClient
 
 
@@ -30,8 +30,8 @@ def main(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
 
-    # Context
-    context = {'courses': Course.objects.all() }
+    # Initialize context
+    context = {'courses': Chapter.objects.all() }
 
     # Render the 'index.html' page
     return render(request,'poc/main.html', context)
@@ -91,11 +91,8 @@ def lesson(request, lesson_id):
     # grab sample code
     lesson_code = lesson_obj.example_code
 
-    # Render the 'index.html' page
-    return render(
-        request,
-        'poc/tutorial.html',
-        {
+    # initialize context
+    context = {
             'title': 'Broncode',
             'year': datetime.now().year,
             'defaultFlags': '-g -O3',
@@ -105,4 +102,6 @@ def lesson(request, lesson_id):
             'lesson_code': lesson_code,
             'profile': request.user.userprofile
         }
-    )
+
+    # Render the 'index.html' page
+    return render(request, 'poc/tutorial.html', context)
