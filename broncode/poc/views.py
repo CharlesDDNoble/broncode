@@ -107,7 +107,7 @@ def lesson(request, lesson_id):
     return render(request, 'poc/tutorial.html', context)
 
 
-def createLessons(request):
+def createLesson(request):
 
     # initialize context
     context = {}
