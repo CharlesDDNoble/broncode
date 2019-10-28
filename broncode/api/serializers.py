@@ -88,7 +88,11 @@ def extract_code_output(log, language):
     if language == "C":
         code_output = "\n".join(log.split('\n')[6:])
     elif language == "Python3":
-        code_output = "\n".join(log.split('\n')[2:])
+        # hack: in python, print statements automatically put a newline character
+        # onto the output. it's difficult to enter that last newline character into
+        # the stdout field of solution sets, so we'll just take the very last one
+        # off before giving it back for comparison.
+        code_output = "\n".join(log.split('\n')[2:])[:-1]
 
     return code_output
 
