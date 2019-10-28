@@ -34,10 +34,10 @@
                             <p>Learn python from 0 to 100!</p>
                         </div>
                         <div class="card-action">
-                            <a href="/poc/tutorial">Tutorial</a>
+                            <a href="{% url 'lesson/1' %}">Tutorial</a>
                         </div>
                         <div class="card-action">
-                            <a href="{% url 'lesson' %}">Create</a>
+                            <a href="{% url 'create_lesson' %}">Create</a>
                         </div>
                     </div>
                 </div>
@@ -45,14 +45,11 @@
             <div class="col s12 m6 l4">
                 <div class="card small blue-grey darken-1">
                     <div class="card-content white-text">
-                        <span class="card-title">Python</span>
+                        <span class="card-title">Create a New Course!</span>
                         <p>Learn python from 0 to 100!</p>
                     </div>
                     <div class="card-action">
-                        <a href="/poc/tutorial">Tutorial</a>
-                    </div>
-                    <div class="card-action">
-                        <a href="{% url 'mainpage' %}">Create</a>
+                        <a href="{% url 'create_course' %}">Create</a>
                     </div>
                 </div>
             </div>            
