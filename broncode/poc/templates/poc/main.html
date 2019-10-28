@@ -26,6 +26,22 @@
             <div class="col s12">
                 <h1 class="brown-color">Courses</h1>
             </div>
+            {% for course in courses %}
+                <div class="col s12 m6 l4">
+                    <div class="card small blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">{{ course.title }}</span>
+                            <p>Learn python from 0 to 100!</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="/poc/tutorial">Tutorial</a>
+                        </div>
+                        <div class="card-action">
+                            <a href="{% url 'mainpage' %}">Create</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
             <div class="col s12 m6 l4">
                 <div class="card small blue-grey darken-1">
                     <div class="card-content white-text">
@@ -37,72 +53,6 @@
                     </div>
                     <div class="card-action">
                         <a href="{% url 'mainpage' %}">Create</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m6 l4">
-                <div class="card small blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Python</span>
-                        <p>Learn python from 0 to 100!</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/poc/tutorial">Tutorial</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m6 l4">
-                <div class="card small blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Python</span>
-                        <p>Learn python from 0 to 100!</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/poc/tutorial">Tutorial</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m6 l4">
-                <div class="card small blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Python</span>
-                        <p>Learn python from 0 to 100!</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/poc/tutorial">Tutorial</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m6 l4">
-                <div class="card small blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Python</span>
-                        <p>Learn python from 0 to 100!</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/poc/tutorial">Tutorial</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m6 l4">
-                <div class="card small blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Python</span>
-                        <p>Learn python from 0 to 100!</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/poc/tutorial">Tutorial</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m6 l4">
-                <div class="card small blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Python</span>
-                        <p>Learn python from 0 to 100!</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="/poc/tutorial">Tutorial</a>
                     </div>
                 </div>
             </div>            

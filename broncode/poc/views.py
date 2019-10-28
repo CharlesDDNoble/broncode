@@ -6,16 +6,17 @@ import json
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.contrib.staticfiles import finders
-from datetime import datetime
-from .codeclient import CodeClient
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 from .forms import CustomUserCreationForm, UserProfileForm
-from .models import Lesson
-from django.core.exceptions import ObjectDoesNotExist
+from .models import Lesson, Course
+from .codeclient import CodeClient
+
 
 def index(request):
     # Renders the home page.
@@ -29,8 +30,11 @@ def main(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
 
+    # Context
+    context = {'courses': Course.objects.all() }
+
     # Render the 'index.html' page
-    return render(request,'poc/main.html')
+    return render(request,'poc/main.html', context)
 
 def register(request):
     # Renders the home page.
