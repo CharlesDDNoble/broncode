@@ -2,10 +2,10 @@
 function renderMarkdown(html_id) {
     // console.log("Rendering markdown...")
 
-    let container = $(html_id)
+    container = $(html_id)
 
     showdown.setFlavor('github');
-    let converter = new showdown.Converter();
+    converter = new showdown.Converter();
 
     container.html(converter.makeHtml(container.html()));
 
