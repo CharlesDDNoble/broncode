@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User as DjangoUser
 from poc.models import UserProfile
 from poc.models import Course
-from poc.models import Chapter
+# from poc.models import Chapter
 from poc.models import Lesson
 from poc.models import Submission
 from poc.models import SolutionSet
@@ -43,11 +43,11 @@ class UserSerializer(serializers.ModelSerializer):
             "submissions"
         )
 
-class ChapterSerializerLite(serializers.ModelSerializer):
-    course = CourseSerializerLite(read_only=True)
-    class Meta:
-        model = Chapter
-        fields = ("id", "title", "number", "course")
+# class ChapterSerializerLite(serializers.ModelSerializer):
+#     course = CourseSerializerLite(read_only=True)
+#     class Meta:
+#         model = Chapter
+#         fields = ("id", "title", "number", "course")
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
