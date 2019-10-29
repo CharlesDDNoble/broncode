@@ -38,7 +38,7 @@ function create_course() {
                     </div>
                 </div>
                 `
-            );
+            ).hide().show("slow");
             console.log(json);
         },
 
