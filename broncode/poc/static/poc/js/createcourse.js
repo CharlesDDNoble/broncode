@@ -29,7 +29,7 @@ function create_course() {
                 <div class="col s12 m6 l4">
                     <div class="card small blue-grey darken-1">
                         <div class="card-content white-text">
-                            <span class="card-title">course_name</span>
+                            <span class="card-title">` + course_name + `</span>
                             <p></p>
                         </div>
                         <div class="card-action">
