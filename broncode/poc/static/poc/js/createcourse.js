@@ -29,11 +29,25 @@ function create_course() {
                 <div class="col s12 m6 l4">
                     <div class="card small blue-grey darken-1">
                         <div class="card-content white-text">
-                            <span class="card-title">` + course_name + `</span>
+                            <span class="card-title">{{ course.title }}</span>
                             <p></p>
                         </div>
                         <div class="card-action">
-                            <a href="">Lessons</a>
+                            <a href="{% url 'lesson_list' course_id=course.id %}">Lessons</a>
+                            <!-- Modal Trigger -->
+                            <a class="waves-effect waves-light modal-trigger right" href="#modal2">Delete</a>
+
+                            <!-- Modal Structure -->
+                            <div id="modal2" class="modal">
+                                <div class="modal-content">
+                                    <h4>Confirmation</h4>
+                                    <h6>Are you sure you want to delete?</h6>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="#!" id="btn-cancel-course" class="modal-close waves-effect waves-green btn">Cancel</a>
+                                    <a href="#!" class="modal-close waves-effect waves-green btn red">Delete</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
