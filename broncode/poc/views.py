@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from .forms import CustomUserCreationForm, UserProfileForm
-from .models import Lesson, Chapter
+from .models import Lesson, Course
 from .codeclient import CodeClient
 
 
