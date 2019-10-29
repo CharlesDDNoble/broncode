@@ -21,7 +21,7 @@ function create_post() {
         data : { 
             user : d_user_id,
             lesson : d_lesson_id,
-            code : $('#codemirror').val(), 
+            code : $('#codemirror').val(),
             compiler_flags : $('#compiler-flags').val()
         }, // data sent with the post request
         dataType: "json",
