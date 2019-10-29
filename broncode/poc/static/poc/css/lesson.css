@@ -32,6 +32,10 @@ html, body {
     position: absolute;
     right: 0;
 }
+.collapsible-ternary {
+    position: absolute;
+    right: 10px;
+}
 
 /* IDs */
 #signup {
