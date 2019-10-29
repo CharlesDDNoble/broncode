@@ -7,7 +7,7 @@ function renderMarkdown(html_id) {
     showdown.setFlavor('github');
     converter = new showdown.Converter();
 
-    container.each(container.html(converter.makeHtml(container.html())));
+    container.each(function() { container.html(converter.makeHtml(container.html())); });
 
     // fix &lt; and &gt; in code blocks
     let codes = container.find("code");
