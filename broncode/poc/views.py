@@ -104,7 +104,7 @@ def createLesson(request, course_name):
     assert isinstance(request, HttpRequest)
 
     # initialize context
-    context = {'lessons': Lesson.objects.get(course=course_name).order_by('number')}
+    context = {'lessons': Lesson.objects.filter(course=course_name).order_by('number')}
 
     return render(request, 'poc/lesson.html', context)
 
