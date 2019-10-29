@@ -9,13 +9,7 @@ class CExecutor(CodeExecutor):
         with open("code.c","w") as f:
             f.write(code)
 
-        if inp:
-            with open("input.txt","w") as f:
-                f.write(code)
-            self.in_file = open("input.txt","r")
-        else:
-            self.in_file = None
-
+        self.input = inp
         self.flags = flags.split()
 
     def run(self):
@@ -25,12 +19,9 @@ class CExecutor(CodeExecutor):
                     cmd_run, 
                     stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE,
-                    stdin=self.in_file)
+                    input=bytes(self.input, "utf-8"))
 
-        if self.in_file:
-            cmd_run += ["<","input.txt"]
-            self.in_file.close()
-
+        cmd_run += ["<", "input.txt"]
         self.log_command(cmd_run)
 
         return done_process

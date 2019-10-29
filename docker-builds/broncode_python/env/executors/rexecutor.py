@@ -3,26 +3,27 @@ import time
 import subprocess
 from .codeexecutor import CodeExecutor
 
-class PythonExecutor(CodeExecutor):
+class RExecutor(CodeExecutor):
     
     def __init__(self, code, flags, inp = ''):
-        with open("code.py","w") as f:
+        with open("code.r","w") as f:
             f.write(code)
 
         self.input = inp
+
         self.flags = flags.split()
 
     def run(self):
-        cmd_run = ["python3", "code.py"]
+        cmd_run = ["Rscript", "code.r"]
 
         done_process = subprocess.run(
                     cmd_run, 
                     stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE,
                     input=bytes(self.input,"utf-8"))
-         
-        self.log_command(cmd_run)
         
+        self.log_command(cmd_run)
+
         return done_process
 
     def execute(self):
