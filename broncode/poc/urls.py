@@ -4,7 +4,7 @@ from poc import views
 urlpatterns = [
     path('', views.index, name = 'homepage'),
     path('main/', views.main, name = 'mainpage'),
-    path('chapter/', views.createCourse, name = 'create_course'),
+    path('course/', views.createCourse, name = 'create_course'),
     path('lesson/', views.createLesson, name = 'create_lesson'),
     path('lesson/<int:lesson_id>/', views.lesson, name = 'lesson'),
     path('register/', views.register, name = 'register'),
