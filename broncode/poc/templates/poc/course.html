@@ -55,19 +55,21 @@
                         <div id="modal1" class="modal">
                             <div class="modal-content">
                                 <div class="row">
-                                    <form class="col s12">
+                                    <!-- Action is provided in `static/poc/js/createcourse.js` -->
+                                    <form action="" class="col s12" method="post" id="form-create-course">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input placeholder="Placeholder" id="course_name" type="text" class="validate">
-                                                <label for="course_name">Course Name</label>
+                                                <input placeholder="Placeholder" id="course-name" type="text" class="validate">
+                                                <label for="course-name">Course Name</label>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                                <a href="" id="btn-cancel" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+                                <a href="" id="btn-create-course" class="modal-close waves-effect waves-green btn-flat">Create</a>
                             </div>
                         </div>
                     </div>
