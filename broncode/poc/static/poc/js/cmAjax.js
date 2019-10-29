@@ -43,7 +43,7 @@ function create_post() {
 
 function resetExampleCode() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/lessons/" + d_lesson_id,
+        url : "http://broncode.cs.wmich.edu:8080/api/lessons/" + d_lesson_id,
         type : "GET",
         success : function(json) {	
             // cEditor is the codemirror object

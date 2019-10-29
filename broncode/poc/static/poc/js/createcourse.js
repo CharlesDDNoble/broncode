@@ -9,33 +9,43 @@ function loadDynamicData(user, lesson, code) {
 
 $('#form-create-course').on('submit', function(event){
     event.preventDefault();
-    $('#output-box').text("Running your code...");
-    create_post();
+    create_course();
 });
 
 // AJAX for posting
-function create_post() {
+function create_course() {
+    var course_name = $("#course-name").val()
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/submissions/", // the endpoint
+        url : "http://broncode.cs.wmich.edu:8080/api/courses/", // the endpoint
         type : "POST", // http method
-        data : { 
-            user : d_user_id,
-            lesson : d_lesson_id,
-            code : $('#codemirror').val(), 
-            compiler_flags : $('#compiler-flags').val()
+        data : {
+            title: course_name
         }, // data sent with the post request
         dataType: "json",
         // handle a successful response
         success : function(json) {
-	    //json.log = json.log.replace(/\n/g,"<br />")	
+        //json.log = json.log.replace(/\n/g,"<br />")
+            $("#card-create-course").before(
+                <div class="col s12 m6 l4">
+                    <div class="card small blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">course_name</span>
+                            <p></p>
+                        </div>
+                        <div class="card-action">
+                            <a href="{% url 'lesson' 1 %}">Tutorial</a>
+                        </div>
+                        <div class="card-action">
+                            <a href="{% url 'create_lesson' %}">Create</a>
+                        </div>
+                    </div>
+                </div>
+            );
             console.log(json);
-           $('#output-box').text(json['log']);
         },
 
         // handle a non-successful response
         error : function(xhr,errmsg,err) {
-            $('#output-box').text("errmsg");
-
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
