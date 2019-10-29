@@ -8,7 +8,7 @@ html, body {
 /* Navbar (override) */
 #navbar {
     background-color: #FFF;
-    /* box-shadow: 0 0 10px -4px black !important; */
+    box-shadow: 0 0 10px -4px black !important;
 }
 
 /* Classes */
