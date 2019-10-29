@@ -33,7 +33,7 @@ function create_course() {
                             <p></p>
                         </div>
                         <div class="card-action">
-                            <a href="">Tutorial</a>
+                            <a href="">Lessons</a>
                         </div>
                     </div>
                 </div>
