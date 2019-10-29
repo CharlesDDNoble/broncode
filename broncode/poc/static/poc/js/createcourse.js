@@ -50,22 +50,6 @@ function create_course() {
     });
 };
 
-function resetExampleCode() {
-    $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/lessons/" + d_lesson_id,
-        type : "GET",
-        success : function(json) {	
-            // cEditor is the codemirror object
-            cEditor.setValue(json.example_code)
-        },
-
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-}
-
 $(function() {
 
     // This function gets cookie with a given name
