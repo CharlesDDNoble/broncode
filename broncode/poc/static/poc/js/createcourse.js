@@ -15,7 +15,7 @@ $('#btn-create-course').on('click', function(event){
 // AJAX for posting
 function create_course() {
     var course_name = $("#course-name").val()
-    var url = "{% url 'lesson_list' course_id=" + course.id + " %}";
+    var url = "{% url 'lesson_list' course_id={{ course.id }} %}";
 
     $.ajax({
         url : "http://broncode.cs.wmich.edu:8080/api/courses/", // the endpoint
