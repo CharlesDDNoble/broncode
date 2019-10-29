@@ -25,7 +25,7 @@ function create_course() {
         // handle a successful response
         success : function(json) {
         //json.log = json.log.replace(/\n/g,"<br />")
-            $("#card-create-course").before(
+            $("#card-create-course").before(`
                 <div class="col s12 m6 l4">
                     <div class="card small blue-grey darken-1">
                         <div class="card-content white-text">
@@ -33,13 +33,11 @@ function create_course() {
                             <p></p>
                         </div>
                         <div class="card-action">
-                            <a href="{% url 'lesson' 1 %}">Tutorial</a>
-                        </div>
-                        <div class="card-action">
-                            <a href="{% url 'create_lesson' %}">Create</a>
+                            <a href="">Tutorial</a>
                         </div>
                     </div>
                 </div>
+                `
             );
             console.log(json);
         },
