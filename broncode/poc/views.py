@@ -99,17 +99,17 @@ def lesson(request, lesson_id):
     return render(request, 'poc/tutorial.html', context)
 
 
-def createLesson(request, course_name):
+def lessonList(request, course_id):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
 
     # initialize context
-    context = {'lessons': Lesson.objects.filter(course=course_name).order_by('number')}
+    context = {'lessons': Lesson.objects.filter(course=course_id).order_by('number')}
 
     return render(request, 'poc/lesson.html', context)
 
 @login_required
-def createCourse(request):
+def course(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
 
