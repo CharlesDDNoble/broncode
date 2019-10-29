@@ -12,7 +12,6 @@ html, body {
 }
 
 /* Classes */
-
 .brand-logo {
     color: #846C63 !important;
 }
@@ -25,12 +24,16 @@ html, body {
 .brown-bg-color {
     background-color: #846C63 !important;
 }
-/* IDs */
-/* #courses-row {
-    width: 70%;
-    margin: 0 auto;
-} */
+.collapsible-header {
+    position: relative;
+    right: 0;
+}
+.collapsible-secondary {
+    position: absolute;
+    right: 0;
+}
 
+/* IDs */
 #signup {
     color: #846C63;
 }
