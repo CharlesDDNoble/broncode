@@ -38,7 +38,7 @@ function create_course() {
                     </div>
                 </div>
                 `
-            ).fadeIn();
+            ).animate({}, 5000);
             console.log(json);
         },
 
