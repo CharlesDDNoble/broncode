@@ -25,7 +25,7 @@ function create_course() {
         // handle a successful response
         success : function(json) {
         //json.log = json.log.replace(/\n/g,"<br />")
-            $("#card-create-course").before(`
+            $(`
                 <div class="col s12 m6 l4">
                     <div class="card small blue-grey darken-1">
                         <div class="card-content white-text">
@@ -38,7 +38,8 @@ function create_course() {
                     </div>
                 </div>
                 `
-            ).animate({}, 5000);
+            ).insertBefore("#card-create-course").hide().show("slow");
+
             console.log(json);
         },
 
