@@ -36,7 +36,7 @@
                     {% for lesson in lessons %}
                         <li>
                             <div class="collapsible-header"><i class="material-icons">filter_drama</i>{{ lesson.number }}.{{ lesson.title }}</div>
-                            <div class="collapsible-body"><span>{{ lesson.markdown }}</span></div>
+                            <div class="collapsible-body"><span class="markdown-content">{{ lesson.markdown }}</span></div>
                         </li>
                     {% endfor %}
                 </ul>
@@ -52,9 +52,9 @@
 
                     // List collapsible fuction
                     $('.collapsible').collapsible();
-                    
+
                     // Render markdown in the collapsible
-                    renderMarkdown(".collapsible-body");
+                    renderMarkdown(".markdown-content");
 
                 });
             </script>
