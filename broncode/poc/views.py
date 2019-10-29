@@ -109,7 +109,7 @@ def createCourse(request):
     assert isinstance(request, HttpRequest)
 
     # Initialize context
-    context = {'courses': Chapter.objects.all() }
+    context = {'courses': Course.objects.all() }
 
     # Render the 'index.html' page
     return render(request,'poc/course.html', context)
