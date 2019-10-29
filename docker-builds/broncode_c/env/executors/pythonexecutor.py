@@ -20,6 +20,10 @@ class PythonExecutor(CodeExecutor):
                     stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE,
                     input=bytes(self.input,"utf-8"))
+    
+        if self.input:
+            #TODO: Add fake input redirect command for the log
+            pass
          
         self.log_command(cmd_run)
         

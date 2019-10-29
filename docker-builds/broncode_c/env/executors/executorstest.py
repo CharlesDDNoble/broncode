@@ -2,6 +2,7 @@ import unittest
 import os
 from .cexecutor import CExecutor
 from .pythonexecutor import PythonExecutor
+from .rexecutor import RExecutor
 
 class CExecutorTest(unittest.TestCase):
     flags = "-o3"
@@ -95,7 +96,7 @@ class CExecutorTest(unittest.TestCase):
                 "Compiling code...\n" \
                 "gcc -o3 -o code code.c\n" \
                 "Executing program...\n" \
-                "./code\n" \
+                "./code < input.txt\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
                 "4"
 
@@ -136,6 +137,39 @@ class PythonExecutorTest(unittest.TestCase):
         self.assertEqual(codex.log,self.good_exp)
 
         os.remove("code.py")
+
+class RExecutorTest(unittest.TestCase):
+
+    good_code = "hello <- \"Hello, World!\"\nprint(hello)"
+    good_exp =  "Rscript code.r\n" \
+                "Your code successfully compiled and ran, here's the output:\n" \
+                "[1] \"Hello, World!\"\n"
+#    bad_code = "print(Erro World!)"
+#    bad_exp =   "python3 code.py\n" \
+#                "Something went wrong running your code:\n" \
+#                "  File \"code.py\", line 1\n" \
+#                "    print(Erro World!)\n" \
+#                "                   ^\n" \
+#                "SyntaxError: invalid syntax\n"
+    flags = ""
+
+    def test_execute(self):
+        # Testing code input with a compilation error in it
+        #codex = RExecutor(self.bad_code,self.flags)
+        #codex.execute()
+        
+        #self.assertEqual(codex.log,self.bad_exp)
+
+        # Testing code input that is correct (it should compile and run successfully)
+        codex = RExecutor(self.good_code,self.flags)
+        codex.execute()
+
+        self.assertEqual(codex.log,self.good_exp)
+
+        os.remove("code.r")
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

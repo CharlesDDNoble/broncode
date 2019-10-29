@@ -20,8 +20,9 @@ class CExecutor(CodeExecutor):
                     stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE,
                     input=bytes(self.input, "utf-8"))
-
-        cmd_run += ["<", "input.txt"]
+        if self.input:
+            cmd_run += ["<", "input.txt"]
+        
         self.log_command(cmd_run)
 
         return done_process
