@@ -1,13 +1,12 @@
 // turns markdown into html
 function renderMarkdown(html_id) {
     // console.log("Rendering markdown...")
-
-    container = $(html_id)
+    let container = $(html_id)
 
     showdown.setFlavor('github');
-    converter = new showdown.Converter();
+    let converter = new showdown.Converter();
 
-    container.each(function() { container.html(converter.makeHtml(container.html())); });
+    container.html(converter.makeHtml(container.html()));
 
     // fix &lt; and &gt; in code blocks
     let codes = container.find("code");
@@ -17,6 +16,30 @@ function renderMarkdown(html_id) {
         });
     });
 }
+
+// turns markdown into html
+function renderMarkdownClass(html_class) {
+    // console.log("Rendering markdown...")
+    classes = $(html_id)
+
+    showdown.setFlavor('github');
+    let converter = new showdown.Converter();
+
+    classes.each(function() {
+        $(this).html(converter.makeHtml($(this).html()));
+    });
+    
+    container.html(converter.makeHtml(container.html()));
+
+    // fix &lt; and &gt; in code blocks
+    let codes = container.find("code");
+    codes.each(function () {
+        $(this).text(function(index, text) {
+            return unescapeHTML(text);
+        });
+    });
+}
+
 
 //from https://stackoverflow.com/a/5302113
 function unescapeHTML(escapedHTML) {
