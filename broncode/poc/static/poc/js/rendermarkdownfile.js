@@ -20,7 +20,7 @@ function renderMarkdown(html_id) {
 // turns markdown into html
 function renderMarkdownClass(html_class) {
     // console.log("Rendering markdown...")
-    classes = $(html_id)
+    classes = $(html_class)
 
     showdown.setFlavor('github');
     let converter = new showdown.Converter();
