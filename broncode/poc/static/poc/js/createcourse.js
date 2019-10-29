@@ -7,7 +7,7 @@ function loadDynamicData(user, lesson, code) {
     d_lesson_id = lesson;
 }
 
-$('#form-create-course').on('submit', function(event){
+$('#btn-create-course').on('submit', function(event){
     event.preventDefault();
     create_course();
 });
