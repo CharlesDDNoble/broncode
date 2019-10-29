@@ -70,12 +70,14 @@ class LessonSerializer(serializers.ModelSerializer):
 #         fields = ("id", "title", "number", "lessons", "course")
 
 class CourseSerializer(serializers.ModelSerializer):
-    chapters = ChapterSerializerLite(many=True, read_only=True)
+    # chapters = ChapterSerializerLite(many=True, read_only=True)
+    lessons = LessonSerializerLite(many=True, read_only=True)
     owners = UserSerializer(many=True, read_only=True)
     enrolled_users = UserSerializer(many=True, read_only=True)
     class Meta:
         model = Course
-        fields = ("id", "title", "chapters", "owners", "enrolled_users")
+        # Changed `chapters` to `lessons`
+        fields = ("id", "title", "lessons", "owners", "enrolled_users")
 
 def extract_code_output(log, language):
     # takes the unedited output log of a program and extracts the actual program
