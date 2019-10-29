@@ -25,17 +25,6 @@ def index(request):
     # Render the 'index.html' page
     return render(request,'poc/index.html')
 
-@login_required
-def main(request):
-    # Renders the home page.
-    assert isinstance(request, HttpRequest)
-
-    # Initialize context
-    context = {'courses': Chapter.objects.all() }
-
-    # Render the 'index.html' page
-    return render(request,'poc/main.html', context)
-
 def register(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
@@ -114,9 +103,13 @@ def createLesson(request):
 
     return render(request, 'poc/lesson.html', context)
 
+@login_required
 def createCourse(request):
+    # Renders the home page.
+    assert isinstance(request, HttpRequest)
 
-    # initialize context
-    context = {}
-    
-    return render(request, 'poc/course.html', context)
+    # Initialize context
+    context = {'courses': Chapter.objects.all() }
+
+    # Render the 'index.html' page
+    return render(request,'poc/course.html', context)

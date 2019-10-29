@@ -3,7 +3,6 @@ from poc import views
 
 urlpatterns = [
     path('', views.index, name = 'homepage'),
-    path('main/', views.main, name = 'mainpage'),
     path('course/', views.createCourse, name = 'create_course'),
     path('lesson/', views.createLesson, name = 'create_lesson'),
     path('lesson/<int:lesson_id>/', views.lesson, name = 'lesson'),

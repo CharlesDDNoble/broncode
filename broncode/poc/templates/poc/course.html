@@ -22,8 +22,38 @@
         </header>
 
         <!-- First Row -->
-        <div class="row" id="courses-row">
-            
+        <div class="row container" id="courses-row">
+            <div class="col s12">
+                <h1 class="brown-color">Courses</h1>
+            </div>
+            {% for course in courses %}
+                <div class="col s12 m6 l4">
+                    <div class="card small blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">{{ course.title }}</span>
+                            <p>Learn python from 0 to 100!</p>
+                        </div>
+                        <div class="card-action">
+                            <a href="{% url 'lesson' 1 %}">Tutorial</a>
+                        </div>
+                        <div class="card-action">
+                            <a href="{% url 'create_lesson' %}">Create</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="col s12 m6 l4">
+                <div class="card small blue-grey darken-1">
+                    <div class="card-content white-text">
+                        <span class="card-title">Create a New Course!</span>
+                        <p>Learn python from 0 to 100!</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="{% url 'create_course' %}">Create</a>
+                    </div>
+                </div>
+            </div>            
+        </div>
         <footer>
             <!--JavaScript at end of body for optimized loading-->
             <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
