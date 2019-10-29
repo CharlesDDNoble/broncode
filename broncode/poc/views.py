@@ -22,9 +22,9 @@ def index(request):
     # Renders the home page.
     assert isinstance(request, HttpRequest)
     
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect(request, 'poc/course.html')
-        
+
     # Render the 'index.html' page
     return render(request,'poc/index.html')
 
