@@ -34,7 +34,7 @@
                             <p></p>
                         </div>
                         <div class="card-action">
-                            <a href="{% url 'create_lesson' %}">Lessons</a>
+                            <a href="{% url 'create_lesson' course={{ course.title }} %}">Lessons</a>
                              <!-- Modal Trigger -->
                             <a class="waves-effect waves-light modal-trigger right" href="#modal2">Delete</a>
 
