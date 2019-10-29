@@ -15,7 +15,7 @@ $('#btn-create-course').on('click', function(event){
 // AJAX for posting
 function create_course() {
     var course_name = $("#course-name").val();
-    
+
     $.ajax({
         url : "http://broncode.cs.wmich.edu:8080/api/courses/", // the endpoint
         type : "POST", // http method
@@ -25,6 +25,9 @@ function create_course() {
         dataType: "json",
         // handle a successful response
         success : function(json) {
+            var url = "{% url 'lesson_list' course_id=123 %}";
+            document.location.href = url.replace('123', json.id);
+            
             $(`
                 <div class="col s12 m6 l4">
                     <div class="card small blue-grey darken-1">
@@ -33,7 +36,7 @@ function create_course() {
                             <p></p>
                         </div>
                         <div class="card-action">
-                            <a href="{% url 'lesson_list' course_id=` + json.id + ` %}">Lessons</a>
+                            <a href="` + url + `">Lessons</a>
                             <!-- Modal Trigger -->
                             <a class="waves-effect waves-light modal-trigger right" href="#modal2">Delete</a>
 
