@@ -28,11 +28,9 @@ function renderMarkdownClass(html_class) {
     classes.each(function() {
         $(this).html(converter.makeHtml($(this).html()));
     });
-    
-    container.html(converter.makeHtml(container.html()));
 
     // fix &lt; and &gt; in code blocks
-    let codes = container.find("code");
+    let codes = classes.find("code");
     codes.each(function () {
         $(this).text(function(index, text) {
             return unescapeHTML(text);
