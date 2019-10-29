@@ -15,7 +15,8 @@
 
         <!-- Jquery -->
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
-        <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}">$(document).ready(renderMarkdown("#instructions"))</script>
+        <script src="{% static 'poc/js/showdown.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
             
     </head>
     
@@ -55,7 +56,6 @@
 
                     // Render markdown in the collapsible
                     renderMarkdown(".markdown-content");
-
                 });
             </script>
         </footer>
