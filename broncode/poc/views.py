@@ -100,9 +100,11 @@ def lesson(request, lesson_id):
 
 
 def createLesson(request):
-
+    # Renders the home page.
+    assert isinstance(request, HttpRequest)
+    
     # initialize context
-    context = {}
+    context = {'lessons': Lesson.objects.all()}
 
     return render(request, 'poc/lesson.html', context)
 

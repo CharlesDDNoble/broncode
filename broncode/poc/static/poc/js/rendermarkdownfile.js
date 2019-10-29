@@ -1,7 +1,8 @@
 // turns markdown into html
-function renderMarkdown() {
+function renderMarkdown(html_id) {
     // console.log("Rendering markdown...")
-    let container = $("#instructions")
+
+    let container = $(html_id)
 
     showdown.setFlavor('github');
     let converter = new showdown.Converter();
