@@ -63,11 +63,11 @@ class LessonSerializer(serializers.ModelSerializer):
             "language"
         )
 
-class ChapterSerializer(serializers.ModelSerializer):
-    lessons = LessonSerializerLite(many=True, read_only=True)
-    class Meta:
-        model = Chapter
-        fields = ("id", "title", "number", "lessons", "course")
+# class ChapterSerializer(serializers.ModelSerializer):
+#     lessons = LessonSerializerLite(many=True, read_only=True)
+#     class Meta:
+#         model = Chapter
+#         fields = ("id", "title", "number", "lessons", "course")
 
 class CourseSerializer(serializers.ModelSerializer):
     chapters = ChapterSerializerLite(many=True, read_only=True)
