@@ -1,6 +1,6 @@
-import plotly.graph_objects as PGraph
-import plotly.io as PIO
-import plotly.express as PExpress
+#import plotly.graph_objects as PGraph
+#import plotly.io as PIO
+#import plotly.express as PExpress
 
 import matplotlib.pyplot as plt
 
@@ -38,33 +38,32 @@ def print_report(test,is_random=False,seed=0):
     print("=============================================================")
     print(test.name+" Test Report:")
 
-    if None in test:
-        print("WARNING: The test list has an index with None!")
+    if None in test.trials:
+        print("WARNING: The Test.trials contains indexes with None!")
     
     if is_random:
         print("Random Seed used: "+str(seed))
 
     print("TOTALS")
-    print_stats(test)
+    print_stats(test.trials)
     
     if passes:
         print("PASSES")
-        print("\tPasses/Total:                  "+str(len(passes))+"/"+str(len(test)))
+        print("\tPasses/Total:                  "+str(len(passes))+"/"+str(len(test.trials)))
         print_stats(passes)
-
     else:
         print("WARNING: NO PASSING TESTS")
 
     if fails:
         print("FAILS")
-        print("\tFails/Total:                   "+str(len(fails))+"/"+str(len(test)))
+        print("\tFails/Total:                   "+str(len(fails))+"/"+str(len(test.trials)))
         print_stats(fails)
     else:
         print("NO FAILING TESTS")
 
     print("=============================================================")
 
-    log_data(test_name,test)
+    log_test(test.name,test)
 
 def create_scat_plot(test_name,tests,xlab='',ylab='',log_name="student_simuations.log"):
     x_data = []
