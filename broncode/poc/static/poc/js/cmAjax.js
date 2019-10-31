@@ -58,6 +58,7 @@ function resetExampleCode() {
 }
 
 $(function() {
+    //adapted from code written by Github user @mjhea0 at https://github.com/realpython/django-form-fun
 
     // This function gets cookie with a given name
     function getCookie(name) {
