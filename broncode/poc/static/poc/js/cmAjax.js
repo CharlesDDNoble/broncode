@@ -16,7 +16,7 @@ $('#major-form').on('submit', function(event){
 // AJAX for posting
 function create_post() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:8080/api/submissions/", // the endpoint
+        url : "http://broncode.cs.wmich.edu:1234/api/submissions/", // the endpoint
         type : "POST", // http method
         data : { 
             user : d_user_id,
@@ -43,7 +43,7 @@ function create_post() {
 
 function resetExampleCode() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:8080/api/lessons/" + d_lesson_id,
+        url : "http://broncode.cs.wmich.edu:1234/api/lessons/" + d_lesson_id,
         type : "GET",
         success : function(json) {	
             // cEditor is the codemirror object

@@ -17,7 +17,7 @@ function create_course() {
     var course_name = $("#course-name").val();
 
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:8080/api/courses/", // the endpoint
+        url : "http://broncode.cs.wmich.edu:1234/api/courses/", // the endpoint
         type : "POST", // http method
         data : {
             title: course_name
