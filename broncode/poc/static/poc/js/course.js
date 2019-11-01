@@ -38,19 +38,19 @@ function create_course() {
                             <p></p>
                         </div>
                         <div class="card-action">
-                            <a href="/course/` + json.id + `">Lessons</a>
-                            <!-- Modal Trigger -->
-                            <a class="waves-effect waves-light modal-trigger right" href="#modal2">Delete</a>
+                            <a href="{/course/` + json.id + `">Lessons</a>
+                             <!-- Modal Trigger -->
+                            <a class="waves-effect waves-light modal-trigger right" href="#modal` + json.id + `">Delete</a>
 
                             <!-- Modal Structure -->
-                            <div id="modal2" class="modal">
+                            <div id="modal` + json.id + `" class="modal">
                                 <div class="modal-content">
                                     <h4>Confirmation</h4>
                                     <h6>Are you sure you want to delete?</h6>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="#!" id="btn-cancel-course" class="modal-close waves-effect waves-green btn">Cancel</a>
-                                    <a href="#!" class="modal-close waves-effect waves-green btn red">Delete</a>
+                                    <a href="#!" id="btn-cancel-delete" class="modal-close waves-effect waves-green btn">Cancel</a>
+                                    <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course('` + json.id + `')">Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,6 @@ function create_course() {
 
 // AJAX for posting
 function delete_course(course_id) {
-    alert(course_id);
     $.ajax({
         url : "http://broncode.cs.wmich.edu:1234/api/courses/" + course_id, // the endpoint
         type : "DELETE", // http method
