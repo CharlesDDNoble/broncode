@@ -13,3 +13,5 @@
 - usability testing
 - phone testing
 - mark deletion vs real deletion?
+- error messages on the login screen
+
