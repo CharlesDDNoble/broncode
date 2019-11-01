@@ -12,6 +12,11 @@ $('#btn-create-course').on('click', function(event){
     create_course();
 });
 
+$('#btn-delete-course').on('click', function(event){
+    event.preventDefault();
+    delete_course();
+});
+
 // AJAX for posting
 function create_course() {
     var course_name = $("#course-name").val();
@@ -54,6 +59,29 @@ function create_course() {
                 `
             ).insertBefore("#card-create-course").hide().show("slow");
 
+            console.log(json);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
+// AJAX for posting
+function delete_course() {
+
+    $.ajax({
+        url : "http://broncode.cs.wmich.edu:1234/api/courses/", // the endpoint
+        type : "DELETE", // http method
+        data : {
+            title: course_name
+        }, // data sent with the post request
+        dataType: "json",
+        // handle a successful response
+        success : function(json) {
+            $("#card-create-course").before().remove();
             console.log(json);
         },
 
