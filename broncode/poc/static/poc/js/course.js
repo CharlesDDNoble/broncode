@@ -78,7 +78,7 @@ function delete_course(course_id) {
         dataType: "json",
         // handle a successful response
         success : function(json) {
-            $("#card-create-course").prev().remove();
+            $("#card-create-course").prev().hide("slow", funciton(){$("#card-create-course").prev().remove()});
             console.log(json);
         },
 
