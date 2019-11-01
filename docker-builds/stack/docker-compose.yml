@@ -32,22 +32,22 @@ services:
       - pythonnet
 
 
-  r_service:
-    image: broncode_r
-    deploy:
-      replicas: 3
-      resources:
-        limits:
-          cpus: "0.01"
-          memory: 50M
-      restart_policy:
-        condition: any
-    ports:
-      - "4002:4002"
-    networks:
-      - rnet
+  # r_service:
+  #   image: broncode_r
+  #   deploy:
+  #     replicas: 3
+  #     resources:
+  #       limits:
+  #         cpus: "0.01"
+  #         memory: 50M
+  #     restart_policy:
+  #       condition: any
+  #   ports:
+  #     - "4002:4002"
+  #   networks:
+  #     - rnet
 
 networks:
   cnet:
   pythonnet:
-  rnet:
+  # rnet:

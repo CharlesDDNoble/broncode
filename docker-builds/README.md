@@ -2,7 +2,10 @@
 
 *Dependencies:*
 docker 1.5.x [apt]
-plotly [pip]
+python3 [apt]
+gcc [apt]
+r-base [apt]
+matplotlib [pip3]
 
 *Install:*
 follow instructions [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/)

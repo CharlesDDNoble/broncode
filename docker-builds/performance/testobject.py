@@ -49,11 +49,27 @@ class Trial():
     #             + str(self.handler.conn_attempt)
 
 class Test():
+
+    def log_test(self,file_name,should_append=True):
+        mode = "a" if should_append else "w"
+
+        with open(file_name,mode) as f:
+            # print(test_name+"\n")
+            f.write((self.to_json())+"\n")
+
     def from_json(self,json_string):
         return json.loads(json_string)
 
     def to_json(self):
         return json.dumps(self.to_dict())
+
+    def from_dict(self,test_dict):
+        return Test(test_dict["name"],
+                    test_dict["test_type"],
+                    test_dict["count"],
+                    test_dict["interval"],
+                    test_dict["time_limit"],
+                    test_dict["trials"])
 
     def to_dict(self):
         # trials_dicts = [trial.to_dict() for trial in test.trials]

@@ -9,10 +9,13 @@
 + python3-psycopg2
 + libpq-dev
 + docker
++ r-base
++ python3 (>= 3.6)
++ gcc
 
 #pip3
 + django
 + djangorestframework
 + djangorestframework-jwt
 + psycopg2
-
++ matplotlib

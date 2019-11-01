@@ -1,25 +1,35 @@
 // Submit post on submit
+var d_user_id = -1 // django_user_id
+var d_lesson_id = -1 // django_lesson_id
+
+function loadDynamicData(user, lesson, code) {
+    d_user_id = user;
+    d_lesson_id = lesson;
+}
+
 $('#major-form').on('submit', function(event){
     event.preventDefault();
-    console.log("form submitted!")  // sanity check
     $('#output-box').text("Running your code...");
     create_post();
 });
 
 // AJAX for posting
 function create_post() {
-    console.log("create post is working!") // sanity check
     $.ajax({
-        url : "", // the endpoint
+        url : "http://broncode.cs.wmich.edu:1209/api/submissions/", // the endpoint
         type : "POST", // http method
-        data : { codearea : $('#codemirror').val(),compileFlags : $('#compiler-flags').val()}, // data sent with the post request
-        //data: $('#codeaarea').val(),
+        data : { 
+            user : d_user_id,
+            lesson : d_lesson_id,
+            code : $('#codemirror').val(), 
+            compiler_flags : $('#compiler-flags').val()
+        }, // data sent with the post request
         dataType: "json",
         // handle a successful response
         success : function(json) {
+	    //json.log = json.log.replace(/\n/g,"<br />")	
             console.log(json);
-            console.log("success"); // another sanity check
-           $('#output-box').text(json);
+           $('#output-box').text(json['log']);
         },
 
         // handle a non-successful response
@@ -31,7 +41,21 @@ function create_post() {
     });
 };
 
+function resetExampleCode() {
+    $.ajax({
+        url : "http://broncode.cs.wmich.edu:1209/api/lessons/" + d_lesson_id,
+        type : "GET",
+        success : function(json) {	
+            // cEditor is the codemirror object
+            cEditor.setValue(json.example_code)
+        },
 
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
 
 $(function() {
 
