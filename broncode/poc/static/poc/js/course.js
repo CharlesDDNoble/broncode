@@ -33,12 +33,8 @@ function create_course() {
             $(`
                 <div class="col s12 m6 l4">
                     <div class="card small blue-grey darken-1">
-                        <div class="card-content white-text">
-                            <span class="card-title">` + json.title + `</span>
-                            <p></p>
-                        </div>
                         <div class="card-action">
-                            <a href="{/course/` + json.id + `">Lessons</a>
+                            <a href="/course/` + json.id + `">Lessons</a>
                              <!-- Modal Trigger -->
                             <a class="waves-effect waves-light modal-trigger right" href="#modal` + json.id + `">Delete</a>
 
@@ -53,6 +49,10 @@ function create_course() {
                                     <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course('` + json.id + `')">Delete</a>
                                 </div>
                             </div>
+                        </div>
+                        <div class="card-content white-text">
+                            <span class="card-title">` + json.title + `</span>
+                            <p></p>
                         </div>
                     </div>
                 </div>
