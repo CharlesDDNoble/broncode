@@ -35,24 +35,23 @@
                         </div>
                         <div class="card-action">
                             <a href="{% url 'lesson_list' course_id=course.id %}">Lessons</a>
-                             <!-- Modal Trigger -->
-                            <a class="waves-effect waves-light modal-trigger right" href="#modal{{course.id}}">Delete</a>
-
-                            <!-- Modal Structure -->
-                            <div id="modal{{course.id}}" class="modal">
-                                <div class="modal-content">
-                                    <h4>Confirmation</h4>
-                                    <h6>Are you sure you want to delete?</h6>
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="#!" id="btn-cancel-delete" class="modal-close waves-effect waves-green btn">Cancel</a>
-                                    <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course('{{ course.id }}')">Delete</a>
-                                </div>
-                            </div>
+                            <!-- Modal Trigger -->
+                            <a class="waves-effect waves-light modal-trigger right" href="#modal2">Delete</a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
+            <!-- Modal Structure -->
+            <div id="modal2" class="modal">
+                <div class="modal-content">
+                    <h4>Confirmation</h4>
+                    <h6>Are you sure you want to delete?</h6>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" id="btn-cancel-delete" class="modal-close waves-effect waves-green btn">Cancel</a>
+                    <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course('{{ course.id }}')">Delete</a>
+                </div>
+            </div>
             <div id="card-create-course" class="col s12 m6 l4">
                 <div class="card small blue-grey darken-1">
                     <div class="card-content white-text">
