@@ -1,10 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
-FLAGS_MAXLEN = 512
-
 class Course(models.Model):
     title = models.CharField(max_length=256)
 
@@ -28,7 +24,7 @@ class Lesson(models.Model):
     chapter = models.ForeignKey(Chapter, related_name='lessons', on_delete=models.CASCADE)
     markdown = models.TextField()
     example_code = models.TextField()
-    compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
+    compiler_flags = models.TextField(blank=True)
     language = models.CharField(max_length=16)
 
 class UserProfile(models.Model):
@@ -60,6 +56,8 @@ class Submission(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="submissions")
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="submissions")
     code = models.TextField(blank=False)
-    compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
+    compiler_flags = models.TextField(blank=True)
+    user_tested = models.BooleanField() # if true, this submission has stdin provided by the user
+    stdin = models.TextField(blank=True)
     passed = models.BooleanField(default=False)
     log = models.TextField(blank=True)

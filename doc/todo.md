@@ -15,3 +15,5 @@
 - error messages on the login screen
 - different view for students/instructors
 - python/R syntax highlighting in codemirror box
+- secure the rest API
+- remove debug output

@@ -1,6 +1,6 @@
-// Submit post on submit
 var d_user_id = -1 // django_user_id
 var d_lesson_id = -1 // django_lesson_id
+var BRONCODE_URL = "http://broncode.cs.wmich.edu:1209/api/submissions/"
 
 function loadDynamicData(user, lesson, code) {
     d_user_id = user;
@@ -9,25 +9,25 @@ function loadDynamicData(user, lesson, code) {
 
 $('#major-form').on('submit', function(event){
     event.preventDefault();
-    $('#output-box').text("Running your code...");
-    create_post();
+    $('#output-box').text("Testing your code...");
+    submitCodeForTesting();
 });
 
 // AJAX for posting
-function create_post() {
+function submitCodeForTesting() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/submissions/", // the endpoint
-        type : "POST", // http method
+        url : BRONCODE_URL,
+        type : "POST", 
         data : { 
             user : d_user_id,
             lesson : d_lesson_id,
             code : $('#codemirror').val(), 
-            compiler_flags : $('#compiler-flags').val()
-        }, // data sent with the post request
+            compiler_flags : $('#compiler-flags').val(),
+            user_tested : false
+        },
         dataType: "json",
         // handle a successful response
         success : function(json) {
-	    //json.log = json.log.replace(/\n/g,"<br />")	
             console.log(json);
            $('#output-box').text(json['log']);
         },
@@ -39,7 +39,35 @@ function create_post() {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
-};
+}
+
+function runTest() {
+    $('#output-box').text("Running your code...");
+    $.ajax({
+        url : BRONCODE_URL,
+        type : "POST", 
+        data : { 
+            user : d_user_id,
+            lesson : d_lesson_id,
+            code : $('#codemirror').val(), 
+            compiler_flags : $('#compiler-flags').val(),
+            user_tested : true,
+        },
+        dataType: "json",
+        // handle a successful response
+        success : function(json) {
+            console.log(json);
+           $('#output-box').text(json['log']);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#output-box').text("errmsg");
+
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
 
 function resetExampleCode() {
     $.ajax({
