@@ -55,6 +55,8 @@ html, body {
 }
 #btn-submit {
     float: right;
+}
+.broncode-action-button {
     box-shadow: none;
 }
 #results {
