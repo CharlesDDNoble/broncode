@@ -12,6 +12,8 @@ from poc.codeclient import CodeClient
 
 from django.core.exceptions import ObjectDoesNotExist
 
+import random
+
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
         model = Course
@@ -121,6 +123,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
         log = ''
         host = ''
         lesson = self.validated_data['lesson']
+        user_tested = self.validated_data['user_tested']
         if lesson.language == "C":
             port = 4000
         elif lesson.language == "Python3":
@@ -128,14 +131,23 @@ class SubmissionSerializer(serializers.ModelSerializer):
         else:
             print("Unknown lesson type: {}".format(lesson.language))
 
-        try:
-            solution_set = SolutionSet.objects.get(lesson=self.validated_data['lesson'])
-        except ObjectDoesNotExist:
-            solution_set = None
+        if not user_tested:
+            solution_sets = SolutionSet.objects.filter(lesson=self.validated_data['lesson'])
 
-        if solution_set:
-            passed_stdin = solution_set.stdin
+            if len(solution_sets) == 0:
+                solution_sets = None
         else:
+            solution_sets = None
+
+        if user_tested == True:
+            chosen_solution_set = None
+            passed_stdin = self.validated_data['stdin']
+        elif solution_sets:
+            # pick a random solution set to test against
+            chosen_solution_set = solution_sets[random.randint(0,len(solution_sets)-1)]
+            passed_stdin = chosen_solution_set.stdin
+        else:
+            chosen_solution_set = None
             passed_stdin = ""
 
         # handle the code execution using docker
@@ -148,8 +160,10 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
         code_output = extract_code_output(log, lesson.language)
 
-        if solution_set:
-            passed_test = (code_output == solution_set.stdout)
+        if user_tested:
+            passed_test = False
+        elif chosen_solution_set:
+            passed_test = (code_output == chosen_solution_set.stdout)
         else:
             passed_test = True
 

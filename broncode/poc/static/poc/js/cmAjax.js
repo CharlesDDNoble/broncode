@@ -7,10 +7,12 @@ function loadDynamicData(user, lesson, code) {
     d_lesson_id = lesson;
 }
 
-$('#major-form').on('submit', function(event){
-    event.preventDefault();
-    $('#output-box').text("Testing your code...");
-    submitCodeForTesting();
+$(document).ready(function (){
+    $('#major-form').on('submit', function(event){
+        event.preventDefault();
+        $('#output-box').text("Testing your code...");
+        submitCodeForTesting();
+    });
 });
 
 // AJAX for posting
@@ -42,6 +44,14 @@ function submitCodeForTesting() {
 }
 
 function runTest() {
+    // need to manually save the new code and stdin into their respective textareas
+    // normally, this is done automatically upon form submit
+    // but this button doesn't submit the form
+
+    // editor is a globla variable defined in component-flags.html
+    // cEditor is a global variable definied in component-codemirror.html
+    editor.save()
+    cEditor.save()
     $('#output-box').text("Running your code...");
     $.ajax({
         url : BRONCODE_URL,
@@ -51,6 +61,7 @@ function runTest() {
             lesson : d_lesson_id,
             code : $('#codemirror').val(), 
             compiler_flags : $('#compiler-flags').val(),
+            stdin : $('#stdin').val(),
             user_tested : true,
         },
         dataType: "json",

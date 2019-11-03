@@ -16,6 +16,7 @@
 
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
+        <script src="{% static 'poc/js/cmAjax.js' %}"></script>
     </head>
     
     <body>
@@ -85,6 +86,5 @@
             </script>
         </footer>
     </body>
-    <script src="{% static 'poc/js/cmAjax.js' %}"></script>
     <script>loadDynamicData({{ profile.id }}, {{ lesson_id }});</script>
 </html>
