@@ -1,0 +1,33 @@
+<!--To be put in a form-->
+{% block stdin %}
+
+    {% load static %}
+    <!--Stylesheets-->
+    <link rel="stylesheet" type="text/css" href="{% static 'poc/codemirror/lib/codemirror.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'poc/codemirror/addon/hint/show-hint.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'poc/css/component-stdin.css' %}">
+    
+    <!--Codemirror deps-->
+    <script src="{% static 'poc/codemirror/lib/codemirror.js' %}"></script>
+    <script src="{% static 'poc/codemirror/addon/edit/matchbrackets.js' %}"></script>
+    <script src="{% static 'poc/codemirror/addon/hint/show-hint.js' %}"></script>
+
+    <!--TODO:remove unused-->
+    <script src="{% static 'poc/codemirror/mode/clike/clike.js' %}"></script>
+    <!-- imports script for shell script used for compiler flags -->
+    <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
+
+    <textarea id="stdin" name="stdin"></textarea>
+
+    <!--Codemirror scripting for highlighting textarea-->
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('stdin'), {
+            mode: "text/plain",
+            theme: 'base16-dark',
+            lineNumbers: false,
+            matchBrackets: false,
+        });
+        editor.setSize('100%', '100%');
+    </script>
+
+{% endblock %}

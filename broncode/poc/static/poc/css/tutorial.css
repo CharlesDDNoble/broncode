@@ -38,10 +38,15 @@ html, body {
     margin: 0;
 }
 #codemirror-wrapper {
-    min-height: 80vh;
-    max-height: 80vh;
+    min-height: 75vh;
+    max-height: 75vh;
     background-color: rgb(31, 30, 46);
     padding: 0;
+}
+#stdin-wrapper {
+    min-height: 5vh;
+    max-height: 5vh;
+    background-color: rgb(20, 20, 30);
 }
 #btn-submit-wrapper {
     min-height: 5vh;

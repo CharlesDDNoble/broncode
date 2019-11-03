@@ -51,6 +51,11 @@
                             {% include 'poc/component-codemirror.html' %}
                             {% endblock codemirror %}
                         </div>
+                        <div class="col s12" id="stdin-wrapper">
+                            {% block stdin %}
+                            {% include 'poc/component-stdin.html' %}
+                            {% endblock stdin %}
+                        </div>
                         <div class="col s12" id="btn-submit-wrapper">
                             <button class="btn waves-effect waves-light" type="button" id="btn-reset" name="action" onclick="resetExampleCode()">Reset
                                 <i class="material-icons right">cached</i>
