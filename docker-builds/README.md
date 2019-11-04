@@ -104,42 +104,42 @@ compiles and executes it, then returns the result.
     To create a new executor, it may be helpful to start with a current executor
     as a template and build from there. Since R is interpreted, we'll use the 
     PythonExecutor. 
-    Copy pythonexecutor.py into a new file rexecutor.py. 
-    Open rexecutor.py and replace all instances of Python with R
-    In __init__ change "code.py" to "code.r"
+    + Copy pythonexecutor.py into a new file rexecutor.py. 
+    + Open rexecutor.py and replace all instances of Python with R
+    + In __init__ change "code.py" to "code.r"
         This is the code file that will be executed.
-    In __run__ in cmd_run change ["python3", "code.py"] to ["Rscript", "code.r"]
+    + In __run__ in cmd_run change ["python3", "code.py"] to ["Rscript", "code.r"]
         This is the command to compile and run the given code file.
  2. Make a new starter
     To create a new starter, use starter_template.py in /starters.
-    Copy starter_template.py into a new file start_r.py. 
-    Open start_r.py and modify the first import, change "from executors.cexecutor import CExecutor"
+    + Copy starter_template.py into a new file start_r.py. 
+    + Open start_r.py and modify the first import, change "from executors.cexecutor import CExecutor"
         to "from executors.rexecutor import RExecutor".
-    In __main__ change the port to the new service's port number, in this case we use 4002
+    + In __main__ change the port to the new service's port number, in this case we use 4002
         and change the Executor from  "CExecutor" to "RExecutor"
 2. Make a new docker image
     Now we need to setup the environment for the new image.
-    Make a new directory named "broncode_<LANGUANGE NAME>", i.e. "broncode_r". Note
+    + Make a new directory named "broncode_<LANGUANGE NAME>", i.e. "broncode_r". Note
         this convention is important for the update.sh and build.sh scripts to run correctly.
-    Move into ./broncode_r and make a dockerfile, for this example its easier to copy an
+    + Move into ./broncode_r and make a dockerfile, for this example its easier to copy an
         existing dockerfile from an existing service, again we use the python dockerfile.
-    Open the dockerfile, we need to make two modifications: add the compiler/interpreter of the
+    + Open the dockerfile, we need to make two modifications: add the compiler/interpreter of the
         chosen language and expose the correct port. Add "r-base" to the end of the __RUN__ command
         and change the Expose command's argument to 4002 (the port number of the new service). Close 
         the file.
-    Make a new directory name "env", this will be used to store all the files that should be copied
+    + Make a new directory name "env", this will be used to store all the files that should be copied
         into the container at startup.
-    Run the update.sh and build.sh scripts (in that order) and if all went correctly, the new 
+    + Run the update.sh and build.sh scripts (in that order) and if all went correctly, the new 
         image should be built.
 3. Make a new service
-    Open ./stack/docker-compose.yml
-    Copy and paste the service "python_service" along with all its fields below it as the template 
+    + Open ./stack/docker-compose.yml
+    + Copy and paste the service "python_service" along with all its fields below it as the template 
         of the service.
-    Change the name of the new service to r_service.
-    Change the name of the network to rnet and add rnet to the list of networks at the bottom 
+    + Change the name of the new service to r_service.
+    + Change the name of the network to rnet and add rnet to the list of networks at the bottom 
         of the file.
-    Change the port mapping to "4002:4002".
-    Close the file and restart the stack if it is running (./stop_stack then ./start_stack) else
+    + Change the port mapping to "4002:4002".
+    + Close the file and restart the stack if it is running (./stop_stack then ./start_stack) else
         start the stack (./start_stack).
     
 -- Written by Charles Noble 2019
