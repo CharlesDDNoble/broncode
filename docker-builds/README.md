@@ -119,7 +119,7 @@ compiles and executes it, then returns the result.
         and change the Executor from  "CExecutor" to "RExecutor"
 2. Make a new docker image
     Now we need to setup the environment for the new image.
-    + Make a new directory named "broncode_<LANGUANGE NAME>", i.e. "broncode_r". Note
+    + Make a new directory named "broncode_[LANGUANGE NAME]", i.e. "broncode_r". Note
         this convention is important for the update.sh and build.sh scripts to run correctly.
     + Move into ./broncode_r and make a dockerfile, for this example its easier to copy an
         existing dockerfile from an existing service, again we use the python dockerfile.
