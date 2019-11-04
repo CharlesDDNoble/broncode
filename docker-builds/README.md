@@ -78,7 +78,7 @@ From there, you need only create a docker-compose.yml file, which will
 configure a service to be run that handles creating replicas of the new 
 image (you may use *broncode_service_c/docker-compose.yml* as a template).
 
-*Stack*
+*Stack:*
 Each broncode image is used as the base of a service defined in ./stack/docker-compose.yml.
 From this file you can update current services as well as create new services. Two self explainatory
 scipts exist in this folder, start_stack.sh and stop_stack.sh. **These two scripts will sometimes fail
@@ -96,7 +96,7 @@ for the docker daemon to free up or prepare the stack, then try again.
   files in the *starters* or *executors* folder. The corresponding update
   script will copy these files into the appropriate places.
 
-*Creating a New Service*
+*Creating a New Service:*
 For this example, let's say we want to make a new docker service that takes R code and
 compiles and executes it, then returns the result.
 
