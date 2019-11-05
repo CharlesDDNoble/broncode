@@ -34,9 +34,9 @@
                             <p></p>
                         </div>
                         <div class="card-action">
-                            <a href="{% url 'lesson_list' course_id=course.id %}">Lessons</a>
+                            <a class="waves-effect waves-light btn-flat" href="{% url 'lesson_list' course_id=course.id %}">Lessons</a>
                             <!-- Modal Trigger -->
-                            <button data-toggle="modal" data-target="#modal2" data-id="{{course.id}}" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
+                            <button data-toggle="modal" data-target="#modal2" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
                         </div>
                     </div>
                 </div>
