@@ -32,6 +32,7 @@
             <div class="col s12">
                 <h1 class="brown-color">Lessons</h1>
             </div>
+            {% if lessons.exists() %}
             <div class="col s12">
                 <ul class="collapsible">
                     {% for lesson in lessons %}
@@ -48,6 +49,7 @@
                     {% endfor %}
                 </ul>
             </div>
+            {% endif %}
         </div>
         <!-- Floating Action Button -->
         <div class="fixed-action-btn">
