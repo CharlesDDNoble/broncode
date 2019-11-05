@@ -44,3 +44,7 @@ html, body {
 #tabs-creation {
     padding: 0;
 }
+
+#preview-markdown {
+    overflow-y: scroll;
+}
