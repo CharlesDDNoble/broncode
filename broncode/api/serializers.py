@@ -56,7 +56,7 @@ class LessonSerializer(serializers.ModelSerializer):
             "id", 
             "title", 
             "number", 
-            "chapter",
+            "course",
             "markdown",
             "example_code", 
             "compiler_flags",
