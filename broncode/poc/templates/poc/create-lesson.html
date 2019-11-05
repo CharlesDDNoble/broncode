@@ -29,7 +29,7 @@
         </header>
 
         <!-- First Row -->
-        <div class="row container" id="courses-row">
+        <div class="row" id="courses-row">
             <div class="col s12">
                 <h1 class="brown-color">Create a Lesson</h1>
             </div>
@@ -44,7 +44,7 @@
                 <div id="tab-double-col" class="row">
                     <form id="form-markdown" class="col s6">
                         {% csrf_token %}
-                        <div id="row-textarea" class="row">
+                        <div class="row">
                             <div class="input-field col s12">
                                 <textarea id="textarea-markdown" class="materialize-textarea"></textarea>
                                 <label for="textarea-markdown">Markdown</label>
