@@ -41,3 +41,6 @@ html, body {
 }
 
 /* IDs */
+#tabs-creation {
+    padding: 0;
+}
