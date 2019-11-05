@@ -16,7 +16,7 @@ $('#btn-create-lesson').on('click', function(event){
 function create_lesson() {
     markdown = $("textarea-markdown").val();
     course_id = $("#course-id").val();
-
+    console.log("create_lesson()");
     $.ajax({
         url : "http://broncode.cs.wmich.edu:1234/api/lessons/", // the endpoint
         type : "POST", // http method
