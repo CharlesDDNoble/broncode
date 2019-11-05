@@ -44,7 +44,7 @@
                 <div class="row">
                     <form id="form-markdown" class="col s6">
                         {% csrf_token %}
-                        <div class="row">
+                        <div id="row-textarea" class="row">
                             <div class="input-field col s12">
                                 <textarea id="textarea-markdown" class="materialize-textarea"></textarea>
                                 <label for="textarea-markdown">Markdown</label>
@@ -52,7 +52,9 @@
                         </div>
                     </form>
                     <div id="preview-markdown" class="col s6">
-                    preview
+                        <div>
+                            <h1 class="gray accent-1">Markdown Preview</h1>
+                        </div>
                     </div>
                 </div>
             </div>

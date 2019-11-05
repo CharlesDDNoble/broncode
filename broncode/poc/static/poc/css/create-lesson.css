@@ -51,6 +51,6 @@ html, body {
 #form-markdown {
     overflow-y: auto;
 }
-#tab-markdown {
+#row-textarea {
     overflow-y: auto;
 }
