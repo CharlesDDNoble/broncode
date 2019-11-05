@@ -109,7 +109,7 @@ def course(request):
 @login_required
 def lessonList(request, course_id):
     assert isinstance(request, HttpRequest)
-    print(course_id)
+    print("COURSE_ID:", course_id)
     # Initialize context
     context = {
         'lessons': Lesson.objects.filter(course=course_id).order_by('number'),
