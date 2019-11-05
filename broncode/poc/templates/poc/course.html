@@ -36,7 +36,7 @@
                         <div class="card-action">
                             <a href="{% url 'lesson_list' course_id=course.id %}">Lessons</a>
                             <!-- Modal Trigger -->
-                            <a class="waves-effect waves-light modal-trigger right" href="#modal2">Delete</a>
+                            <button data-toggle="modal" data-target="#modal2" data-id="{{}}" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="#!" id="btn-cancel-delete" class="modal-close waves-effect waves-green btn">Cancel</a>
-                    <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course('{{ course.id }}')">Delete</a>
+                    <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course()">Delete</a>
                 </div>
             </div>
             <div id="card-create-course" class="col s12 m6 l4">
