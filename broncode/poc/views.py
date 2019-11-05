@@ -19,7 +19,6 @@ from .codeclient import CodeClient
 
 
 def index(request):
-    # Renders the home page.
     assert isinstance(request, HttpRequest)
     
     if request.user.is_authenticated:
@@ -29,7 +28,6 @@ def index(request):
     return render(request,'poc/index.html')
 
 def register(request):
-    # Renders the home page.
     assert isinstance(request, HttpRequest)
 
     if request.method != 'POST':
@@ -65,7 +63,6 @@ def register(request):
 
 @login_required
 def lesson(request, lesson_id):
-    # Renders the home page.
     assert isinstance(request, HttpRequest)
 
     # make sure the lesson exists
@@ -98,16 +95,6 @@ def lesson(request, lesson_id):
     # Render the 'index.html' page
     return render(request, 'poc/tutorial.html', context)
 
-
-def lessonList(request, course_id):
-    # Renders the home page.
-    assert isinstance(request, HttpRequest)
-
-    # initialize context
-    context = {'lessons': Lesson.objects.filter(course=course_id).order_by('number')}
-
-    return render(request, 'poc/lesson.html', context)
-
 @login_required
 def course(request):
     # Renders the home page.
@@ -118,3 +105,24 @@ def course(request):
 
     # Render the 'index.html' page
     return render(request,'poc/course.html', context)
+
+@login_required
+def lessonList(request, course_id):
+    assert isinstance(request, HttpRequest)
+
+    # Initialize context
+    context = {
+        'lessons': Lesson.objects.filter(course=course_id).order_by('number'),
+        'course_id': course_id,
+    }
+
+    return render(request, 'poc/lessons.html', context)
+
+@login_required
+def createLesson(request, course_id):
+    assert isinstance(request, HttpRequest)
+
+    # Initialize context
+    context = {}
+
+    return render(request, 'poc/create-lesson.html', context)
