@@ -36,5 +36,8 @@ html, body {
     position: absolute;
     right: 40px;
 }
+.carousel .carousel-item{
+  width:100%;
+}
 
 /* IDs */
