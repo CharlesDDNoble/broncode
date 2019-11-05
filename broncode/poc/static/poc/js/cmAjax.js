@@ -50,8 +50,8 @@ function runTest() {
 
     // editor is a globla variable defined in component-flags.html
     // cEditor is a global variable definied in component-codemirror.html
-    editor.save()
-    cEditor.save()
+    editor.save();
+    cEditor.save();
     $('#output-box').text("Running your code...");
     $.ajax({
         url : BRONCODE_URL,
