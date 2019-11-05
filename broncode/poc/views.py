@@ -84,7 +84,7 @@ def lesson(request, lesson_id):
     codemirror_lang_name = "text/x-csrc"
     codemirror_lang_args = ""
     if lesson_lang == "Python3":
-        codemirror_lang_name = "{name: \"python\", version: 3, singleLineStringErrors: false}"
+        codemirror_lang_name = "python"
         codemirror_lang_args = ", version: 3, singleLineStringErrors: false"
 
     # grab lesson text
