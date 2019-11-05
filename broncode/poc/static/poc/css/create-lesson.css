@@ -46,5 +46,5 @@ html, body {
 }
 
 #preview-markdown {
-    overflow-y: scroll;
+    overflow-y: auto !important;
 }

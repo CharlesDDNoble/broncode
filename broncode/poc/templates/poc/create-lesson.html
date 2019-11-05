@@ -75,7 +75,7 @@
                     });
 
                     // Render markdown realtime
-                    $("#textarea-markdown").keypress(function() {
+                    $("#textarea-markdown").on('change keyup paste', function() {
                         $("#preview-markdown").html($(this).val());
                         renderMarkdownClass("#preview-markdown");
                     });
