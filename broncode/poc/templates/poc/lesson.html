@@ -33,22 +33,26 @@
                 <h1 class="brown-color">Lessons</h1>
             </div>
             {% if lessons %}
-            <div class="col s12">
-                <ul class="collapsible">
-                    {% for lesson in lessons %}
-                        <li>
-                            <div class="collapsible-header">
-                                <i class="material-icons">code</i>
-                                {{ lesson.number }}.{{ lesson.title }}
-                                <a href="#" class="waves-effect waves-light btn-flat collapsible-ternary"><i class="material-icons">mode_edit</i></a>
-                                <a href="#" class="waves-effect waves-light btn-flat collapsible-secondary"><i class="material-icons">delete</i></a>
-                            </div>
-                            
-                            <div class="collapsible-body"><span class="markdown-content">{{ lesson.markdown }}</span></div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+                <div class="col s12">
+                    <ul class="collapsible">
+                        {% for lesson in lessons %}
+                            <li>
+                                <div class="collapsible-header">
+                                    <i class="material-icons">code</i>
+                                    {{ lesson.number }}.{{ lesson.title }}
+                                    <a href="#" class="waves-effect waves-light btn-flat collapsible-ternary"><i class="material-icons">mode_edit</i></a>
+                                    <a href="#" class="waves-effect waves-light btn-flat collapsible-secondary"><i class="material-icons">delete</i></a>
+                                </div>
+                                
+                                <div class="collapsible-body"><span class="markdown-content">{{ lesson.markdown }}</span></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <div class="col s12">
+                    Lessons coming soon!
+                </div>
             {% endif %}
         </div>
         <!-- Floating Action Button -->
