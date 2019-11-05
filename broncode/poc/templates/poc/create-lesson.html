@@ -18,7 +18,7 @@
         <script src="{% static 'poc/js/showdown.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
         <script>
-            $(document).ready(function(){
+            {% comment %} $(document).ready(function(){ {% endcomment %}
                 $('.sidenav').sidenav();
                 $('#login').attr('class', 'waves-effect waves-light btn-small brown');
                 $('#navbar-username').css("color", "rgb(132,108,99)");
@@ -26,7 +26,7 @@
                 $('.tabs').tabs({
                     swipeable: true
                 });
-            });
+            {% comment %} }); {% endcomment %}
         </script>
     </head>
     
