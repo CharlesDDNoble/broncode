@@ -81,7 +81,11 @@ def lesson(request, lesson_id):
     # grab lesson language
     lesson_lang = lesson_obj.language
 
-    codemirror_lang = "text/x-csrc"
+    codemirror_lang_name = "text/x-csrc"
+    codemirror_lang_args = ""
+    if lesson_lang == "Python3":
+        codemirror_lang_name = "{name: \"python\", version: 3, singleLineStringErrors: false}"
+        codemirror_lang_args = ", version: 3, singleLineStringErrors: false"
 
     # grab lesson text
     lesson_text = lesson_obj.markdown
@@ -105,6 +109,7 @@ def lesson(request, lesson_id):
             'lesson_flags' : lesson_flags,
             'lesson_code': lesson_code,
             'profile': request.user.userprofile,
-            'codemirror_lang': codemirror_lang
+            'codemirror_lang_name': codemirror_lang_name,
+            'codemirror_lang_args': codemirror_lang_args
         }
     )
