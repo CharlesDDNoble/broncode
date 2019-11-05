@@ -61,7 +61,7 @@
         </div>
         <input type="hidden" id="course-id" value="{{ course_id }}">
         <div class="fixed-action-btn">
-            <a id="btn-create-lesson" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">send</i></a> 
+            <a href="#!" id="btn-create-lesson" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">send</i></a> 
         </div>
         <footer>
             <!--JavaScript at end of body for optimized loading-->
@@ -82,6 +82,10 @@
                         $("#preview-markdown").html($(this).val());
                         renderMarkdownClass("#preview-markdown");
                     });
+
+
+                    // Floating Action Button
+                    $('.fixed-action-btn').floatingActionButton();
                 });
             </script>
         </footer>
