@@ -76,7 +76,7 @@
 
                     // Render markdown realtime
                     $("#textarea-markdown").keypress(function() {
-                        $("#preview-markdown").html($(this).html());
+                        $("#preview-markdown").html($(this).val());
                         renderMarkdownClass("#preview-markdown");
                     });
                 });
