@@ -17,15 +17,13 @@
 
     <!-- imports script for C-like languages. Must be swapped out for other languages -->
     <script src="{% static 'poc/codemirror/mode/clike/clike.js' %}"></script>
-    <!--TODO:remove unused-->
-    <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
     
     <textarea id="codemirror" name="codearea">{{ lesson_code }}</textarea>
     <script>
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,
             matchBrackets: true,
-            mode: "text/x-csrc",//must be changed for editing other languages
+            mode: {{ codemirror_lang }},//must be changed for editing other languages
             theme: 'base16-dark'
         });
         cEditor.setSize('100%', '75vh');

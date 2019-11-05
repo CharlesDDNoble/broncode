@@ -78,6 +78,11 @@ def lesson(request, lesson_id):
 
     lesson_obj = Lesson.objects.get(id=lesson_id)
 
+    # grab lesson language
+    lesson_lang = lesson_obj.language
+
+    codemirror_lang = "\"text/x-csrc\""
+
     # grab lesson text
     lesson_text = lesson_obj.markdown
     
@@ -99,6 +104,7 @@ def lesson(request, lesson_id):
             'lesson_text': lesson_text,
             'lesson_flags' : lesson_flags,
             'lesson_code': lesson_code,
-            'profile': request.user.userprofile
+            'profile': request.user.userprofile,
+            'codemirror_lang': codemirror_lang
         }
     )
