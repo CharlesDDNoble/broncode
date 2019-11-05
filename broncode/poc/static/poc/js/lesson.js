@@ -7,57 +7,31 @@ function loadDynamicData(user, lesson, code) {
     d_lesson_id = lesson;
 }
 
-$('#btn-create-course').on('click', function(event){
+$('#btn-create-lesson').on('click', function(event){
     event.preventDefault();
-    create_course();
+    create_lesson();
 });
 
-// $('#btn-delete-course').on('click', function(event){
-//     event.preventDefault();
-//     delete_course();
-// });
-
 // AJAX for posting
-function create_course() {
-    var course_name = $("#course-name").val();
+function create_lesson() {
+    markdown = $("textarea-markdown").val();
+    course_id = $("#course-id").val();
 
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1234/api/courses/", // the endpoint
+        url : "http://broncode.cs.wmich.edu:1234/api/lessons/", // the endpoint
         type : "POST", // http method
         data : {
-            title : course_name
+            title : "AJAX Lesson",
+            course : course_id,
+            markdown : markdown,
+            example_code: "HARDCODED",
+            language: "Python3"
+
         }, // data sent with the post request
         dataType: "json",
         // handle a successful response
         success : function(json) {
-            $(`
-                <div class="col s12 m6 l4">
-                    <div class="card small blue-grey darken-1">
-                        <div class="card-content white-text">
-                            <span class="card-title">` + json.title + `</span>
-                            <p></p>
-                        </div>
-                        <div class="card-action">
-                        <!-- Modal Structure -->
-                            <div id="modal` + json.id + `" class="modal">
-                                <div class="modal-content">
-                                    <h4>Confirmation</h4>
-                                    <h6>Are you sure you want to delete?</h6>
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="#!" id="btn-cancel-delete" class="modal-close waves-effect waves-green btn">Cancel</a>
-                                    <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course('` + json.id + `')">Delete</a>
-                                </div>
-                            </div>
-                            <a href="/course/` + json.id + `">Lessons</a>
-                             <!-- Modal Trigger -->
-                            <a class="waves-effect waves-light modal-trigger right" href="#modal` + json.id + `">Delete</a>
-                        </div>
-                    </div>
-                </div>
-                `
-            ).insertBefore("#card-create-course").hide().show("slow");
-
+            windows.location.replace("broncode.cs.wmich.edu:1234/course/" + json.course_id + "/lessons");
             console.log(json);
         },
 
@@ -74,7 +48,7 @@ function delete_course(course_id) {
     $.ajax({
         url : "http://broncode.cs.wmich.edu:1234/api/courses/" + course_id, // the endpoint
         type : "DELETE", // http method
-        dataType : "json",
+        dataType: "json",
         // handle a successful response
         success : function(json) {
             $("#card-create-course").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
