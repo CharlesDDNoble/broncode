@@ -111,7 +111,10 @@ def lessonList(request, course_id):
     assert isinstance(request, HttpRequest)
     
     # Initialize context
-    context = {'lessons': Lesson.objects.filter(course=course_id).order_by('number')}
+    context = {
+        'lessons': Lesson.objects.filter(course=course_id).order_by('number'),
+        'course_id': course_id,
+    }
 
     return render(request, 'poc/lessons.html', context)
 
