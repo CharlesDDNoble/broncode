@@ -1,12 +1,3 @@
-// Submit post on submit
-var d_user_id = -1 // django_user_id
-var d_lesson_id = -1 // django_lesson_id
-
-function loadDynamicData(user, lesson, code) {
-    d_user_id = user;
-    d_lesson_id = lesson;
-}
-
 $('#btn-create-lesson').on('click', function(event){
     event.preventDefault();
     create_lesson();
@@ -14,9 +5,9 @@ $('#btn-create-lesson').on('click', function(event){
 
 // AJAX for posting
 function create_lesson() {
+    console.log("create_lesson()");
     markdown = $("textarea-markdown").val();
     course_id = $("#course-id").val();
-    console.log("create_lesson()");
     $.ajax({
         url : "http://broncode.cs.wmich.edu:1234/api/lessons/", // the endpoint
         type : "POST", // http method
