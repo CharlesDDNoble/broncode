@@ -1,6 +1,6 @@
 var d_user_id = -1 // django_user_id
 var d_lesson_id = -1 // django_lesson_id
-var BRONCODE_URL = "http://broncode.cs.wmich.edu:1209/api/submissions/"
+var BRONCODE_URL = "http://broncode.cs.wmich.edu:1209"
 
 function loadDynamicData(user, lesson, code) {
     d_user_id = user;
@@ -18,7 +18,7 @@ $(document).ready(function (){
 // AJAX for posting
 function submitCodeForTesting() {
     $.ajax({
-        url : BRONCODE_URL,
+        url : BRONCODE_URL + "/api/submissions/",
         type : "POST", 
         data : { 
             user : d_user_id,
@@ -54,7 +54,7 @@ function runTest() {
     cEditor.save();
     $('#output-box').text("Running your code...");
     $.ajax({
-        url : BRONCODE_URL,
+        url : BRONCODE_URL + "/api/submissions/",
         type : "POST", 
         data : { 
             user : d_user_id,
@@ -82,7 +82,7 @@ function runTest() {
 
 function resetExampleCode() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/lessons/" + d_lesson_id,
+        url : BRONCODE_URL + "/api/lessons/" + d_lesson_id,
         type : "GET",
         success : function(json) {	
             // cEditor is the codemirror object
