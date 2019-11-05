@@ -81,7 +81,7 @@ def lesson(request, lesson_id):
     # grab lesson language
     lesson_lang = lesson_obj.language
 
-    codemirror_lang = "\"text/x-csrc\""
+    codemirror_lang = "text/x-csrc"
 
     # grab lesson text
     lesson_text = lesson_obj.markdown

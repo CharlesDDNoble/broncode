@@ -23,7 +23,7 @@
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,
             matchBrackets: true,
-            mode: {{ codemirror_lang }},//must be changed for editing other languages
+            mode: "{{ codemirror_lang }}",//must be changed for editing other languages
             theme: 'base16-dark'
         });
         cEditor.setSize('100%', '75vh');
