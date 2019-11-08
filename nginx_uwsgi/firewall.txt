@@ -1,0 +1,19 @@
+# Accept all incoming traffic on the lo (loopback)
+sudo iptables -I INPUT 1 -i lo -j ACCEPT
+
+# Silently ignore all incoming traffic on these ports
+sudo iptables -A INPUT -p tcp --dport 4000 -j DROP
+sudo iptables -A INPUT -p tcp --dport 4001 -j DROP
+sudo iptables -A INPUT -p tcp --dport 4002 -j DROP
+
+# Check iptables - Simple
+sudo iptables -L
+ 
+# Check iptables - Detailed
+sudo iptables -L -v
+
+# Save current iptables configuration
+iptables-save > "./iptables.rules"
+
+# Load iptables configuration from file
+iptables-restore < "./iptables.rules"
