@@ -1,0 +1,1 @@
+Don't track files in this folder, but keep it in git!
