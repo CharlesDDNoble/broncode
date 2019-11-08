@@ -46,18 +46,25 @@ class CodeServer():
             #get compiler flags and code, remove any null bytes from packing
             flags = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
             code = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
-            inp = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
+            num_inputs = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
+
+            inputs = []
+            for _ in range(num_inputs):
+                inputs.append(connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0',''))
 
             #reset alarm to time out in case of really long running programs
             signal.alarm(self.max_time)
 
-            codex = self.Executor(code,flags,inp)
+            codex = self.Executor(code,flags,inputs)
 
             assert(isinstance(codex,CodeExecutor))
 
             codex.execute()
 
-            connection.send(self.make_block(codex.log))
+            connection.send(self.make_block(codex.compilation_log))
+            for log in codex.run_logs:
+                connection.send(self.make_block(log))
+
         except TimeoutError:
             serversocket.close()
             raise SystemExit
