@@ -140,8 +140,13 @@ class SubmissionSerializer(serializers.ModelSerializer):
             solution_sets = []
 
         inputs = []
-        for sset in solution_sets:
-            inputs.append(sset.stdin)
+        if not user_tested:
+            for sset in solution_sets:
+                inputs.append(sset.stdin)
+        else:
+            inputs.append(self.validated_data['stdin'])
+
+        print("inputs:", inputs)
 
         # handle the code execution using docker
         if code != '':

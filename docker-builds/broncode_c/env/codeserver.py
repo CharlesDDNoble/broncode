@@ -49,7 +49,7 @@ class CodeServer():
             num_inputs = connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0','')
 
             inputs = []
-            for _ in range(num_inputs):
+            for _ in range(int(num_inputs)):
                 inputs.append(connection.recv(BLOCK_SIZE).decode("utf-8").replace('\0',''))
 
             #reset alarm to time out in case of really long running programs

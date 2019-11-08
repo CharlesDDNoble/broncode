@@ -6,9 +6,7 @@ from .pythonexecutor import PythonExecutor
 class CExecutorTest(unittest.TestCase):
     flags = "-o3"
     bad_code =  "int main(int argc,char** argv){error;return 0;}\n"
-    bad_exp  =  "Parsing gcc flags...\n" \
-                "Compiling code...\n" \
-                "gcc -o3 -o code code.c\n" \
+    bad_exp  =  "gcc -o3 -o code code.c\n" \
                 "Something went wrong compiling your code:\n" \
                 "code.c: In function 'main':\n" \
                 "code.c:1:32: error: 'error' undeclared (first use in this function)\n" \
@@ -17,9 +15,7 @@ class CExecutorTest(unittest.TestCase):
                 "code.c:1:32: note: each undeclared identifier is reported only once for each function it appears in\n"
 
     good_code = "int main(int argc,char** argv){printf(\"Hello!\\n\");return 0;}\n"
-    good_exp  = "Parsing gcc flags...\n" \
-                "Compiling code...\n" \
-                "gcc -o3 -o code code.c\n" \
+    good_exp  = "gcc -o3 -o code code.c\n" \
                 "Executing program...\n" \
                 "./code\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
@@ -59,15 +55,15 @@ class CExecutorTest(unittest.TestCase):
         codex.execute()
 
         # GCC seems to use the curly quotes instead of regular quotes...
-        codex.log = codex.log.replace('‘','\'')
-        codex.log = codex.log.replace('’','\'') 
-        self.assertEqual(codex.log,self.bad_exp)
+        codex.compilation_log = codex.compilation_log.replace('‘','\'')
+        codex.compilation_log = codex.compilation_log.replace('’','\'') 
+        self.assertEqual(codex.compilation_log,self.bad_exp)
 
         # Testing code input that is correct (it should compile and run successfully)
         codex = CExecutor(self.good_code,self.flags)
         codex.execute()
 
-        self.assertEqual(codex.log,self.good_exp)
+        self.assertEqual(codex.compilation_log,self.good_exp)
 
         os.remove("code")
         os.remove("code.c")
@@ -91,9 +87,7 @@ class CExecutorTest(unittest.TestCase):
                 "    return 0;\n"\
                 "}\n"
 
-        exp  = "Parsing gcc flags...\n" \
-                "Compiling code...\n" \
-                "gcc -o3 -o code code.c\n" \
+        exp  =  "gcc -o3 -o code code.c\n" \
                 "Executing program...\n" \
                 "./code\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
@@ -102,7 +96,7 @@ class CExecutorTest(unittest.TestCase):
         codex = CExecutor(code,self.flags,"2")
         codex.execute()
 
-        self.assertEqual(codex.log,exp)
+        self.assertEqual(codex.compilation_log,exp)
 
         os.remove("code")
         os.remove("code.c")
@@ -113,7 +107,7 @@ class PythonExecutorTest(unittest.TestCase):
     good_exp =  "python3 code.py\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
                 "Hello World!\n"
-    bad_code = "print(Erro World!)"
+    bad_code =  "print(Erro World!)"
     bad_exp =   "python3 code.py\n" \
                 "Something went wrong running your code:\n" \
                 "  File \"code.py\", line 1\n" \
@@ -127,13 +121,13 @@ class PythonExecutorTest(unittest.TestCase):
         codex = PythonExecutor(self.bad_code,self.flags)
         codex.execute()
         
-        self.assertEqual(codex.log,self.bad_exp)
+        self.assertEqual(codex.compilation_log,self.bad_exp)
 
         # Testing code input that is correct (it should compile and run successfully)
         codex = PythonExecutor(self.good_code,self.flags)
         codex.execute()
 
-        self.assertEqual(codex.log,self.good_exp)
+        self.assertEqual(codex.compilation_log,self.good_exp)
 
         os.remove("code.py")
 

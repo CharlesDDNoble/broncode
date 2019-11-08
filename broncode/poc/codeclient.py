@@ -89,7 +89,7 @@ class CodeClient():
                 #TODO: handle case if message is too big.
                 sock.send(self.make_block(self.flags))
                 sock.send(self.make_block(self.code))
-                sock.send(self.make_block(len(self.inputs)))
+                sock.send(self.make_block(str(len(self.inputs))))
                 for input in self.inputs:
                     sock.send(self.make_block(input))
                 
@@ -123,7 +123,7 @@ class CodeClient():
                 log += str(ose)
                 sleep(self.conn_wait_time)
             except Exception as excep:
-                log = "Something strange occurred!\n"
+                log += "Something strange occurred!\n"
                 log += str(excep)
                 done = True
 
