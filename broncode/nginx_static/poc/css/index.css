@@ -1,9 +1,10 @@
 /* General */
 body {
-    background: url("../images/homepage.jpg") #141414;
+    background-image: url("../images/homepage.jpg");
     background-size: cover;
     background-repeat: no-repeat;
 }
+
 
 /* Navbar (override) */
 #navbar {

@@ -1,6 +1,8 @@
-
-#output-box {
+/* Codemirror Output */
+.CodeMirror {
+    /* Set height, width, borders, and global font properties here */
     font-family: monospace;
-    padding: 0 2rem !important;
-	overflow: scroll;
+    height: auto;
+    color: white !important;
+    direction: ltr;
 }
