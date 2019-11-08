@@ -16,7 +16,7 @@ $('#major-form').on('submit', function(event){
 // AJAX for posting
 function create_post() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/submissions/", // the endpoint
+        url : "http://broncode.cs.wmich.edu/api/submissions/", // the endpoint
         type : "POST", // http method
         data : { 
             user : d_user_id,
@@ -58,6 +58,7 @@ function resetExampleCode() {
 }
 
 $(function() {
+    //adapted from code written by Github user @mjhea0 at https://github.com/realpython/django-form-fun
 
     // This function gets cookie with a given name
     function getCookie(name) {
