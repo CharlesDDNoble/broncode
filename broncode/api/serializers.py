@@ -135,24 +135,17 @@ class SubmissionSerializer(serializers.ModelSerializer):
             solution_sets = SolutionSet.objects.filter(lesson=self.validated_data['lesson'])
 
             if len(solution_sets) == 0:
-                solution_sets = None
+                solution_sets = []
         else:
-            solution_sets = None
+            solution_sets = []
 
-        if user_tested == True:
-            chosen_solution_set = None
-            passed_stdin = self.validated_data['stdin']
-        elif solution_sets:
-            # pick a random solution set to test against
-            chosen_solution_set = solution_sets[random.randint(0,len(solution_sets)-1)]
-            passed_stdin = chosen_solution_set.stdin
-        else:
-            chosen_solution_set = None
-            passed_stdin = ""
+        inputs = []
+        for sset in solution_sets:
+            inputs.append(sset.stdin)
 
         # handle the code execution using docker
         if code != '':
-            handler = CodeClient(host,port,code,flags,passed_stdin)
+            handler = CodeClient(host,port,code,flags,inputs)
             handler.run()
             log = handler.log
         else:
