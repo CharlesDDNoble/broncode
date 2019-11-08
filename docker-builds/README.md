@@ -5,7 +5,8 @@
 + python3 [apt]
 + r-base [apt]
 + gcc [apt]
-+ matplotlab [pip3] (only for performance testing)
++ matplotlab [pip3]\ (only for performance testing)
+
 
 *Docker Install:*
 follow instructions [here](https://docs.docker.com/install/linux/docker-ce/ubuntu/)

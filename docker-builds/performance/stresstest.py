@@ -10,6 +10,9 @@ import visualizer
 from testobject import Trial, Test
 from codeclient import CodeClient
 
+#TODO: Implement functionality to associate service_name to correct docker service
+#      I input service name (and maybe host/port), and the tests are run for that service
+
 # Hack: This is assigned in main, giving it global scope due to my own laziness
 timeout_response = ""
 
@@ -33,7 +36,6 @@ def execute_request(code,exp,trials,index,wait=0):
 
     trial = Trial(test_time,out,exp,timeout_response,handler)
 
-
     trials[index] = trial
 
 # check that the service is at its maximum number of replicas
@@ -44,12 +46,16 @@ def has_max_replicas(service_name):
                         stderr = subprocess.PIPE)
     out = done_process.stdout.decode("utf-8").split("/")
     err = done_process.stderr.decode("utf-8")
+    try:
+        count = int(out[0])
+        total = int(out[1])
 
-    count = int(out[0])
-    total = int(out[1])
-
-    if err:
-        return False
+        if err:
+            return True
+    except Exception as ex:
+        print(ex)
+        print("This may be a permission issue. Try running with sudo.")
+        raise SystemExit
 
     return (count == total)
 
@@ -57,7 +63,7 @@ def has_max_replicas(service_name):
 # Every INTERVAL seconds, send code to the given service for compiling and running.
 # Repeat the process REPS times.
 
-def run_test(service_name,test_name,code,exp,total,interval,should_print=False):
+def run_test(service_name,test_name,code,exp,total,interval):
     while not has_max_replicas(service_name):
         sleep(.1)
 
@@ -67,11 +73,6 @@ def run_test(service_name,test_name,code,exp,total,interval,should_print=False):
         execute_request(code,exp,trials,i,interval)
 
     test = Test(test_name,"Single-Thread",total,interval,interval,trials)
-
-    if should_print and trials:
-        print_report(test)
-    elif not trials:
-        print("No test data collected")
 
     return test
 
@@ -83,7 +84,7 @@ def run_test(service_name,test_name,code,exp,total,interval,should_print=False):
 # Start a REPS threads and assign a random wait time within INTERVAL for the thread
 # to begin execution, namely sending a code to the given service for compiling and running.
 
-def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=False,should_print=False):
+def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=False):
     while not has_max_replicas(service_name):
         sleep(.1)
 
@@ -118,25 +119,20 @@ def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=F
         threads[i].join(wait)
 
     test = Test(test_name,"Multi-Thread",total,interval,interval,trials)
- 
-    if should_print and trials:
-        print_report(test,is_random,seed)
-    elif not trials:
-        print("No test data collected")
 
     return test
 
-def simulate_student(trials,index,time_limit,max_wait,inputs):
+def simulate_student(trials,index,time_limit,max_wait,max_executions,inputs):
     start_time = time()
     
     random.seed(start_time)
     
     next_execution = random.random() * max_wait
-
+    execution_count = 0
     my_trials = []
     count = 0
 
-    while time() - start_time < time_limit:
+    while time() - start_time < time_limit and count < max_executions:
         if next_execution <= 0:
             inp = math.floor(random.random() * len(inputs))
             code, exp = inputs[inp]
@@ -145,8 +141,8 @@ def simulate_student(trials,index,time_limit,max_wait,inputs):
             count += 1
             next_execution = 5 + random.random() * max_wait
         else:
-            next_execution -= 1
-            sleep(.1)
+            next_execution -= .5
+            sleep(.5)
 
     trials[index] = my_trials
 
@@ -154,7 +150,7 @@ def simulate_student(trials,index,time_limit,max_wait,inputs):
 # Roughly simulate the access patterns for a student, i.e. for time_limit seconds,
 # wait a random time within max_wait, then execute_request to comp/run code in container.
 # The code and expected output are 2-tuples pulled from the inputs [ (code,exp)^n ].
-def run_student_test(service_name,test_name,student_count,time_limit,max_wait,inputs):
+def run_student_test(service_name,test_name,student_count,time_limit,max_wait,max_executions,inputs):
     while not has_max_replicas(service_name):
         sleep(.1)
 
@@ -162,7 +158,7 @@ def run_student_test(service_name,test_name,student_count,time_limit,max_wait,in
     threads = [None] * student_count
 
     for i in range(student_count):
-        threads[i] = Thread(target=simulate_student,args=(trials,i,time_limit,max_wait,inputs))
+        threads[i] = Thread(target=simulate_student,args=(trials,i,time_limit,max_wait,max_executions,inputs))
         threads[i].start()
 
     for i in range(student_count):
@@ -187,6 +183,7 @@ def test_spawn_time(service_name,inputs):
     command = ["docker", "service", "ls", "--filter", "name="+service_name, "--format", "{{.Replicas}}"]
     code, exp = inputs[2]
     has_containers = True
+    thread_count = 0
     while has_containers:
         done_process = subprocess.run(command, 
                             stdout = subprocess.PIPE, 
@@ -196,9 +193,14 @@ def test_spawn_time(service_name,inputs):
 
         count = int(out[0])
         total = int(out[1])
+
         if count > 0:
-            trials = [None] 
-            execute_request(code,exp,trials,0)
+            if thread_count < total + 10:
+                # INF CODE
+                code, exp = inputs[2]
+                thread = Thread(target=execute_request,args=(code,exp,[None],0,0))
+                thread.start()
+                thread_count += 1
         else:
             has_containers = False
 
@@ -207,7 +209,7 @@ def test_spawn_time(service_name,inputs):
         sleep(.01)
     end_time = time() - start_time
 
-    return (end_time,total)
+    return {"end_time":end_time, "total":total, "avg":end_time/total}
 
 def main():
     service_name = "broncode_c_service"
@@ -250,35 +252,61 @@ def main():
 
     tests = []
     time = 60
-    reps = 3
+    reps = 1
     max_wait = 30
+    max_executions = 2
     
 
     max_tests = (6-1 + 7-3) * reps 
     for i in range(reps):
-        # Values 5,10,15,25
-        for j in range(1,6):
-            tests += [run_student_test(service_name,"Simulated Student Test",j*5,time,max_wait,inputs)]
-            print("Finished test: "+str(len(tests))+"/"+str(max_tests))
-        # Values 30,40,50,60
-        for j in range(3,7):
-            tests += [run_student_test(service_name,"Simulated Student Test",j*10,time,max_wait,inputs)]
-            print("Finished test: "+str(len(tests))+"/"+str(max_tests))
+       # Values 5,10,15,25
+       for j in range(1,6):
+           tests += [run_student_test(service_name,"Simulated Student Test",j*5,time,max_wait,max_executions,inputs)]
+           print("Finished test: "+str(len(tests))+"/"+str(max_tests))
+       # Values 30,40,50,60
+       for j in range(3,7):
+           tests += [run_student_test(service_name,"Simulated Student Test",j*10,time,max_wait,max_executions,inputs)]
+           print("Finished test: "+str(len(tests))+"/"+str(max_tests))
 
-    visualizer.create_scat_plot("Simulated Student Test With 30 Docker Replicas",
-                            tests,
-                            "Number of Students",
-                            "Percent of Executions Handled in < 8 Seconds")
+    xdata, ydata, axis = visualizer.get_percent_success_vs_count(tests)
+    
+    visualizer.scatter("Number of Students vs. % Successful Executions",
+                        xdata,
+                        ydata,
+                        axis,
+                        "Student Count",
+                        "% Successful executions with runtime < 8 sec",
+                        ".png")
 
-    # print_report("Simulated Student Tests",test)
+
+    # ======================== TEST SPAWN TIME ========================
+   
+#    for i in range(10): 
+#        print(test_spawn_time(service_name,inputs))
 
     # ======================== NON THREADED TESTS ========================
 
     # BAD CODE
     # code, exp = inputs[0]
 
-    # run_tests(service_name,"Bad Code 5-interval",code,exp,reps,5)
+    # tests = []
 
+    # for i in range(2,8):
+    #     test = run_test(service_name,"Bad Code 1-interval "+str(i*5)+"-executions",code,exp,i*5,1)
+    #     visualizer.print_report(test)
+    #     test.log_test("bad_code_interval_tests.log")
+    #     tests += [test]
+
+
+    # xdata, ydata, axis = visualizer.get_percent_success_vs_count(tests)
+    
+    # visualizer.scatter("Trial Count vs. % Successful Executions",
+    #                     xdata,
+    #                     ydata,
+    #                     axis,
+    #                     "Trial Count",
+    #                     "% Success",
+    #                     ".png")
     # ======================== THREADED TESTS - Regular Interval ========================
 
     # BAD CODE
