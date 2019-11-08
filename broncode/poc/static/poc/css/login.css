@@ -18,6 +18,21 @@ body {
 }
 
 /* Classes */
+/* .input-field [type=text] {
+    border-bottom: 1px solid white !important;
+} */
+.input-field [type=text] {
+    color: white;
+}
+
+#label-username {
+    color: white;
+}
+
+#label-password {
+    color: white;
+}
+
 .row {
     margin: 0;
 }
@@ -29,5 +44,5 @@ body {
 
 
 #form-login {
-    padding: 2rem;    
+    padding: 2rem;  
 }

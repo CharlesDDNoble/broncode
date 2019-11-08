@@ -28,7 +28,7 @@
             </div>
             {% for course in courses %}
                 <div class="col s12 m6 l4">
-                    <div class="card small blue-grey darken-1">
+                    <div class="card small blue-grey darken-4 z-depth-0">
                         <div class="card-content white-text">
                             <span class="card-title">{{ course.title }}</span>
                             <p></p>
@@ -41,6 +41,17 @@
                     </div>
                 </div>
             {% endfor %}
+            <div id="card-create-course" class="col s12 m6 l4">
+                <div class="card small blue-grey darken-3 z-depth-0">
+                    <div class="card-content white-text">
+                        <span class="card-title">Create a New Course!</span>
+                    </div>
+                    <div class="card-action">
+                        <!-- Modal Trigger -->
+                        <a class="waves-effect waves-light btn-flat modal-trigger" href="#modal1">Create</a>
+                    </div>
+                </div>
+            </div>
             <!-- Modal Structure -->
             <div id="modal2" class="modal">
                 <div class="modal-content">
@@ -50,17 +61,6 @@
                 <div class="modal-footer">
                     <a href="#!" id="btn-cancel-delete" class="modal-close waves-effect waves-green btn">Cancel</a>
                     <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course()">Delete</a>
-                </div>
-            </div>
-            <div id="card-create-course" class="col s12 m6 l4">
-                <div class="card small blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Create a New Course!</span>
-                    </div>
-                    <div class="card-action">
-                        <!-- Modal Trigger -->
-                        <a class="waves-effect waves-light btn-flat modal-trigger" href="#modal1">Create</a>
-                    </div>
                 </div>
             </div>
             <!-- Modal Structure -->
@@ -96,8 +96,8 @@
                 $(document).ready(function(){
                     // Side nav
                     $('.sidenav').sidenav();
-                    $('#login').attr('class', 'waves-effect waves-light btn-small brown').hide().show();
-                    $('#navbar-username').css("color", "rgb(132,108,99)");
+                    // $('#login').attr('class', 'waves-effect waves-light btn-small brown').hide().show();
+                    // $('#navbar-username').css("color", "rgb(132,108,99)");
                     
                     // Modal
                     $('.modal').modal();

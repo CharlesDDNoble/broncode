@@ -2,18 +2,23 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: #F6F4F1;
+    /* Light Mode */
+    background-color: rgb(235, 235, 235);
+    color: rgb(30, 30, 30);
+    /* Dark Mode */
+    /* background-color: rgb(31, 30, 46); */
+    /* color: rgb(235, 235, 235); */
 }
 
 /* Navbar (override) */
 #navbar {
-    background-color: #FFF;
-    box-shadow: 0 0 10px -4px black !important;
+    background-color: rgb(20, 20, 30);
+    /* box-shadow: 0 0 10px -4px black !important; */
 }
 
 /* Classes */
 
-.brand-logo {
+/* .brand-logo {
     color: #846C63 !important;
 }
 .brown-color {
@@ -23,17 +28,17 @@ html, body {
     color: #FFAB40 !important;
 }
 .brown-bg-color {
-    background-color: #846C63 !important;
-}
+    background-color: #846C63 !important; */
+/* } */
 /* IDs */
 /* #courses-row {
     width: 70%;
     margin: 0 auto;
 } */
 
-#signup {
+/* #signup {
     color: #846C63;
-}
+} */
 
 #modal2 {
     width: 50% !important;    

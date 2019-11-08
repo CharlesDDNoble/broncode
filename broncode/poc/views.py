@@ -119,7 +119,7 @@ def lessonList(request, course_id):
         'course_id': course_id,
     }
 
-    return render(request, 'poc/lessons.html', context)
+    return render(request, 'poc/lesson-list.html', context)
 
 @login_required
 def createLesson(request, course_id):

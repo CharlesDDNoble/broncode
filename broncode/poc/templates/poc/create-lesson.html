@@ -33,14 +33,17 @@
             </div>
             <div id="tabs-creation" class="col s12">
                 <ul class="tabs">
-                    <li class="tab col s3"><a class="active" href="#tab-markdown">Markdown</a></li>
-                    <li class="tab col s3"><a href="#test2">Default Code</a></li>
-                    <li class="tab col s3"><a href="#test3">Test 3</a></li>
+                    <li class="tab col s3"><a href="#tab-information">Information</a></li>
+                    <li class="tab col s3"><a href="#tab-markdown">Markdown</a></li>
+                    <li class="tab col s3"><a href="#tab-codemirror">Default Code</a></li>
                 </ul>
+            </div>
+            <div id="tab-information" class="col s12 white">
+            
             </div>
             <div id="tab-markdown" class="col s12 white">
                 <div id="tab-double-col" class="row">
-                    <form id="form-markdown" class="col s6">
+                    <form id="form-markdown" class="col s6 z-depth-1">
                         {% csrf_token %}
                         <div class="row">
                             <div class="input-field col s12">
@@ -49,13 +52,16 @@
                             </div>
                         </div>
                     </form>
-                    <div id="preview-markdown" class="col s6">
-                        <h3><span class="grey-text lighten-2">Markdown Preview...<span></h3>
+                    <div id="preview-markdown" class="col s6 z-depth-1">
+                        <h5><span class="grey-text lighten-2">Markdown Preview...<span></h5>
                     </div>
                 </div>
             </div>
-            <div id="test2" class="col s12 white">Test 2</div>
-            <div id="test3" class="col s12 white">Test 3</div>
+            <div id="tab-codemirror" class="col s12 white">
+                {% block codemirror %}
+                {% include 'poc/component-codemirror.html' %}
+                {% endblock codemirror %}
+            </div>
         </div>
         <input type="hidden" id="course-id" value="{{ course_id }}">
         <!-- Get the lastest lesson number -->
@@ -70,8 +76,8 @@
             <script>
                 $(document).ready(function(){
                     $('.sidenav').sidenav();
-                    $('#login').attr('class', 'waves-effect waves-light btn-small brown');
-                    $('#navbar-username').css("color", "rgb(132,108,99)");
+                    // $('#login').attr('class', 'waves-effect waves-light btn-small brown');
+                    // $('#navbar-username').css("color", "rgb(132,108,99)");
 
                     // Render the tabs
                     $('.tabs').tabs({
@@ -87,6 +93,8 @@
 
                     // Floating Action Button
                     $('.fixed-action-btn').floatingActionButton();
+
+                    cEditor.setSize('100%', '95%');
                 });
             </script>
         </footer>

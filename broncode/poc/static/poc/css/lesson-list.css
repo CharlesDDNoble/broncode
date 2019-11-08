@@ -2,17 +2,26 @@
 html, body {
     margin: 0;
     padding: 0;
-    background-color: #F6F4F1;
+    height: 100%;
+    width: 100%;
+
+    /* Light Mode */
+    background-color: rgb(235, 235, 235);
+    color: rgb(30, 30, 30);
+    /* Dark Mode */
+    /* background-color: rgb(31, 30, 46); */
+    /* color: rgb(235, 235, 235); */
 }
+
 
 /* Navbar (override) */
 #navbar {
-    background-color: #FFF;
+    background-color: rgb(20, 20, 30);
     /* box-shadow: 0 0 10px -4px black !important; */
 }
 
 /* Classes */
-.brand-logo {
+/* .brand-logo {
     color: #846C63 !important;
 }
 .brown-color {
@@ -23,7 +32,7 @@ html, body {
 }
 .brown-bg-color {
     background-color: #846C63 !important;
-}
+} */
 .collapsible-header {
     position: relative;
     right: 0;
