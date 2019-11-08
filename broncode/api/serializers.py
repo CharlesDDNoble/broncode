@@ -79,26 +79,6 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ("id", "title", "chapters", "owners", "enrolled_users")
 
-def extract_code_output(log, language):
-    # takes the unedited output log of a program and extracts the actual program
-    # output from it. this is different from the log because there are some extra
-    # informational lines printed in the log such as "Executing program..." etc
-
-    # hack: code output will be after the first x lines
-    # x depends on the language (or more precisely, the docker container backend) that is used
-    code_output = ""
-    if language == "C":
-        code_output = "\n".join(log.split('\n')[6:])
-    elif language == "Python3":
-        code_output = "\n".join(log.split('\n')[2:])
-    
-    # hack: upon inputing a stdout sample when creating a testcase in the django
-    # admin panel, django will trim any excess whitespace. we should do that to
-    # our code output too.
-    code_output = code_output.rstrip()
-
-    return code_output
-
 class SubmissionSerializer(serializers.ModelSerializer):
     log = serializers.CharField(read_only=True)
     passed = serializers.BooleanField(read_only=True)
@@ -156,16 +136,21 @@ class SubmissionSerializer(serializers.ModelSerializer):
         else:
             log = "No code to run...\n"
 
-        code_output = extract_code_output(log, lesson.language)
-
         passed_test = False
 
-        # if user_tested:
-        #     passed_test = False
-        # elif chosen_solution_set:
-        #     passed_test = (code_output == chosen_solution_set.stdout)
-        # else:
-        #     passed_test = True
+        if user_tested:
+            passed_test = False
+        elif inputs:
+            passed_test = True
+            for i in range(len(solution_sets)):
+                print(handler.run_logs[i].rstrip() + " vs " + solution_sets[i].stdout)
+                if handler.run_logs[i].rstrip() != solution_sets[i].stdout:
+                    passed_test = False
+        else:
+            passed_test = True
+
+        if not user_tested and passed_test:
+            log = "You did it!"
 
         print("Creating submission object...")
 

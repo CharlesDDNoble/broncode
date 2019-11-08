@@ -53,6 +53,7 @@ class CodeClient():
         self.conn_attempt = 0
         self.BLOCK_SIZE = 4096
         self.has_lost_data = False
+        self.run_logs = []
 
     def run(self):
         """Main driver function for the CodeHandler object"""
@@ -98,14 +99,13 @@ class CodeClient():
                 self.recv_time = time()
 
                 compilation_log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
-                run_logs = []
+                self.run_logs = []
                 for _ in self.inputs:
-                    run_logs.append(sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
+                    self.run_logs.append(sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
 
                 log = compilation_log
                 for i in range(len(self.inputs)):
-                    log += "Input: " + self.inputs[i] + "\n"
-                    log += "Output: \n" + run_logs[i] + "\n"
+                    log += self.run_logs[i]
 
                 self.recv_time = time() - self.recv_time
 
