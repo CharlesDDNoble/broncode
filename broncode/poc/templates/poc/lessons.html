@@ -27,14 +27,19 @@
             {% endblock %}
         </header>
 
-        <!-- First Row -->
+        <!-- Row -->
         <div class="row container" id="courses-row">
             <div class="col s12">
                 <h1 class="brown-color">Lessons</h1>
             </div>
             {% if lessons %}
                 <div class="col s12">
-                    <ul class="collapsible">
+                <div class="collection">
+                {% for lesson in lessons %}
+                    <a href="{% url 'lesson' course_id=course_id lesson_number=lesson.number %}" class="collection-item">{{ lesson.title }}</a>
+                {% endfor %}
+                </div>
+                    {% comment %} <ul class="collapsible">
                         {% for lesson in lessons %}
                             <li>
                                 <div class="collapsible-header">
@@ -47,7 +52,7 @@
                                 <div class="collapsible-body"><span class="markdown-content">{{ lesson.markdown }}</span></div>
                             </li>
                         {% endfor %}
-                    </ul>
+                    </ul> {% endcomment %}
                 </div>
             {% else %}
                 <div class="col s12">

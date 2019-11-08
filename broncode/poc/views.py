@@ -62,15 +62,18 @@ def register(request):
     return render(request, 'registration/register.html', context)
 
 @login_required
-def lesson(request, lesson_id):
+def lesson(request, course_id, lesson_number):
     assert isinstance(request, HttpRequest)
-
+    
     # make sure the lesson exists
-    if not Lesson.objects.filter(id=lesson_id).exists():
+    if not Lesson.objects.filter(course=course_id, number=lesson_number).exists():
         raise ObjectDoesNotExist
+    
+    
+    lesson_obj = Lesson.objects.filter(course=course_id, number=lesson_number)[0]
 
-    lesson_obj = Lesson.objects.get(id=lesson_id)
-
+    print("lesson_obj=---===============",lesson_obj)
+    print(lesson_obj.id)
     # grab lesson text
     lesson_text = lesson_obj.markdown
     
@@ -85,7 +88,7 @@ def lesson(request, lesson_id):
             'title': 'Broncode',
             'year': datetime.now().year,
             'defaultFlags': '-g -O3',
-            'lesson_id': lesson_id,
+            'lesson_id': lesson_obj.id,
             'lesson_text': lesson_text,
             'lesson_flags' : lesson_flags,
             'lesson_code': lesson_code,
@@ -93,7 +96,7 @@ def lesson(request, lesson_id):
         }
 
     # Render the 'index.html' page
-    return render(request, 'poc/tutorial.html', context)
+    return render(request, 'poc/lesson.html', context)
 
 @login_required
 def course(request):
