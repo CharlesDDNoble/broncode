@@ -45,11 +45,6 @@ class CExecutor(CodeExecutor):
         return done_process
 
     def execute(self):
-
-        self.compilation_log += "Parsing gcc flags...\n"
-
-        self.compilation_log += "Compiling code...\n"
-
         done_process = self.compile()
 
         #if there were errors in comp

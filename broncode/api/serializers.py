@@ -153,12 +153,14 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
         code_output = extract_code_output(log, lesson.language)
 
-        if user_tested:
-            passed_test = False
-        elif chosen_solution_set:
-            passed_test = (code_output == chosen_solution_set.stdout)
-        else:
-            passed_test = True
+        passed_test = False
+
+        # if user_tested:
+        #     passed_test = False
+        # elif chosen_solution_set:
+        #     passed_test = (code_output == chosen_solution_set.stdout)
+        # else:
+        #     passed_test = True
 
         print("Creating submission object...")
 
