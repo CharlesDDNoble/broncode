@@ -126,8 +126,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
         else:
             inputs.append(self.validated_data['stdin'])
 
-        print("inputs:", inputs)
-
         # handle the code execution using docker
         if code != '':
             handler = CodeClient(host,port,code,flags,inputs)
@@ -138,6 +136,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
         passed_test = False
 
+        tests_failed = []
         if user_tested:
             passed_test = False
         elif inputs:
@@ -145,14 +144,23 @@ class SubmissionSerializer(serializers.ModelSerializer):
             for i in range(len(solution_sets)):
                 print(handler.run_logs[i].rstrip() + " vs " + solution_sets[i].stdout)
                 if handler.run_logs[i].rstrip() != solution_sets[i].stdout:
+                    tests_failed.append(str(solution_sets[i].number))
                     passed_test = False
         else:
             passed_test = True
 
-        if not user_tested and passed_test:
-            log = "You did it!"
-
-        print("Creating submission object...")
+        if not user_tested:
+            if passed_test:
+                log = "You passed all tests!"
+            else:
+                log = "You didn't pass every test. You failed:\n"
+                if len(tests_failed) == 1:
+                    log += "Test {}.".format(tests_failed[0])
+                else:
+                    log += "Tests "
+                    for i in range(len(tests_failed) - 1):
+                        log += tests_failed[i] + ", "
+                    log += "and {}.".format(tests_failed[-1])
 
         # you can add additional data to serializers by calling save(newdata=data)
         # so after running the code and getting the necessary data, we just call
