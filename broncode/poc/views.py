@@ -122,7 +122,17 @@ def lessonList(request, course_id):
 def createLesson(request, course_id):
     assert isinstance(request, HttpRequest)
     print("COURSE_ID:", course_id)
+
+    lesson_numbers = Lesson.objects.filter(course=course_id).values_list('number', flat=True).order_by('-number')
+    print("Lesson_numbers:", lesson_numbers)
+
+    if len(lesson_numbers) == 0:
+        new_lesson_number = 1
+    else:
+        new_lesson_number = lesson_numbers[0] + 1
+    
+
     # Initialize context
-    context = {'course_id': course_id}
+    context = {'course_id': course_id, 'new_lesson_number': new_lesson_number}
 
     return render(request, 'poc/create-lesson.html', context)

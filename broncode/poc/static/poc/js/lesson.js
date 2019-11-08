@@ -8,12 +8,15 @@ function create_lesson() {
     console.log("create_lesson()");
     textarea_markdown = $("#textarea-markdown").val();
     course_id = $("#course-id").val();
+    lesson_number = $("#new-lesson-number").val();
+    console.log(lesson_number);
     $.ajax({
         url : "http://broncode.cs.wmich.edu:1234/api/lessons/", // the endpoint
         type : "POST", // http method
         data : {
             title : "AJAX Lesson",
             course : course_id,
+            number : lesson_number,
             markdown : textarea_markdown,
             example_code: "HARDCODED",
             language: "Python3"
@@ -22,7 +25,7 @@ function create_lesson() {
         dataType: "json",
         // handle a successful response
         success : function(json) {
-            windows.location.replace("broncode.cs.wmich.edu:1234/course/" + json.course_id + "/lessons");
+            window.location.replace("http://broncode.cs.wmich.edu:1234/course/" + json.course);
             console.log(json);
         },
 
