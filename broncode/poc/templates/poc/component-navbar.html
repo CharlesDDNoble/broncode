@@ -10,17 +10,22 @@
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
             {% if user.is_authenticated %}
-                <li>Hello, {{ user.username }}!</li>
+                <li id="navbar-username">Hello, {{ user.username }}!</li>
                 <li><a class="waves-effect waves-light btn-small deep-purple darken-3" id="login" href="{% url 'logout' %}">Logout</a></li>
             {% else %}
-                <li><a class="waves-effect waves-light" id="signup" href="{% url 'register' %}">New user?</a></li>
+                <li><a class="waves-effect waves-light btn-small btn-flat" id="signup" href="{% url 'register' %}">New user?</a></li>
                 <li><a class="waves-effect waves-light btn-small deep-purple darken-3" id="login" href="{% url 'login' %}">Login</a></li>
             {% endif %}
             </ul>
         </div>
     </nav>
     <ul class="sidenav" id="mobile-demo">
-        <li><a class="waves-effect waves-light" href="{% url 'register' %}">New user?</a></li>
-        <li><a class="waves-effect waves-light btn-small deep-purple darken-3" href="{% url 'login' %}">Login</a></li>   
+        {% if user.is_authenticated %}
+            <li id="navbar-username">Hello, {{ user.username }}!</li>
+            <li><a class="waves-effect waves-light btn-small deep-purple darken-3" id="login" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a class="waves-effect waves-light" id="signup" href="{% url 'register' %}">New user?</a></li>
+            <li><a class="waves-effect waves-light btn-small deep-purple darken-3" id="login" href="{% url 'login' %}">Login</a></li>
+        {% endif %}   
     </ul>
 {% endblock %}

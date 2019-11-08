@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User as DjangoUser
 from poc.models import UserProfile
 from poc.models import Course
-from poc.models import Chapter
+# from poc.models import Chapter
 from poc.models import Lesson
 from poc.models import Submission
 from poc.models import SolutionSet
@@ -43,11 +43,11 @@ class UserSerializer(serializers.ModelSerializer):
             "submissions"
         )
 
-class ChapterSerializerLite(serializers.ModelSerializer):
-    course = CourseSerializerLite(read_only=True)
-    class Meta:
-        model = Chapter
-        fields = ("id", "title", "number", "course")
+# class ChapterSerializerLite(serializers.ModelSerializer):
+#     course = CourseSerializerLite(read_only=True)
+#     class Meta:
+#         model = Chapter
+#         fields = ("id", "title", "number", "course")
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -56,26 +56,28 @@ class LessonSerializer(serializers.ModelSerializer):
             "id", 
             "title", 
             "number", 
-            "chapter",
+            "course",
             "markdown",
             "example_code", 
             "compiler_flags",
             "language"
         )
 
-class ChapterSerializer(serializers.ModelSerializer):
-    lessons = LessonSerializerLite(many=True, read_only=True)
-    class Meta:
-        model = Chapter
-        fields = ("id", "title", "number", "lessons", "course")
+# class ChapterSerializer(serializers.ModelSerializer):
+#     lessons = LessonSerializerLite(many=True, read_only=True)
+#     class Meta:
+#         model = Chapter
+#         fields = ("id", "title", "number", "lessons", "course")
 
 class CourseSerializer(serializers.ModelSerializer):
-    chapters = ChapterSerializerLite(many=True, read_only=True)
+    # chapters = ChapterSerializerLite(many=True, read_only=True)
+    lessons = LessonSerializerLite(many=True, read_only=True)
     owners = UserSerializer(many=True, read_only=True)
     enrolled_users = UserSerializer(many=True, read_only=True)
     class Meta:
         model = Course
-        fields = ("id", "title", "chapters", "owners", "enrolled_users")
+        # Changed `chapters` to `lessons`
+        fields = ("id", "title", "lessons", "owners", "enrolled_users")
 
 def extract_code_output(log, language):
     # takes the unedited output log of a program and extracts the actual program

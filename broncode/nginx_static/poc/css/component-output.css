@@ -1,0 +1,6 @@
+
+#output-box {
+    font-family: monospace;
+    padding: 0 2rem !important;
+	overflow: scroll;
+}

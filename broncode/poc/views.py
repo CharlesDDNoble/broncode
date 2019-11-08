@@ -6,34 +6,28 @@ import json
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.contrib.staticfiles import finders
-from datetime import datetime
-from .codeclient import CodeClient
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
 from .forms import CustomUserCreationForm, UserProfileForm
-from .models import Lesson
-from django.core.exceptions import ObjectDoesNotExist
+from .models import Lesson, Course
+from .codeclient import CodeClient
+
 
 def index(request):
-    # Renders the home page.
     assert isinstance(request, HttpRequest)
     
+    if request.user.is_authenticated:
+        return redirect('/course/')
+
     # Render the 'index.html' page
     return render(request,'poc/index.html')
 
-@login_required
-def main(request):
-    # Renders the home page.
-    assert isinstance(request, HttpRequest)
-
-    # Render the 'index.html' page
-    return render(request,'poc/main.html')
-
 def register(request):
-    # Renders the home page.
     assert isinstance(request, HttpRequest)
 
     if request.method != 'POST':
@@ -68,16 +62,18 @@ def register(request):
     return render(request, 'registration/register.html', context)
 
 @login_required
-def lesson(request, lesson_id):
-    # Renders the home page.
+def lesson(request, course_id, lesson_number):
     assert isinstance(request, HttpRequest)
-
+    
     # make sure the lesson exists
-    if not Lesson.objects.filter(id=lesson_id).exists():
+    if not Lesson.objects.filter(course=course_id, number=lesson_number).exists():
         raise ObjectDoesNotExist
+    
+    
+    lesson_obj = Lesson.objects.filter(course=course_id, number=lesson_number)[0]
 
-    lesson_obj = Lesson.objects.get(id=lesson_id)
-
+    print("lesson_obj=---===============",lesson_obj)
+    print(lesson_obj.id)
     # grab lesson text
     lesson_text = lesson_obj.markdown
     
@@ -87,18 +83,59 @@ def lesson(request, lesson_id):
     # grab sample code
     lesson_code = lesson_obj.example_code
 
-    # Render the 'index.html' page
-    return render(
-        request,
-        'poc/tutorial.html',
-        {
+    # initialize context
+    context = {
             'title': 'Broncode',
             'year': datetime.now().year,
             'defaultFlags': '-g -O3',
-            'lesson_id': lesson_id,
+            'lesson_id': lesson_obj.id,
             'lesson_text': lesson_text,
             'lesson_flags' : lesson_flags,
             'lesson_code': lesson_code,
             'profile': request.user.userprofile
         }
-    )
+
+    # Render the 'index.html' page
+    return render(request, 'poc/lesson.html', context)
+
+@login_required
+def course(request):
+    # Renders the home page.
+    assert isinstance(request, HttpRequest)
+
+    # Initialize context
+    context = {'courses': Course.objects.all() }
+
+    # Render the 'index.html' page
+    return render(request,'poc/course.html', context)
+
+@login_required
+def lessonList(request, course_id):
+    assert isinstance(request, HttpRequest)
+    
+    # Initialize context
+    context = {
+        'lessons': Lesson.objects.filter(course=course_id).order_by('number'),
+        'course_id': course_id,
+    }
+
+    return render(request, 'poc/lesson-list.html', context)
+
+@login_required
+def createLesson(request, course_id):
+    assert isinstance(request, HttpRequest)
+    print("COURSE_ID:", course_id)
+
+    lesson_numbers = Lesson.objects.filter(course=course_id).values_list('number', flat=True).order_by('-number')
+    print("Lesson_numbers:", lesson_numbers)
+
+    if len(lesson_numbers) == 0:
+        new_lesson_number = 1
+    else:
+        new_lesson_number = lesson_numbers[0] + 1
+    
+
+    # Initialize context
+    context = {'course_id': course_id, 'new_lesson_number': new_lesson_number}
+
+    return render(request, 'poc/create-lesson.html', context)

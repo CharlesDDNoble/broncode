@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/materialize/css/materialize.min.css' %}"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <!--Import thepage.css-->
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/course.css' %}">
+    </head>
+    
+    <body>
+        <header>
+            {% block navbar %}
+            {% include 'poc/component-navbar.html' %}
+            {% endblock %}
+        </header>
+
+        <!-- First Row -->
+        <div class="row container" id="courses-row">
+            <div class="col s12">
+                <h1 class="brown-color">Courses</h1>
+            </div>
+            {% for course in courses %}
+                <div class="col s12 m6 l4">
+                    <div class="card small blue-grey darken-4 z-depth-0">
+                        <div class="card-content white-text">
+                            <span class="card-title">{{ course.title }}</span>
+                            <p></p>
+                        </div>
+                        <div class="card-action">
+                            <a class="waves-effect waves-light btn-flat" href="{% url 'lesson_list' course_id=course.id %}">Lessons</a>
+                            <!-- Modal Trigger -->
+                            <button data-toggle="modal" data-target="#modal2" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div id="card-create-course" class="col s12 m6 l4">
+                <div class="card small blue-grey darken-3 z-depth-0">
+                    <div class="card-content white-text">
+                        <span class="card-title">Create a New Course!</span>
+                    </div>
+                    <div class="card-action">
+                        <!-- Modal Trigger -->
+                        <a class="waves-effect waves-light btn-flat modal-trigger" href="#modal1">Create</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Structure -->
+            <div id="modal2" class="modal">
+                <div class="modal-content">
+                    <h4>Confirmation</h4>
+                    <h6>Are you sure you want to delete?</h6>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" id="btn-cancel-delete" class="modal-close waves-effect waves-green btn">Cancel</a>
+                    <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course()">Delete</a>
+                </div>
+            </div>
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                    <h4>Create a new course!</h4>
+                    <h6>Type the course name below:</h6>
+                    <div class="row">
+                        <!-- Action is provided in `static/poc/js/createcourse.js` -->
+                        <form action="" class="col s12" method="post" id="form-create-course">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="course-name" type="text" class="validate">
+                                    <label for="course-name">Course Name</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" id="btn-cancel-create" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+                    <a href="#!" id="btn-create-course" class="modal-close waves-effect waves-green btn-flat">Create</a>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <!--JavaScript at end of body for optimized loading-->
+            <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
+            <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
+            <script type="text/javascript" src="{% static 'poc/js/course.js' %}"></script>
+            <script>
+                $(document).ready(function(){
+                    // Side nav
+                    $('.sidenav').sidenav();
+                    // $('#login').attr('class', 'waves-effect waves-light btn-small brown').hide().show();
+                    // $('#navbar-username').css("color", "rgb(132,108,99)");
+                    
+                    // Modal
+                    $('.modal').modal();
+                });
+            </script>
+        </footer>
+    </body>
+    
+</html>

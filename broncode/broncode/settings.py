@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'broncode.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'broncode',
+        'NAME': 'broncode_alarfdah',
         'USER': os.environ.get('BRONCODE_DB_USER', ''),
         'PASSWORD': os.environ.get('BRONCODE_DB_PASS', ''),
         'HOST': 'localhost'
@@ -135,5 +135,5 @@ STATICFILES_DIRS = [
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/course/'
 LOGOUT_REDIRECT_URL = '/'

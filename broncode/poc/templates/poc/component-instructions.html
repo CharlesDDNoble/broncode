@@ -4,6 +4,6 @@
 	<script src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
 	<div id="instructions">{{ lesson_text }}</div> <!-- needs to be one line! -->
 	<script>
-		$(document).ready(renderMarkdown())
+		$(document).ready(renderMarkdown("#instructions"))
 	</script>
 {% endblock %}
