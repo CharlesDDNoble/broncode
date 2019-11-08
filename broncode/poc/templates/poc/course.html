@@ -59,32 +59,33 @@
                     </div>
                     <div class="card-action">
                         <!-- Modal Trigger -->
-                        <a class="modal-trigger" href="#modal1">Create</a>
-
-                        <!-- Modal Structure -->
-                        <div id="modal1" class="modal">
-                            <div class="modal-content">
-                                <div class="row">
-                                    <!-- Action is provided in `static/poc/js/createcourse.js` -->
-                                    <form action="" class="col s12" method="post" id="form-create-course">
-                                        {% csrf_token %}
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <input id="course-name" type="text" class="validate">
-                                                <label for="course-name">Course Name</label>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="#!" id="btn-cancel-create" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-                                <a href="#!" id="btn-create-course" class="modal-close waves-effect waves-green btn-flat">Create</a>
-                            </div>
-                        </div>
+                        <a class="waves-effect waves-light btn-flat modal-trigger" href="#modal1">Create</a>
                     </div>
                 </div>
-            </div>            
+            </div>
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                    <h4>Create a new course!</h4>
+                    <h6>Type the course name below:</h6>
+                    <div class="row">
+                        <!-- Action is provided in `static/poc/js/createcourse.js` -->
+                        <form action="" class="col s12" method="post" id="form-create-course">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="course-name" type="text" class="validate">
+                                    <label for="course-name">Course Name</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" id="btn-cancel-create" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+                    <a href="#!" id="btn-create-course" class="modal-close waves-effect waves-green btn-flat">Create</a>
+                </div>
+            </div>
         </div>
         <footer>
             <!--JavaScript at end of body for optimized loading-->

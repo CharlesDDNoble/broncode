@@ -38,20 +38,9 @@ function create_course() {
                             <p></p>
                         </div>
                         <div class="card-action">
-                        <!-- Modal Structure -->
-                            <div id="modal` + json.id + `" class="modal">
-                                <div class="modal-content">
-                                    <h4>Confirmation</h4>
-                                    <h6>Are you sure you want to delete?</h6>
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="#!" id="btn-cancel-delete" class="modal-close waves-effect waves-green btn">Cancel</a>
-                                    <a href="#!" id="btn-delete-course" class="modal-close waves-effect waves-green btn red" onclick="delete_course('` + json.id + `')">Delete</a>
-                                </div>
-                            </div>
-                            <a href="/course/` + json.id + `">Lessons</a>
-                             <!-- Modal Trigger -->
-                            <a class="waves-effect waves-light modal-trigger right" href="#modal` + json.id + `">Delete</a>
+                            <a class="waves-effect waves-light btn-flat" href="course/` + json.course + `/">Lessons</a>
+                            <!-- Modal Trigger -->
+                            <button data-toggle="modal" data-target="#modal2" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
                         </div>
                     </div>
                 </div>
