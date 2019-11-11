@@ -56,9 +56,6 @@ def register(request):
             # Return back
             return redirect('/')
     
-    print(form.errors.as_json())
-    print("\n\n\n")
-    print(profile_form.errors.as_json())
     context = {'form': form, 'profile_form': profile_form}
 
     # Render the 'register.html' page
