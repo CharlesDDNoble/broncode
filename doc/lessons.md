@@ -18,9 +18,9 @@ From now on, assume that all numbers are given in decimal unless otherwise state
 
 Similarly, in binary we may represent numbers other than 0 and 1
 using place-value notation. Observe that,
->    127 = 64 + 32 + 16 + 8 + 4 + 2 + 1
->    127 = 1 \* 2^7 + 1 \* 2^6 + 1 \* 2^5 + 1 \* 2^4 + 1 \* 2^3 + 1 \* 2^2 + 1 \* 2^1 + 1 \* 2^0
->   127 = base-2(1111111)
+>   127 = 64 + 32 + 16 + 8 + 4 + 2 + 1<br>
+>   127 = 1 \* 2^7 + 1 \* 2^6 + 1 \* 2^5 + 1 \* 2^4 + 1 \* 2^3 + 1 \* 2^2 + 1 \* 2^1 + 1 \* 2^0<br>
+>   127 = base-2(1111111)<br>
 
 ## Binary in Computing
 
@@ -49,12 +49,12 @@ Notice that,
 > base-2(00010100) = 0 \* 2^7 + 0 \* 2^6 + 0 \* 2^5  + 1 \* 2^4  + 0 \* 2^3   + 1 \* 2^2  + 0 \* 2^1 + 0 \* 2^0 
 
 One important thing to note here is the fixed range of our example 8 bit unsigned integer. We can only represent so many unique values using 8-bits, in fact we can determine that number fairly easily. Observe that,
-> For a bitstring of size **1**:
-> &nbsp;&nbsp;&nbsp;&nbsp;The unique strings are "**0**" and "**1**"
-> &nbsp;&nbsp;&nbsp;----> **2** unique values. <br>
-> For a bitstring of size **2**:
-> &nbsp;&nbsp;&nbsp;The unique strings are "**00**", "**01**", "**10**", and "**11**"
-> &nbsp;&nbsp;&nbsp;----> **4** unique values.
+> For a bitstring of size **1**:<br>
+> &nbsp;&nbsp;&nbsp;&nbsp;The unique strings are "**0**" and "**1**"<br>
+> &nbsp;&nbsp;&nbsp;----> **2** unique values.<br><br>
+> For a bitstring of size **2**:<br>
+> &nbsp;&nbsp;&nbsp;The unique strings are "**00**", "**01**", "**10**", and "**11**"<br>
+> &nbsp;&nbsp;&nbsp;----> **4** unique values.<br>
 
 Thus, the maximum number of unique values a bit string of size *n* ≥ 1 can have is
 > 2^*n*
@@ -78,8 +78,8 @@ A 8-bit signed integer *i* would be stored like so (each character is a single b
 > B = Binary representation of *i*
 
 Now let's say *i* = 21, then *i* would be stored as,
-> 0001 0101
->^------------ Notice the sign bit is **0**
+> 0001 0101<br>
+> ^------------ Notice the sign bit is **0**
 
 Now let's say *j* is a 8-bit signed integer where *j* = -21. Remember that a negative signed integer is the Two's complement its positive counterpart. Thus, to find the binary representation of *j*, we must first invert the bits of the binary representation of 21. In C bitwise inversion can be be done via the *bitwise not* operator (**~**).
 > ~ (00010101) = 11101010
@@ -88,12 +88,11 @@ Next we simply add the binary number one to the result,
 > 11101010 + 0000001 = 11101011 
 
 Thus, for a 8-bit signed integer, base-2(11101011) = -21. Now, observe what happens when we add *i* and *j*.
-> &nbsp;&nbsp;&nbsp;0001 0101
-> \+ 1110 1011 
-> \---------------
-> &nbsp;1&nbsp;0000 0000
->&nbsp;^---- Notice that this bit exceeds our 8-bit storage size, therefore it is 
->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;effectively **lost**, but as mentioned above the carry flag is set.
+> &nbsp;&nbsp;&nbsp;0001 0101<br>
+> \+ 1110 1011 <br>
+> \---------------<br>
+> &nbsp;1&nbsp;0000 0000<br>
+>&nbsp;^---- Notice that this bit exceeds our 8-bit storage size, therefore it is effectively **lost**, but as mentioned above the carry flag is set.
 
 Thus *i* + *j* = base-2(00000000) = **0**!
 
@@ -138,11 +137,9 @@ Using Scientific-Notation we represent a number like so,
 >    *m* \* 10^*n*
 
 Where *m* (the mantissa) is the sequence of significant digits of the number and *n* is the number of decimal places to the left or right the mantissa begins. The following are a list of base-10 numbers expressed in Scientific-Notation:
-```
-1230000 = 1.23 * 10^6
-0.00007 = 7.00 * 10^(-5)
-1.50700 = 1.507 * 10^0
-```
+> 1230000 = 1.23 * 10^6<br>
+> 0.00007 = 7.00 * 10^(-5)<br>
+> 1.50700 = 1.507 * 10^0<br>
 
 Floating-point representation is very similar to Scientific-Notation. In computing, floating-point arithmetic is defined as arithmetic using formulaic representation of real numbers as an approximation to support a trade-off between range and precision [(more here)](https://en.wikipedia.org/wiki/Floating-point_arithmetic). 
 
