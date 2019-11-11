@@ -153,10 +153,10 @@ As stated above, floating-point arithmetic standards try to maximize both of the
 ## Physical Storage and IEEE Standards
 
 **IEEE-754** floats (4 bytes) or doubles (8 bytes) are composed of three parts: a sign bit to represent the whether the number is positive or negative, an exponent giving its order of magnitude, and a mantissa (the coefficient) which contains the significant digits of the number. An IEEE-754 float has a binary representation as follows (each character is a **bit**):
-> SEEEEEEE EMMMMMMM MMMMMMMM MMMMMMMM
-S = Sign bit
-E = Exponent bit
-M = Mantissa (coefficient/significand) bit
+> SEEEEEEE EMMMMMMM MMMMMMMM MMMMMMMM<br>
+> S = Sign bit<br>
+> E = Exponent bit<br>
+> M = Mantissa (coefficient/significand) bit<br>
 
 ## Storage Size and Ranges
 
