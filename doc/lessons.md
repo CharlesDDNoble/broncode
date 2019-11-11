@@ -158,14 +158,15 @@ As stated above, floating-point arithmetic standards try to maximize both of the
 > E = Exponent bit<br>
 > M = Mantissa (coefficient/significand) bit<br>
 
-## Storage Size and Ranges
-
-<INSERT_WORDS>
-
-## Equality
 
 ## Normalized vs. Denormalized
 
 ## Overflow (INF/NAN)
 
+## Equality
+
 ## Loss of Significance
+
+## Storage Size and Ranges
+
+<INSERT_WORDS>
