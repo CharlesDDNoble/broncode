@@ -46,3 +46,7 @@ body {
 #form-login {
     padding: 2rem;  
 }
+
+#form-errors {
+    color: red;
+}
