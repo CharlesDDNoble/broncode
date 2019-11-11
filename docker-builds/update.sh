@@ -51,4 +51,7 @@ do
 
 done
 
+echo "Updating codeclient.py in $WORKDIR/performance"
+cp "$WORKDIR/client/codeclient.py" "$WORKDIR/performance"
+
 exit 0

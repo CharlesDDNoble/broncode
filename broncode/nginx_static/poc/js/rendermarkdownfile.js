@@ -1,26 +1,45 @@
-// see https://dev.to/shoupn/javascript-fetch-api-and-using-asyncawait-47mp
-async function getFileContents(file) {
-    let response = await fetch(file);
-    let contents = await response.text();
-    return contents;
+// turns markdown into html
+function renderMarkdown(html_id) {
+    // console.log("Rendering markdown...")
+    let container = $(html_id)
+
+    showdown.setFlavor('github');
+    let converter = new showdown.Converter();
+
+    container.html(converter.makeHtml(container.html()));
+
+    // fix &lt; and &gt; in code blocks
+    let codes = container.find("code");
+    codes.each(function () {
+        $(this).text(function(index, text) {
+            return unescapeHTML(text);
+        });
+    });
 }
 
-function renderMarkdownFile(path) {
-    console.log("Rendering " + path);
+// turns markdown into html
+function renderMarkdownClass(html_class) {
+    // console.log("Rendering markdown...")
+    classes = $(html_class)
 
-    // grabs the html element containing the <script> tag invoking this function
-    let container = document.currentScript.parentElement;
+    showdown.setFlavor('github');
+    let converter = new showdown.Converter();
 
-    // grab file contents...
-    getFileContents(path)
-    .then(function(text) {
-        showdown.setFlavor('github');
-        let converter = new showdown.Converter();
-
-        // put in container we grabbed earlier
-        container.innerHTML = converter.makeHtml(text); 
-    },
-    function(text) {
-        console.error("Something went wrong in fetching the contents of " + path);
+    classes.each(function() {
+        $(this).html(converter.makeHtml($(this).html()));
     });
+
+    // fix &lt; and &gt; in code blocks
+    let codes = classes.find("code");
+    codes.each(function () {
+        $(this).text(function(index, text) {
+            return unescapeHTML(text);
+        });
+    });
+}
+
+
+//from https://stackoverflow.com/a/5302113
+function unescapeHTML(escapedHTML) {
+    return escapedHTML.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
 }

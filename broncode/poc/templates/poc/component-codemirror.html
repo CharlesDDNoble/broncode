@@ -20,7 +20,9 @@
     <script src="{% static 'poc/codemirror/mode/python/python.js' %}"></script>
     <script src="{% static 'poc/codemirror/mode/r/r.js' %}"></script>
     
-    <textarea id="codemirror" name="codearea">{{ lesson_code }}</textarea>
+    <label>Coding Area
+        <textarea id="codemirror" name="codearea">{{ lesson_code }}</textarea>
+    </label>
     <script>
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,

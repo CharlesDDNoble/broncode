@@ -11,25 +11,31 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
-class Chapter(models.Model):
-    title = models.CharField(max_length=128)
-    number = models.IntegerField()
-    course = models.ForeignKey(Course, related_name='chapters', on_delete=models.CASCADE)
+# class Chapter(models.Model):
+#     title = models.CharField(max_length=128)
+#     number = models.IntegerField()
+#     course = models.ForeignKey(Course, related_name='chapters', on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ['course', 'number']
+#     class Meta:
+#         unique_together = ['course', 'number']
 
-    def __str__(self):
-        return self.title
+#     def __str__(self):
+#         return self.title
 
 class Lesson(models.Model):
     title = models.CharField(max_length=128)
     number = models.IntegerField()
-    chapter = models.ForeignKey(Chapter, related_name='lessons', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, related_name='lessons', on_delete=models.CASCADE)
     markdown = models.TextField()
     example_code = models.TextField()
     compiler_flags = models.CharField(max_length=FLAGS_MAXLEN, blank=True)
     language = models.CharField(max_length=16)
+
+    class Meta:
+        unique_together = ['course', 'number']
+    
+    def __str__(self):
+        return self.title
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

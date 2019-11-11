@@ -12,8 +12,8 @@ from .serializers import UserSerializer
 from poc.models import Course
 from .serializers import CourseSerializer
 
-from poc.models import Chapter
-from .serializers import ChapterSerializer
+# from poc.models import Chapter
+# from .serializers import ChapterSerializer
 
 from poc.models import Lesson
 from .serializers import LessonSerializer
@@ -33,9 +33,9 @@ class LessonViewSet(viewsets.ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 
-class ChapterViewSet(viewsets.ModelViewSet):
-    queryset = Chapter.objects.all()
-    serializer_class = ChapterSerializer
+# class ChapterViewSet(viewsets.ModelViewSet):
+#     queryset = Chapter.objects.all()
+#     serializer_class = ChapterSerializer
 
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()

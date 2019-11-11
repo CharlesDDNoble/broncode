@@ -3,7 +3,11 @@ build_image() {
     cd "$1"
     NAME=`basename $1`
     echo "Building $NAME"
-    docker build --tag "$NAME" . > /dev/null
+    docker build --tag "$NAME" .
+    if [ $? -ne 0 ]
+    then
+        echo "ERROR: There was an error builing $NAME!"
+    fi
     cd ..
 }
 

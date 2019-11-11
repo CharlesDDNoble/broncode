@@ -2,6 +2,7 @@ import unittest
 import os
 from .cexecutor import CExecutor
 from .pythonexecutor import PythonExecutor
+from .rexecutor import RExecutor
 
 class CExecutorTest(unittest.TestCase):
     flags = "-o3"
@@ -24,7 +25,7 @@ class CExecutorTest(unittest.TestCase):
                 "./code\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
                 "Hello!\n"
-    # inf_code = "int main(int argc,char** argv){while(1);return 0;}\n"
+    inf_code = "int main(int argc,char** argv){while(1);return 0;}\n"
 
     def test_compile_and_run(self):
         # Testing code input with a compilation error in it
@@ -72,6 +73,41 @@ class CExecutorTest(unittest.TestCase):
         os.remove("code")
         os.remove("code.c")
 
+    def test_stdin(self):
+        # Testing reading stdin functionality
+        # Program outputs stdin x 2
+
+        code =  "#include <stdio.h>\n"\
+                "#include <stdlib.h>\n"\
+                "\n"\
+                "int main() {\n"\
+                "    int integer;\n"\
+                "    int r;\n"\
+                "    long unsigned int size = 128;\n"\
+                "    char *buf;\n"\
+                "    buf = malloc(128*sizeof(char));\n"\
+                "    r = getline(&buf, &size, stdin);\n"\
+                "    integer = atoi(buf);\n"\
+                "    printf(\"%d\", integer * 2);\n"\
+                "    return 0;\n"\
+                "}\n"
+
+        exp  = "Parsing gcc flags...\n" \
+                "Compiling code...\n" \
+                "gcc -o3 -o code code.c\n" \
+                "Executing program...\n" \
+                "./code < input.txt\n" \
+                "Your code successfully compiled and ran, here's the output:\n" \
+                "4"
+
+        codex = CExecutor(code,self.flags,"2")
+        codex.execute()
+
+        self.assertEqual(codex.log,exp)
+
+        os.remove("code")
+        os.remove("code.c")
+
 class PythonExecutorTest(unittest.TestCase):
 
     good_code = "print(\"Hello World!\")"
@@ -101,6 +137,38 @@ class PythonExecutorTest(unittest.TestCase):
         self.assertEqual(codex.log,self.good_exp)
 
         os.remove("code.py")
+
+class RExecutorTest(unittest.TestCase):
+
+    good_code = "hello <- \"Hello, World!\"\nprint(hello)"
+    good_exp =  "Rscript code.r\n" \
+                "Your code successfully compiled and ran, here's the output:\n" \
+                "[1] \"Hello, World!\"\n"
+#    bad_code = "print(Erro World!)"
+#    bad_exp =   "python3 code.py\n" \
+#                "Something went wrong running your code:\n" \
+#                "  File \"code.py\", line 1\n" \
+#                "    print(Erro World!)\n" \
+#                "                   ^\n" \
+#                "SyntaxError: invalid syntax\n"
+    flags = ""
+
+    def test_execute(self):
+        # Testing code input with a compilation error in it
+        #codex = RExecutor(self.bad_code,self.flags)
+        #codex.execute()
+        
+        #self.assertEqual(codex.log,self.bad_exp)
+
+        # Testing code input that is correct (it should compile and run successfully)
+        codex = RExecutor(self.good_code,self.flags)
+        codex.execute()
+
+        self.assertEqual(codex.log,self.good_exp)
+
+        os.remove("code.r")
+
+
 
 
 if __name__ == '__main__':

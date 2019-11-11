@@ -21,7 +21,7 @@ function create_post() {
         data : { 
             user : d_user_id,
             lesson : d_lesson_id,
-            code : $('#codemirror').val(), 
+            code : $('#codemirror').val(),
             compiler_flags : $('#compiler-flags').val()
         }, // data sent with the post request
         dataType: "json",
@@ -43,7 +43,7 @@ function create_post() {
 
 function resetExampleCode() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/lessons/" + d_lesson_id,
+        url : "http://broncode.cs.wmich.edu:1234/api/lessons/" + d_lesson_id,
         type : "GET",
         success : function(json) {	
             // cEditor is the codemirror object
