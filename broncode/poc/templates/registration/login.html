@@ -35,13 +35,10 @@
                         {% comment %} <input id="password" type="password" class="validate"> {% endcomment %}
                         {{ form.password }}
                         <label id="label-password" for="password">Password</label>
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.non_field_errors }}</span>
+                        {% endif %}
                     </div>
-                </div>
-                <div id="form-login-errors">
-                    {% if form.errors %}
-                    {{ field.errors }}
-                    {{ form.non_field_errors }}
-                    {% endif %}
                 </div>
                 <input class="btn" type="submit" value="login">
 		        <input type="hidden" name="next" value="{{ next }}">

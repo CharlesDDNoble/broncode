@@ -37,10 +37,8 @@
                     <div class="input-field col s12">
                         {{ form.username }}
                         <label for="username">Username</label>
-                    </div>
-                    <div class="col s12 error-container">
-                        {% if form.username.errors %}
-                        {{ form.username.errors }}
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.username.errors }}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -48,10 +46,8 @@
                     <div class="input-field col s12">
                         {{ profile_form.email }}
                         <label for="email">Email</label>
-                    </div>
-                    <div class="col s12 error-container">
-                        {% if form.email.errors %}
-                        {{ form.email.errors }}
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.email.errors }}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -59,10 +55,8 @@
                     <div class="input-field col s12">
                         {{ form.password1 }}
                         <label for="password1">Password</label>
-                    </div>
-                    <div class="col s12 error-container">
-                        {% if form.password1.errors %}
-                        {{ form.password1.errors }}
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.password1.errors }}</span>
                         {% endif %}
                     </div>
                 </div>
@@ -70,10 +64,8 @@
                     <div class="input-field col s12">
                         {{ form.password2 }}
                         <label for="password2">Confirm Password</label>
-                    </div>
-                    <div class="col s12 error-container">
-                        {% if form.password2.errors %}
-                        {{ form.password2.errors }}
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.password2.errors }}</span>
                         {% endif %}
                     </div>
                 </div>

@@ -24,23 +24,19 @@ body {
 .input-field [type=text] {
     color: white;
 }
-
 .input-field [type=email] {
     color: white;
 }
-
 .input-field [type=password] {
     color: white;
 }
-
 .row {
     margin: 0;
+    padding-top: 0;
 }
-
 .errorlist {
     color: red;
 }
-
 .error-container {
     padding: 0;
 }
@@ -49,11 +45,9 @@ body {
 #row-register {
     padding: 2rem 0 0 0;
 }
-
 #form-register {
     padding: 2rem;  
 }
-
 #form-register-errors {
     color: red;
 }
