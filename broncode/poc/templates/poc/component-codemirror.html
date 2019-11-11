@@ -20,7 +20,9 @@
     <!--TODO:remove unused-->
     <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
     
-    <textarea id="codemirror" name="codearea">{{ lesson_code }}</textarea>
+    <label>Coding Area
+        <textarea id="codemirror" name="codearea">{{ lesson_code }}</textarea>
+    </label>
     <script>
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,
