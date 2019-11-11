@@ -25,20 +25,35 @@ body {
     color: white;
 }
 
+.input-field [type=email] {
+    color: white;
+}
+
+.input-field [type=password] {
+    color: white;
+}
+
 .row {
     margin: 0;
 }
 
+.errorlist {
+    color: red;
+}
+
+.error-container {
+    padding: 0;
+}
+
 /* IDs */
-#row-login {
+#row-register {
     padding: 2rem 0 0 0;
 }
 
-
-#form-login {
+#form-register {
     padding: 2rem;  
 }
 
-#form-login-errors {
+#form-register-errors {
     color: red;
 }
