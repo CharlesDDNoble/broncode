@@ -72,8 +72,19 @@ def lesson(request, course_id, lesson_number):
     
     lesson_obj = Lesson.objects.filter(course=course_id, number=lesson_number)[0]
 
+
+    # grab lesson language
+    lesson_lang = lesson_obj.language
+
+    codemirror_lang_name = "text/x-csrc"
+    codemirror_lang_args = ""
+    if lesson_lang == "Python3":
+        codemirror_lang_name = "python"
+        codemirror_lang_args = ", version: 3, singleLineStringErrors: false"
+
     print("lesson_obj=---===============",lesson_obj)
     print(lesson_obj.id)
+
     # grab lesson text
     lesson_text = lesson_obj.markdown
     
@@ -92,7 +103,9 @@ def lesson(request, course_id, lesson_number):
             'lesson_text': lesson_text,
             'lesson_flags' : lesson_flags,
             'lesson_code': lesson_code,
-            'profile': request.user.userprofile
+            'profile': request.user.userprofile,
+            'codemirror_lang_name': codemirror_lang_name,
+            'codemirror_lang_args': codemirror_lang_args
         }
 
     # Render the 'index.html' page

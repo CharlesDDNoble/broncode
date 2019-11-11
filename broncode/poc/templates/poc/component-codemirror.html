@@ -17,8 +17,8 @@
 
     <!-- imports script for C-like languages. Must be swapped out for other languages -->
     <script src="{% static 'poc/codemirror/mode/clike/clike.js' %}"></script>
-    <!--TODO:remove unused-->
-    <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
+    <script src="{% static 'poc/codemirror/mode/python/python.js' %}"></script>
+    <script src="{% static 'poc/codemirror/mode/r/r.js' %}"></script>
     
     <label>Coding Area
         <textarea id="codemirror" name="codearea">{{ lesson_code }}</textarea>
@@ -27,7 +27,7 @@
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,
             matchBrackets: true,
-            mode: "text/x-csrc",//must be changed for editing other languages
+            mode: {name: "{{ codemirror_lang_name }}" {{ codemirror_lang_args }} },//must be changed for editing other languages
             theme: 'base16-dark'
         });
         cEditor.setSize('100%', '75vh');
