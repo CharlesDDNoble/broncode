@@ -31,15 +31,18 @@ html, body {
 }
 #major-form {
 }
+#label-command-line-flags {
+    
+}
 #compiler-flags-wrapper {
-    height: 5vh;
+    height: 7vh;
     background-color: rgb(20, 20, 30);
     /* padding: 0 1rem; */
     margin: 0;
 }
 #codemirror-wrapper {
-    min-height: 80vh;
-    max-height: 80vh;
+    min-height: 78vh;
+    max-height: 78vh;
     background-color: rgb(31, 30, 46);
     padding: 0;
 }
