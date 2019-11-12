@@ -41,14 +41,14 @@ html, body {
     margin: 0;
 }
 #codemirror-wrapper {
-    min-height: 78vh;
-    max-height: 78vh;
+    min-height: 77vh;
+    max-height: 77vh;
     background-color: rgb(31, 30, 46);
     padding: 0;
 }
 #btn-submit-wrapper {
-    min-height: 5vh;
-    max-height: 5vh;
+    min-height: 6vh;
+    max-height: 6vh;
     background-color: rgb(31, 30, 46);
 }
 #btn-submit {
