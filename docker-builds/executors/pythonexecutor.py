@@ -4,11 +4,11 @@ import subprocess
 from .codeexecutor import CodeExecutor
 
 class PythonExecutor(CodeExecutor):
-    
     def __init__(self, code, flags, inputs = []):
         with open("code.py","w") as f:
             f.write(code)
 
+        self.run_logs = []
         self.inputs = inputs
         self.flags = flags.split()
 

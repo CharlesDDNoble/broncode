@@ -100,7 +100,7 @@ class CExecutorTest(unittest.TestCase):
                 "Your code successfully compiled and ran, here's the output:\n" \
                 "./code\n"
                 
-        exp2 =  "4"
+        exp2 =  "4\n"
 
         codex = CExecutor(code,self.flags,["2"])
         codex.execute()
@@ -110,6 +110,33 @@ class CExecutorTest(unittest.TestCase):
 
         os.remove("code")
         os.remove("code.c")
+
+    def test_multi_input(self):
+        code =  '#include <stdio.h>\n'\
+                'int main() {\n'\
+                '    int number;\n'\
+                '    scanf("%d", &number);\n'\
+                '    printf("%d\\n", number * 2);\n'\
+                '}\n'
+        flags = ""
+        inputs = ["2", "4", "8"]
+
+        comp_log =  "gcc -o code code.c\n"\
+                    "Executing program...\n"\
+                    "Your code successfully compiled and ran, here's the output:\n"\
+                    "./code\n"
+
+        codex = CExecutor(code, flags, inputs)
+        codex.execute()
+
+        self.assertEqual(codex.compilation_log, comp_log)
+        self.assertEqual(len(codex.run_logs), 3)
+        self.assertEqual(codex.run_logs[0], "4\n")
+        self.assertEqual(codex.run_logs[1], "8\n")
+        self.assertEqual(codex.run_logs[2], "16\n")
+
+        os.remove("code")
+        os.remove("code.c")       
 
 class PythonExecutorTest(unittest.TestCase):
 
@@ -138,6 +165,21 @@ class PythonExecutorTest(unittest.TestCase):
         codex.execute()
 
         self.assertEqual(codex.compilation_log,self.good_exp)
+
+        os.remove("code.py")
+
+    def test_multi_input(self):
+        code = "print(str(int(input()) * 2))"
+        flags = ""
+        inputs = ["2", "4", "8"]
+        codex = PythonExecutor(code, flags, inputs)
+        codex.execute()
+
+        self.assertEqual(codex.compilation_log, "python3 code.py\n")
+        self.assertEqual(len(codex.run_logs), 3)
+        self.assertEqual(codex.run_logs[0], "4\n")
+        self.assertEqual(codex.run_logs[1], "8\n")
+        self.assertEqual(codex.run_logs[2], "16\n")
 
         os.remove("code.py")
 
