@@ -10,7 +10,6 @@ class RExecutor(CodeExecutor):
             f.write(code)
 
         self.input = inp
-
         self.flags = flags.split()
 
     def run(self):
@@ -29,13 +28,13 @@ class RExecutor(CodeExecutor):
     def execute(self):
         done_process = self.run()
         if done_process.stderr:
-            self.log += self.error_msg_run
+            self.compilation_log += self.error_msg_run
         else:
-            self.log += self.msg_sucess
+            self.compilation_log += self.msg_sucess
             
         #add the _logs of the returned process to this object's _log
-        self.log += done_process.stdout.decode("utf-8")
-        self.log += done_process.stderr.decode("utf-8")
+        self.compilation_log += done_process.stdout.decode("utf-8")
+        self.compilation_log += done_process.stderr.decode("utf-8")
 
         
 

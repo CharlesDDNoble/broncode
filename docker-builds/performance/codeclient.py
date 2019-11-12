@@ -23,7 +23,7 @@ class CodeClient():
                 "port" : self.port,
                 "code" : self.code,
                 "flags" : self.flags,
-                "inp" : self.inp,
+                "inputs" : self.inputs,
                 "log" : self.log,
                 "send_time" : self.send_time,
                 "recv_time" : self.recv_time,
@@ -35,14 +35,14 @@ class CodeClient():
                 "BLOCK_SIZE" : self.BLOCK_SIZE,
                 "has_lost_data" : self.has_lost_data}
 
-    def __init__(self, host = '', port = 4000, code = '', flags = '', inp = ''):
+    def __init__(self, host = '', port = 4000, code = '', flags = '', inputs = []):
         """Constructor for the CodeHandler class."""
         #TODO: consider logging inputs and outputs
         self.host = host
         self.port = port
         self.code = code
         self.flags = flags
-        self.inp = inp
+        self.inputs = inputs
         self.log = ''
         self.send_time = 0
         self.recv_time = 0
@@ -89,13 +89,23 @@ class CodeClient():
                 #TODO: handle case if message is too big.
                 sock.send(self.make_block(self.flags))
                 sock.send(self.make_block(self.code))
-                sock.send(self.make_block(self.inp))
+                sock.send(self.make_block(str(len(self.inputs))))
+                for input in self.inputs:
+                    sock.send(self.make_block(input))
                 
                 self.send_time = time() - self.send_time
 
                 self.recv_time = time()
 
-                log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+                compilation_log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+                run_logs = []
+                for _ in self.inputs:
+                    run_logs.append(sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
+
+                log = compilation_log
+                for i in range(len(self.inputs)):
+                    log += "Input: " + self.inputs[i] + "\n"
+                    log += "Output: \n" + run_logs[i] + "\n"
 
                 self.recv_time = time() - self.recv_time
                 
@@ -111,7 +121,6 @@ class CodeClient():
                 done = False
             except ConnectionError as ce:
                 # Try to recover
-                # Sometimes a ConnectionAbortedError is thrown, should determine why...
                 self.conn_attempt += 1
                 log = error_msg_conn
                 log += str(ce)
@@ -128,7 +137,7 @@ class CodeClient():
                 log += str(ose)
                 done = False
             except Exception as excep:
-                log = "Something strange occurred!\n"
+                log += "Something strange occurred!\n"
                 log += str(excep)
                 done = True
 

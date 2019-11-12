@@ -5,7 +5,8 @@ class CodeExecutor(abc.ABC):
     """ Abstract class that all code executors should inherit from. """
 
     """ Log of all messages and output of program """
-    log = ""
+    compilation_log = ""
+    run_logs = []
 
     """ Program Compilation Error Message """
     error_msg_comp = "Something went wrong compiling your code:\n"
@@ -19,8 +20,8 @@ class CodeExecutor(abc.ABC):
     def log_command(self,command):
         """ Adds the command to run a subprocess to self.log """
         for tok in command:
-            self.log += tok+" "
-        self.log = self.log[0:-1]+"\n"
+            self.compilation_log += tok+" "
+        self.compilation_log = self.compilation_log[0:-1]+"\n"
 
     @abc.abstractmethod
     def execute():

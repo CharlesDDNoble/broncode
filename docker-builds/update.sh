@@ -53,5 +53,7 @@ done
 
 echo "Updating codeclient.py in $WORKDIR/performance"
 cp "$WORKDIR/client/codeclient.py" "$WORKDIR/performance"
+echo "Updating codeclient.py in $WORKDIR/../broncode/poc/codeclient.py"
+cp "$WORKDIR/client/codeclient.py" "$WORKDIR/../broncode/poc/codeclient.py"
 
 exit 0

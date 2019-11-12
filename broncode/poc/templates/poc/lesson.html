@@ -17,6 +17,7 @@
 
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
+        <script src="{% static 'poc/js/cmAjax.js' %}"></script>
     </head>
     
     <body>
@@ -52,11 +53,19 @@
                             {% include 'poc/component-codemirror.html' %}
                             {% endblock codemirror %}
                         </div>
+                        <div class="col s12" id="stdin-wrapper">
+                            {% block stdin %}
+                            {% include 'poc/component-stdin.html' %}
+                            {% endblock stdin %}
+                        </div>
                         <div class="col s12" id="btn-submit-wrapper">
-                            <button class="btn waves-effect waves-light" type="button" id="btn-reset" name="reset_action" onclick="resetExampleCode()">Reset
+                            <button class="btn waves-effect waves-light broncode-action-button" type="button" id="btn-reset" name="action" onclick="resetExampleCode()">Reset
                                 <i class="material-icons right">cached</i>
                             </button>
-                            <button class="btn waves-effect waves-light" type="submit" id="btn-submit" name="submit_action">Submit
+                            <button class="btn waves-effect waves-light broncode-action-button" type="button" id="btn-test" name="action" onclick="runTest()">Test
+                                <i class="material-icons right">play_arrow</i>
+                            </button>
+                            <button class="btn waves-effect waves-light broncode-action-button" type="submit" id="btn-submit" name="action">Submit
                                 <i class="material-icons right">send</i>
                             </button>
                         </div>
@@ -78,6 +87,5 @@
             </script>
         </footer>
     </body>
-    <script src="{% static 'poc/js/cmAjax.js' %}"></script>
     <script>loadDynamicData({{ profile.id }}, {{ lesson_id }});</script>
 </html>
