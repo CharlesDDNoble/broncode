@@ -31,21 +31,24 @@ html, body {
 }
 #major-form {
 }
+#label-command-line-flags {
+    
+}
 #compiler-flags-wrapper {
-    height: 5vh;
+    height: 7vh;
     background-color: rgb(20, 20, 30);
     /* padding: 0 1rem; */
     margin: 0;
 }
 #codemirror-wrapper {
-    min-height: 80vh;
-    max-height: 80vh;
+    min-height: 77vh;
+    max-height: 77vh;
     background-color: rgb(31, 30, 46);
     padding: 0;
 }
 #btn-submit-wrapper {
-    min-height: 5vh;
-    max-height: 5vh;
+    min-height: 6vh;
+    max-height: 6vh;
     background-color: rgb(31, 30, 46);
 }
 #btn-submit {

@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         <!--Import thepage.css-->
-        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/login.css' %}">
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/register.css' %}">
     </head>
     
     <body>
@@ -20,8 +20,8 @@
             {% include 'poc/component-navbar.html' %}
             {% endblock %}
         </header>
-        <div class="row" id="row-login">
-            <form class="col s10 m4 offset-m7 offset-s1" id="form-login" method="post" action="{% url 'register' %}">
+        <div class="row" id="row-register">
+            <form class="col s10 m4 offset-m7 offset-s1" id="form-register" method="post" action="{% url 'register' %}">
                 {% csrf_token %}
                 <div class="row">
                     <div class="input-field col s6">
@@ -37,24 +37,36 @@
                     <div class="input-field col s12">
                         {{ form.username }}
                         <label for="username">Username</label>
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.username.errors }}</span>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         {{ profile_form.email }}
                         <label for="email">Email</label>
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.email.errors }}</span>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         {{ form.password1 }}
                         <label for="password1">Password</label>
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.password1.errors }}</span>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         {{ form.password2 }}
                         <label for="password2">Confirm Password</label>
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.password2.errors }}</span>
+                        {% endif %}
                     </div>
                 </div>
                 <input class="btn" type="submit" value="Register">

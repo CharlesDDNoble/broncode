@@ -2,6 +2,7 @@
 html {
     min-height: 100%; /* needed to make the background fit on mac */
 }
+
 body {
     min-height: 100%; /* needed to make the background fit on mac */
     background-image: url("../images/login-5.jpg");
@@ -17,26 +18,36 @@ body {
 }
 
 /* Classes */
-.row {
-    margin: 0;
-}
-.input-field .helper-text {
-    color: red;
-}
+/* .input-field [type=text] {
+    border-bottom: 1px solid white !important;
+} */
 .input-field [type=text] {
+    color: white;
+}
+.input-field [type=email] {
     color: white;
 }
 .input-field [type=password] {
     color: white;
 }
+.row {
+    margin: 0;
+    padding-top: 0;
+}
+.errorlist {
+    color: red;
+}
+.error-container {
+    padding: 0;
+}
 
 /* IDs */
-#row-login {
+#row-register {
     padding: 2rem 0 0 0;
 }
-#form-login {
+#form-register {
     padding: 2rem;  
 }
-#form-login-errors {
+#form-register-errors {
     color: red;
 }

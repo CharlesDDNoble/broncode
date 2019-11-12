@@ -30,7 +30,8 @@
             mode: {name: "{{ codemirror_lang_name }}" {{ codemirror_lang_args }} },//must be changed for editing other languages
             theme: 'base16-dark'
         });
-        cEditor.setSize('100%', '75vh');
+        // Must be a little less than the size of the container
+        cEditor.setSize('100%', '74vh');
         var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
         CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
     </script>

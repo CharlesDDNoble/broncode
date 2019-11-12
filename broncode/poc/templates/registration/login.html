@@ -20,11 +20,6 @@
             {% include 'poc/component-navbar.html' %}
             {% endblock %}
         </header>
-        {% if form.errors %}
-            {{ field.errors }}
-            space
-            {{ form.non_field_errors }}
-        {% endif %}
         <div class="row" id="row-login">
             <form class="col s10 m4 offset-m7 offset-s1" id="form-login" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
@@ -40,6 +35,9 @@
                         {% comment %} <input id="password" type="password" class="validate"> {% endcomment %}
                         {{ form.password }}
                         <label id="label-password" for="password">Password</label>
+                        {% if form.errors %}
+                            <span class="helper-text" data-error="wrong" data-success="right">{{ form.non_field_errors }}</span>
+                        {% endif %}
                     </div>
                 </div>
                 <input class="btn" type="submit" value="login">
