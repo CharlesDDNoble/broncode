@@ -110,8 +110,11 @@ class SubmissionSerializer(serializers.ModelSerializer):
             port = 4000
         elif lesson.language == "Python3":
             port = 4001
+        elif lesson.language == "R":
+            port = 4002
         else:
             print("Unknown lesson type: {}".format(lesson.language))
+            raise "Unkown lesson type"
 
         if not user_tested:
             solution_sets = SolutionSet.objects.filter(lesson=self.validated_data['lesson'])

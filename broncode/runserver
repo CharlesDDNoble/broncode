@@ -1,5 +1,5 @@
 #!/bin/bash
 
-./collect_static.sh
+sudo ./collect_static.sh
 source /home/sysadmin/broncode/dbcreds
 uwsgi --ini broncode_uwsgi.ini
