@@ -20,11 +20,11 @@ class PythonExecutor(CodeExecutor):
         if len(self.inputs) > 0:
             for input in self.inputs:
                 done_process = subprocess.run(
-                            cmd_run, 
-                            stdout=subprocess.PIPE, 
-                            stderr=subprocess.PIPE,
-                            input=bytes(input, "utf-8")
-                            )
+                    cmd_run, 
+                    stdout=subprocess.PIPE, 
+                    stderr=subprocess.PIPE,
+                    input=bytes(input, "utf-8")
+                    )
 
                 run_log = ""
                 run_log += done_process.stdout.decode("utf-8")
@@ -32,10 +32,10 @@ class PythonExecutor(CodeExecutor):
                 self.run_logs.append(run_log)
         else:
             done_process = subprocess.run(
-                        cmd_run, 
-                        stdout=subprocess.PIPE, 
-                        stderr=subprocess.PIPE,
-                        )
+                cmd_run, 
+                stdout=subprocess.PIPE, 
+                stderr=subprocess.PIPE,
+                )
 
             if done_process.stderr:
                 self.compilation_log += self.error_msg_run
