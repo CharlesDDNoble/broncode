@@ -102,12 +102,12 @@ class CodeClient():
                 self.compilation_log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
                 self.run_logs = []
                 for _ in self.inputs:
-                    run_logs.append(sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
+                    self.run_logs.append(sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
 
                 log = self.compilation_log
                 for i in range(len(self.inputs)):
                     log += "Input: " + self.inputs[i] + "\n"
-                    log += "Output: \n" + run_logs[i] + "\n"
+                    log += "Output: \n" + self.run_logs[i] + "\n"
 
                 self.recv_time = time() - self.recv_time
                 
