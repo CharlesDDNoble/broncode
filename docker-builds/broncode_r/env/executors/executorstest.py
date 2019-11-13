@@ -210,7 +210,7 @@ class RExecutorTest(unittest.TestCase):
         codex = RExecutor(self.good_code,self.flags)
         codex.execute()
 
-        self.assertEqual(codex.compliation_log,self.good_exp)
+        self.assertEqual(codex.compilation_log,self.good_exp)
 
         os.remove("code.r")
 

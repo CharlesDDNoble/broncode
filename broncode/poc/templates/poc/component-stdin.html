@@ -17,7 +17,9 @@
     <!-- imports script for shell script used for compiler flags -->
     <script src="{% static 'poc/codemirror/mode/shell/shell.js' %}"></script>
 
-    <textarea id="stdin" name="stdin"></textarea>
+    <label>Program Input (stdin)
+        <textarea id="stdin" name="stdin"></textarea>
+    </label>
 
     <!--Codemirror scripting for highlighting textarea-->
     <script>
@@ -27,7 +29,7 @@
             lineNumbers: false,
             matchBrackets: false,
         });
-        editor.setSize('100%', '5vh');
+        editor.setSize('100%', '3vh');
     </script>
 
 {% endblock %}

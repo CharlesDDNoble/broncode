@@ -10,7 +10,6 @@ class RExecutor(CodeExecutor):
             f.write(code)
 
         self.input = inp
-
         self.flags = flags.split()
 
     def run(self):

@@ -11,7 +11,7 @@ function create_lesson() {
     lesson_number = $("#new-lesson-number").val();
     console.log(lesson_number);
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1234/api/lessons/", // the endpoint
+        url : "http://broncode.cs.wmich.edu:1209/api/lessons/", // the endpoint
         type : "POST", // http method
         data : {
             title : "AJAX Lesson",
@@ -25,7 +25,7 @@ function create_lesson() {
         dataType: "json",
         // handle a successful response
         success : function(json) {
-            window.location.replace("http://broncode.cs.wmich.edu:1234/course/" + json.course);
+            window.location.replace("http://broncode.cs.wmich.edu:1209/course/" + json.course);
             console.log(json);
         },
 
@@ -40,7 +40,7 @@ function create_lesson() {
 function delete_course(course_id) {
     console.log(course_id);
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1234/api/courses/" + course_id, // the endpoint
+        url : "http://broncode.cs.wmich.edu:1209/api/courses/" + course_id, // the endpoint
         type : "DELETE", // http method
         dataType: "json",
         // handle a successful response
