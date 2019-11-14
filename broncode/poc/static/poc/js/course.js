@@ -18,11 +18,13 @@ $('#btn-create-course').on('click', function(event){
 // });
 
 // AJAX for posting
-function create_course() {
-    var course_name = $("#course-name").val();
+function create_course(param_course_name) {
+    // var course_name = $("#course-name").val();
+    var course_name = param_course_name;
+    console.log(course_name);
 
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1234/api/courses/", // the endpoint
+        url : "http://broncode.cs.wmich.edu:1209/api/courses/", // the endpoint
         type : "POST", // http method
         data : {
             title : course_name
@@ -32,13 +34,13 @@ function create_course() {
         success : function(json) {
             $(`
                 <div class="col s12 m6 l4">
-                    <div class="card small blue-grey darken-1">
+                    <div class="card small blue-grey darken-4">
                         <div class="card-content white-text">
                             <span class="card-title">` + json.title + `</span>
                             <p></p>
                         </div>
                         <div class="card-action">
-                            <a class="waves-effect waves-light btn-flat" href="course/` + json.course + `/">Lessons</a>
+                            <a class="waves-effect waves-light btn-flat" href="` + json.id + `/">Lessons</a>
                             <!-- Modal Trigger -->
                             <button data-toggle="modal" data-target="#modal2" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
                         </div>
@@ -61,7 +63,7 @@ function create_course() {
 function delete_course(course_id) {
     console.log(course_id);
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1234/api/courses/" + course_id, // the endpoint
+        url : "http://broncode.cs.wmich.edu:1209/api/courses/" + course_id, // the endpoint
         type : "DELETE", // http method
         dataType : "json",
         // handle a successful response

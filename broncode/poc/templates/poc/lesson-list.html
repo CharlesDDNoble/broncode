@@ -40,10 +40,10 @@
                         <div>
                             {{ lesson.title }}
                             <a href="{% url 'lesson' course_id=course_id lesson_number=lesson.number %}" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
-                            &nbsp
-                            <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
-                            
-                            <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+                            {% if user.is_staff %}    
+                                <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
+                                <a href="#!" class="secondary-content"><i class="material-icons">delete</i></a>
+                            {% endif %}
                         </div>
                     </li>
                     {% comment %} <a href="{% url 'lesson' course_id=course_id lesson_number=lesson.number %}" class="collection-item">{{ lesson.title }}</a> {% endcomment %}
@@ -56,12 +56,15 @@
                 </div>
             {% endif %}
         </div>
-        <!-- Floating Action Button -->
-        <div class="fixed-action-btn">
-            <a class="waves-effect waves-light btn-floating btn-large red" href="{% url 'create_lesson' course_id=course_id %}">
-                <i class="large material-icons">add</i>
-            </a>
-        </div>
+
+        {% if user.is_staff %}
+            <!-- Floating Action Button -->
+            <div class="fixed-action-btn">
+                <a class="waves-effect waves-light btn-floating btn-large red" href="{% url 'create_lesson' course_id=course_id %}">
+                    <i class="large material-icons">add</i>
+                </a>
+            </div>
+        {% endif %}
         <footer>
             <!--JavaScript at end of body for optimized loading-->
             <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
