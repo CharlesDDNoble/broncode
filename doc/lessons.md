@@ -41,7 +41,7 @@ An integer is defined as a number that can be written without a fractional compo
 In C, if we have an integer variable *i* ≥ **0**, i.e. we expect *i* to always be greater than or equal to **0**, then we may store it as an unsigned integer. Unsigned integers are represented by a string of bits, the length of which depends on the specific data type. 
 
 Let's assume an unsigned integer *u* is stored as a string of 8 bits (1 byte). If *u* = 20, then *u* would be stored like so,
-> 0001 0100
+> 00010100
 
 Notice that,
 > base-2(00010100) = 1\*(16) + 1\*(4)<br>
@@ -72,13 +72,13 @@ One bit, called the **sign bit**, is set aside from the number to represent whet
 Negative binary integers are stored as the **Two's Complement** of their positive counterparts. The Two's Complement of a binary value can be found by inverting every bit, i.e. turning **0**'s to **1**'s and vice versa, then adding **1** to the result. In essence, the Two's Complement of a binary value is its *additive inverse*. When a number and its additive inverse are summed, the result is **0**, likewise when a fixed length binary number and its **Two's Complement** are summed, the resulting bitstring will contain only zero's (although a special flag will be set, called the **carry** bit).
 
 A 8-bit signed integer *i* would be stored like so (each character is a single bit),
-> SBBB BBBB<br>
+> SBBBBBBB<br>
 > <br>
 > S = Sign Bit<br>
 > B = Binary representation of *i*<br>
 
 Now let's say *i* = 21, then *i* would be stored as,
-> 0001 0101<br>
+> 00010101<br>
 > ^------------ Notice the sign bit is **0**
 
 Now let's say *j* is a 8-bit signed integer where *j* = -21. Remember that a negative signed integer is the Two's complement its positive counterpart. Thus, to find the binary representation of *j*, we must first invert the bits of the binary representation of 21. In C bitwise inversion can be be done via the *bitwise not* operator (**~**).
