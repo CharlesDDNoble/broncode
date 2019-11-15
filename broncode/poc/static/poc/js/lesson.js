@@ -5,33 +5,38 @@ $('#btn-create-lesson').on('click', function(event){
 
 // AJAX for posting
 function create_lesson() {
-    console.log("create_lesson()");
-    textarea_markdown = $("#textarea-markdown").val();
-    course_id = $("#course-id").val();
-    lesson_number = $("#new-lesson-number").val();
-    console.log(lesson_number);
+    console.log('create_lesson()');
+    lesson_name = $('#lesson-name').val();
+    textarea_markdown = $('#textarea-markdown').val();
+    course_id = $('#course-id').val();
+    lesson_number = $('#new-lesson-number').val();
+    code = cEditor.getValue();
+    selected_language = $("#select-language").val();
+
     $.ajax({
-        url : "http://broncode.cs.wmich.edu/api/lessons/", // the endpoint
-        type : "POST", // http method
+        url : 'http://broncode.cs.wmich.edu/api/lessons/', // the endpoint
+        type : 'POST', // http method
+
         data : {
-            title : "AJAX Lesson",
+            title : lesson_name,
             course : course_id,
             number : lesson_number,
             markdown : textarea_markdown,
-            example_code: "HARDCODED",
-            language: "Python3"
+            example_code: code,
+            language: selected_language
 
         }, // data sent with the post request
-        dataType: "json",
+        dataType: 'json',
         // handle a successful response
         success : function(json) {
-            window.location.replace("http://broncode.cs.wmich.edu/course/" + json.course);
+            window.location.replace('http://broncode.cs.wmich.edu/course/' + json.course);
+
             console.log(json);
         },
 
         // handle a non-successful response
         error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
 };
@@ -40,18 +45,19 @@ function create_lesson() {
 function delete_course(course_id) {
     console.log(course_id);
     $.ajax({
-        url : "http://broncode.cs.wmich.edu/api/courses/" + course_id, // the endpoint
-        type : "DELETE", // http method
-        dataType: "json",
+        url : 'http://broncode.cs.wmich.edu/api/courses/' + course_id, // the endpoint
+        type : 'DELETE', // http method
+        dataType: 'json',
+
         // handle a successful response
         success : function(json) {
-            $("#card-create-course").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
+            $('#card-create-course').prev().hide('slow', function(){$('#card-create-course').prev().remove()});
             console.log(json);
         },
 
         // handle a non-successful response
         error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
 };
