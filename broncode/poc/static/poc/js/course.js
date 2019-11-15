@@ -24,7 +24,7 @@ function create_course(param_course_name) {
     console.log(course_name);
 
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/courses/", // the endpoint
+        url : "http://broncode.cs.wmich.edu/api/courses/", // the endpoint
         type : "POST", // http method
         data : {
             title : course_name
@@ -63,7 +63,7 @@ function create_course(param_course_name) {
 function delete_course(course_id) {
     console.log(course_id);
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1209/api/courses/" + course_id, // the endpoint
+        url : "http://broncode.cs.wmich.edu/api/courses/" + course_id, // the endpoint
         type : "DELETE", // http method
         dataType : "json",
         // handle a successful response

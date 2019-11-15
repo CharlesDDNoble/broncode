@@ -12,8 +12,9 @@ function create_lesson() {
     lesson_number = $('#new-lesson-number').val();
     code = cEditor.getValue();
     selected_language = $("#select-language").val();
+
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu:1209/api/lessons/', // the endpoint
+        url : 'http://broncode.cs.wmich.edu/api/lessons/', // the endpoint
         type : 'POST', // http method
         data : {
             title : lesson_name,
@@ -27,7 +28,7 @@ function create_lesson() {
         dataType: 'json',
         // handle a successful response
         success : function(json) {
-            window.location.replace('http://broncode.cs.wmich.edu:1209/course/' + json.course);
+            window.location.replace('http://broncode.cs.wmich.edu/course/' + json.course);
             console.log(json);
         },
 

@@ -38,6 +38,10 @@ html, body {
 .brown-bg-color {
     background-color: #846C63 !important;
 } */
+
+.broncode-color {
+    background-color: rgb(20, 20, 30);
+}
 .collapsible-header {
     position: relative;
     right: 0;
@@ -58,6 +62,7 @@ html, body {
     max-width: 1280px;
     width: 90%;
 }
+
 @media only screen and (min-width: 601px) {
     .container {
       width: 85%;
@@ -81,6 +86,7 @@ html, body {
     padding: 0;
 }
 #lesson-create-wrapper {
+    padding: 1rem;
     border-radius: 1.5px;
 }
 #double-col {
