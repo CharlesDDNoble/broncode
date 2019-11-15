@@ -31,6 +31,68 @@
             <div class="col s12">
                 <h1 class="brown-color">Create a Lesson</h1>
             </div>
+            
+            <form class="col s12">
+            {% csrf_token %}
+                <div id="lesson-create-wrapper" class="row blue-grey darken-4">
+
+                    <!-- Lesson Name -->
+                    <div id="" class="input-field col s6">
+                        <input placeholder="Lesson Name" id="lesson-name" type="text" class="validate white-text">
+                        <label for="lesson-name">Lesson Name</label>
+                    </div>
+
+                    <!-- Language -->
+                    <div class="input-field col s6">
+                        <select id="select-language">
+                            <option value="" style="color:white;" disabled selected>Choose Language</option>
+                            <option value="Python3">Python</option>
+                            <option value="C">C</option>
+                            <option value="R">R</option>
+                        </select>
+                        <label>Language Select</label>
+                    </div>
+
+                    <!-- Uploading File -->
+                    <div class="file-field input-field col s12">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" id="input-file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate white-text" type="text" id="input-file-path">
+                        </div>
+                    </div>
+
+                    <!-- Markdown -->
+                    <div id="" class="col s12">
+                        <div id="double-col" class="row">
+                            <!-- Markdown Input -->
+                            <div id="textarea-markdown-wrapper" class="input-field col s12 m6">
+                                <textarea placeholder="# Type or Upload File" id="textarea-markdown" class="materialize-textarea white-text"></textarea>
+                                <label for="textarea-markdown">Markdown</label>
+                            </div>
+
+                            <!-- Markdown Preview -->
+                            <div id="preview-markdown" class="col s12 m6 white-text"></div>
+                        </div>
+                    </div>
+
+                    <!-- Codemirror -->
+                    <div id="codemirror-create-wrapper" class="col s12 white">
+                        {% block codemirror %}
+                        {% include 'poc/component-codemirror.html' %}
+                        {% endblock codemirror %}
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {% comment %} <!-- First Row -->
+        <div class="row container" id="courses-row">
+            <div class="col s12">
+                <h1 class="brown-color">Create a Lesson</h1>
+            </div>
             <div id="tabs-creation" class="col s12">
                 <ul class="tabs">
                     <li class="tab col s3"><a href="#tab-information">Information</a></li>
@@ -62,7 +124,7 @@
                 {% include 'poc/component-codemirror.html' %}
                 {% endblock codemirror %}
             </div>
-        </div>
+        </div> {% endcomment %}
         <input type="hidden" id="course-id" value="{{ course_id }}">
         <!-- Get the lastest lesson number -->
         <input type="hidden" id="new-lesson-number" value="{{ new_lesson_number }}"> 
@@ -84,18 +146,58 @@
                         swipeable: true
                     });
 
+                    // Render select
+                    $('select').formSelect();
+
                     // Render markdown realtime
-                    $("#textarea-markdown").on('change keyup paste', function() {
-                        $("#preview-markdown").html($(this).val());
+                    function renderTextarea(textarea_id) {
+                        $("#preview-markdown").html($(textarea_id).val());
                         renderMarkdownClass("#preview-markdown");
+                    }
+
+                    $("#textarea-markdown").on('change keyup paste', function() {
+                        renderTextarea("#textarea-markdown");
                     });
 
 
                     // Floating Action Button
                     $('.fixed-action-btn').floatingActionButton();
 
-                    cEditor.setSize('100%', '95%');
+                    // Set codemirror size (Variable declared in `component-codemirror.html`)
+                    cEditor.setSize('100%', '70vh');
+
+                    // Grabbing input file
+                    // Reference: https://stackoverflow.com/questions/31746837/reading-uploaded-text-file-contents-in-html
+                    $('#input-file').change(getFile);
+
+                    function getFile(event) {
+                        const input = event.target;
+                        if ('files' in input && input.files.length > 0) {
+                            placeFileContent($('#textarea-markdown'), input.files[0]);
+                        }
+                    }
+
+                    function placeFileContent(target, file) {
+                        readFileContent(file).then(content => {
+                            console.log(content);
+                            $(target).val(content);
+                            var textarea = target;
+                            renderTextarea(textarea);
+                            M.textareaAutoResize($(target));
+                        }).catch(error => console.log(error))
+                    }
+
+                    function readFileContent(file) {
+                        const reader = new FileReader()
+                        return new Promise((resolve, reject) => {
+                            reader.onload = event => resolve(event.target.result);
+                            reader.onerror = error => reject(error);
+                            reader.readAsText(file);
+                        })
+                    }
+
                 });
+                
             </script>
         </footer>
     </body>
