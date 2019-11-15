@@ -115,8 +115,7 @@ The maximum/minimum value that an integer can have depends on the data type of t
 | long             | 8                | [-9223372036854775808, 9223372036854775807]  |
 | unsigned long    | 8                | [0, 18446744073709551615]                    |
 
-*\*Note: the actual size/range of the data type varies on implementation, but <br>
-the data type is guaranteed to be >= size and contain the range given.* <br>
+*\*Note: the actual size/range of the data type varies on implementation.<br>
 *\*\*Note: The signedness of char is implementation specific.*
 
 # Real Numbers in C
@@ -165,7 +164,7 @@ Like integers, Floating-point values have a fixed range. However, unlike integer
 ## Normalized vs. Denormalized
 A normalized floating-point value is a number that can be represented without leading zero's in the mantissa. Leading zero's can be gotten rid of by modifying the exponent of the floating-point, i.e. 0.0127 can be represented as 1.27 * 10^(-2). Note, that there are only a fixed number of bits in the exponent section of the floating-point, as such there is a minimum exponential value. This minimum value leads to the existence of denormalized numbers.
 
-Denormalized numbers (now called *subnormal* since IEEE 754-2008) are numbers that must be stored with leading zero's because its exponent component is already as small as representable. This can lead to a loss of significance digits because the mantissa now must store some of the leading zero's of the number. See (this)[https://en.wikipedia.org/wiki/Denormal_number#Performance_issues] for some interesting effects denormalized numbers can have on program performance.
+Denormalized numbers (now called *subnormal* since IEEE 754-2008) are numbers that must be stored with leading zero's because its exponent component is already as small as representable. This can lead to a loss of significance digits because the mantissa now must store some of the leading zero's of the number. See [this](https://en.wikipedia.org/wiki/Denormal_number#Performance_issues) for some interesting effects denormalized numbers can have on program performance.
 
 ## Loss of Significance
 
@@ -205,8 +204,21 @@ Uh oh! Representing 1/3 as the sum of negative powers of 2 is not exactly easy (
 We can try to get closer by adding smaller powers of 2,
 > 1/3 ≈ 1/4 + 1/16 + 1/64 + 1/256 = 0.33203125
 
-That's pretty close, but definitely not exact. 
+That's pretty close, but definitely not exact. This, and the fact that floats and doubles have different numbers of bits in their corresponding mantissas, makes the *equal to* operator in C (**==**) not extremely useful when dealing with floats. It is possible that a value like 1/3 is stored differently depending on your C compiler, its settings, and the CPU of your computer. When comparing two floating-point values, it is generally a better practice to check to see if they are within a certain value of each other (generally referred to as *epsilon*). Thus, our comparison would look like this in C:
+> double a = .1 <br>
+> double b = .1 <br>
+> double epsilon = 0.001 // Currently chosen arbitrarily<br>
+> if (abs(a-b) <= epsilon) { <br>
+> // the values are close enough... do something... <br>
+> } <br>
 
 ## Storage Size and Ranges
+The table below gives a detailed look at each floating-point data type in C and some of its properties. 
 
-<INSERT_WORDS>
+| Data Type   | Sizes*| Minimum Positive Norm. Value* | Maximum Value* | Bits in Mantissa* | Guarenteed Precise Decimal Digits* |
+|-------------|-------|-------------------------------|----------------|-------------------|------------------------------------|
+| float       | 4     | 1.175494e-38                  | 3.402823e+28   | 24                | 6                                  |
+| double      | 8     | 2.225074e-308                 | 1.797693e+308  | 53                | 15                                 |
+| long double | 16    | 3.362103e-4932                | 1.189731e+4932 | 64                | 18                                 |
+
+\*Note: these values may vary on implementation.
