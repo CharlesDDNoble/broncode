@@ -16,6 +16,16 @@ int main(int argc, char **argv)
     printf("Maximum number of decimal digits that can be rounded to double and back without change: %d\n",DBL_DIG);
     printf("Maximum number of decimal digits that can be rounded to long double and back without change: %d\n\n",LDBL_DIG);
 
+    // Minimum Positive
+    printf("Minimum normalized positive float number: %e\n",FLT_MIN);
+    printf("Minimum normalized positive double number: %e\n",DBL_MIN);
+    printf("Minimum normalized positive long double number: %Le\n\n",LDBL_MIN);
+
+    // Maximum
+    printf("Maximum finite representable float number: %e\n",FLT_MAX);
+    printf("Maximum finite representable double number: %e\n",DBL_MAX);
+    printf("Maximum finite representable long double number: %Le\n\n",LDBL_MAX);
+
     // Minimum Exponent
     printf("Minimum negative integer such that FLT_RADIX raised to that power minus 1 is a normalized float number: %d\n",FLT_MIN_EXP);
     printf("Minimum negative integer such that FLT_RADIX raised to that power minus 1 is a normalized double number: %d\n",DBL_MIN_EXP);
@@ -36,20 +46,10 @@ int main(int argc, char **argv)
     printf("Maximum integer such that 10 raised to that power is in the range of representable finite doubles: %d\n",DBL_MAX_10_EXP);
     printf("Maximum integer such that 10 raised to that power is in the range of representable finite long doubles: %d\n\n",LDBL_MAX_10_EXP);
 
-    // Maximum
-    printf("Maximum finite representable float number: %e\n",FLT_MAX);
-    printf("Maximum finite representable double number: %e\n",DBL_MAX);
-    printf("Maximum finite representable long double number: %Le\n\n",LDBL_MAX);
-
-    // Minimum 0
-    printf("Minimum finite representable positive float number: %e\n",FLT_MIN);
-    printf("Minimum finite representable positive double number: %e\n",DBL_MIN);
-    printf("Minimum finite representable positive long double number: %Le\n\n",LDBL_MIN);
-
     // Epsilon
-    printf("Difference between 1 and the least value greater than 1 that is representable and normalized for float: %e\n",FLT_EPSILON);
-    printf("Difference between 1 and the least value greater than 1 that is representable and normalized for double: %e\n",DBL_EPSILON);
-    printf("Difference between 1 and the least value greater than 1 that is representable and normalized for long double: %Le\n\n",LDBL_EPSILON);
+    printf("Difference between 1 and the next representable normalized float: %e\n",FLT_EPSILON);
+    printf("Difference between 1 and the next representable normalized double: %e\n",DBL_EPSILON);
+    printf("Difference between 1 and the next representable normalized long double: %Le\n\n",LDBL_EPSILON);
 
     return 0;
 }
