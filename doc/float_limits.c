@@ -37,19 +37,19 @@ int main(int argc, char **argv)
     printf("Maximum integer value for the exponent of a base-10 expression that would generate a normalized long double number: %d\n",LDBL_MAX_10_EXP);
 
     // Maximum
-    printf("Maximum finite representable float number: %f\n",FLT_MAX);
-    printf("Maximum finite representable double number: %lf\n",DBL_MAX);
-    printf("Maximum finite representable long double number: %Lf\n",LDBL_MAX);
+    printf("Maximum finite representable float number: %e\n",FLT_MAX);
+    printf("Maximum finite representable double number: %e\n",DBL_MAX);
+    printf("Maximum finite representable long double number: %Le\n",LDBL_MAX);
 
     // Minimum 0
-    printf("Minimum finite representable positive float number: %f\n",FLT_MIN);
-    printf("Minimum finite representable positive double number: %lf\n",DBL_MIN);
-    printf("Minimum finite representable positive long double number: %Lf\n",LDBL_MIN);
+    printf("Minimum finite representable positive float number: %e\n",FLT_MIN);
+    printf("Minimum finite representable positive double number: %e\n",DBL_MIN);
+    printf("Minimum finite representable positive long double number: %Le\n",LDBL_MIN);
 
     // Epsilon
-    printf("Difference between 1 and the least value greater than 1 that is representable for float: %f\n",FLT_EPSILON);
-    printf("Difference between 1 and the least value greater than 1 that is representable for double: %lf\n",DBL_EPSILON);
-    printf("Difference between 1 and the least value greater than 1 that is representable for long double: %Lf\n",LDBL_EPSILON);
+    printf("Difference between 1 and the least value greater than 1 that is representable for float: %e\n",FLT_EPSILON);
+    printf("Difference between 1 and the least value greater than 1 that is representable for double: %e\n",DBL_EPSILON);
+    printf("Difference between 1 and the least value greater than 1 that is representable for long double: %Le\n",LDBL_EPSILON);
 
     return 0;
 }
