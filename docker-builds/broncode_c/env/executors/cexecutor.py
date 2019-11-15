@@ -5,27 +5,43 @@ from .codeexecutor import CodeExecutor
 
 class CExecutor(CodeExecutor):
     
-    def __init__(self, code, flags, inp = ''):
+    def __init__(self, code, flags, inputs = []):
         with open("code.c","w") as f:
             f.write(code)
 
-        self.input = inp
+        self.inputs = inputs
         self.flags = flags.split()
 
     def run(self):
         cmd_run = ["./code"]
 
-        done_process = subprocess.run(
-                    cmd_run, 
-                    stdout=subprocess.PIPE, 
-                    stderr=subprocess.PIPE,
-                    input=bytes(self.input, "utf-8"))
-        if self.input:
-            cmd_run += ["<", "input.txt"]
-        
+        self.compilation_log += self.msg_sucess
         self.log_command(cmd_run)
 
-        return done_process
+        if len(self.inputs) > 0:
+            for input in self.inputs:
+                done_process = subprocess.run(
+                            cmd_run, 
+                            stdout=subprocess.PIPE, 
+                            stderr=subprocess.PIPE,
+                            input=bytes(input, "utf-8"),
+                            )
+
+                run_log = ""
+                run_log += done_process.stdout.decode("utf-8")
+                run_log += done_process.stderr.decode("utf-8")
+                self.run_logs.append(run_log)
+        else:
+            done_process = subprocess.run(
+                        cmd_run, 
+                        stdout=subprocess.PIPE, 
+                        stderr=subprocess.PIPE,
+                        )
+
+            self.compilation_log += done_process.stdout.decode("utf-8")
+            self.compilation_log += done_process.stderr.decode("utf-8")
+
+        return True
 
     def compile(self):
         cmd_compile  = ["gcc"] + self.flags + ["-o","code","code.c"]
@@ -40,22 +56,12 @@ class CExecutor(CodeExecutor):
         return done_process
 
     def execute(self):
-
-        self.log += "Parsing gcc flags...\n"
-
-        self.log += "Compiling code...\n"
-
         done_process = self.compile()
 
         #if there were errors in comp
         if done_process.returncode:
-            self.log += self.error_msg_comp
+            self.compilation_log += self.error_msg_comp
+            self.compilation_log += done_process.stderr.decode("utf-8")
         else:
-            self.log += "Executing program...\n"
-            done_process = self.run()
-            self.log += self.msg_sucess
-            
-
-        #add the _logs of the returned process to this object's _log
-        self.log += done_process.stdout.decode("utf-8")
-        self.log += done_process.stderr.decode("utf-8")
+            self.compilation_log += "Executing program...\n"
+            self.run()

@@ -1,33 +1,35 @@
-// Submit post on submit
 var d_user_id = -1 // django_user_id
 var d_lesson_id = -1 // django_lesson_id
+var BRONCODE_URL = "http://broncode.cs.wmich.edu"
 
 function loadDynamicData(user, lesson, code) {
     d_user_id = user;
     d_lesson_id = lesson;
 }
 
-$('#major-form').on('submit', function(event){
-    event.preventDefault();
-    $('#output-box').text("Running your code...");
-    create_post();
+$(document).ready(function (){
+    $('#major-form').on('submit', function(event){
+        event.preventDefault();
+        $('#output-box').text("Testing your code...");
+        submitCodeForTesting();
+    });
 });
 
 // AJAX for posting
-function create_post() {
+function submitCodeForTesting() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu/api/submissions/", // the endpoint
-        type : "POST", // http method
+        url : BRONCODE_URL + "/api/submissions/",
+        type : "POST", 
         data : { 
             user : d_user_id,
             lesson : d_lesson_id,
-            code : $('#codemirror').val(),
-            compiler_flags : $('#compiler-flags').val()
-        }, // data sent with the post request
+            code : $('#codemirror').val(), 
+            compiler_flags : $('#compiler-flags').val(),
+            user_tested : false
+        },
         dataType: "json",
         // handle a successful response
         success : function(json) {
-	    //json.log = json.log.replace(/\n/g,"<br />")	
             console.log(json);
            $('#output-box').text(json['log']);
         },
@@ -39,11 +41,48 @@ function create_post() {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
-};
+}
+
+function runTest() {
+    // need to manually save the new code and stdin into their respective textareas
+    // normally, this is done automatically upon form submit
+    // but this button doesn't submit the form
+
+    // editor is a globla variable defined in component-flags.html
+    // cEditor is a global variable definied in component-codemirror.html
+    editor.save();
+    cEditor.save();
+    $('#output-box').text("Running your code...");
+    $.ajax({
+        url : BRONCODE_URL + "/api/submissions/",
+        type : "POST", 
+        data : { 
+            user : d_user_id,
+            lesson : d_lesson_id,
+            code : $('#codemirror').val(), 
+            compiler_flags : $('#compiler-flags').val(),
+            stdin : $('#stdin').val(),
+            user_tested : true,
+        },
+        dataType: "json",
+        // handle a successful response
+        success : function(json) {
+            console.log(json);
+           $('#output-box').text(json['log']);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            $('#output-box').text("errmsg");
+
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
 
 function resetExampleCode() {
     $.ajax({
-        url : "http://broncode.cs.wmich.edu:1234/api/lessons/" + d_lesson_id,
+        url : BRONCODE_URL + "/api/lessons/" + d_lesson_id,
         type : "GET",
         success : function(json) {	
             // cEditor is the codemirror object

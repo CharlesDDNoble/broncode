@@ -23,7 +23,7 @@ class CodeClient():
                 "port" : self.port,
                 "code" : self.code,
                 "flags" : self.flags,
-                "inp" : self.inp,
+                "inputs" : self.inputs,
                 "log" : self.log,
                 "send_time" : self.send_time,
                 "recv_time" : self.recv_time,
@@ -35,21 +35,23 @@ class CodeClient():
                 "BLOCK_SIZE" : self.BLOCK_SIZE,
                 "has_lost_data" : self.has_lost_data}
 
-    def __init__(self, host = '', port = 4000, code = '', flags = '', inp = ''):
+    def __init__(self, host = '', port = 4000, code = '', flags = '', inputs = []):
         """Constructor for the CodeHandler class."""
         #TODO: consider logging inputs and outputs
         self.host = host
         self.port = port
         self.code = code
         self.flags = flags
-        self.inp = inp
+        self.inputs = inputs
+        self.compilation_log = ''
+        self.run_logs = []
         self.log = ''
         self.send_time = 0
         self.recv_time = 0
         self.run_time = 0
         self.max_time = 10.0
-        self.max_connection_attempts = 2
-        self.conn_wait_time = 4
+        self.max_connection_attempts = 8
+        self.conn_wait_time = 1
         self.conn_attempt = 0
         self.BLOCK_SIZE = 4096
         self.has_lost_data = False
@@ -89,31 +91,55 @@ class CodeClient():
                 #TODO: handle case if message is too big.
                 sock.send(self.make_block(self.flags))
                 sock.send(self.make_block(self.code))
-                sock.send(self.make_block(self.inp))
+                sock.send(self.make_block(str(len(self.inputs))))
+                for input in self.inputs:
+                    sock.send(self.make_block(input))
                 
                 self.send_time = time() - self.send_time
 
                 self.recv_time = time()
 
-                log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+                self.compilation_log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+                self.run_logs = []
+                for _ in self.inputs:
+                    self.run_logs.append(sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
+
+                log = self.compilation_log
+                for i in range(len(self.inputs)):
+                    log += "Input: " + self.inputs[i] + "\n"
+                    log += "Output: \n" + self.run_logs[i] + "\n"
 
                 self.recv_time = time() - self.recv_time
-
-                #in case the server times out without sending anything
-                if not log:
-                    log = error_msg_time_out
-
+                
                 done = True
             except socket.timeout:
+                #in case the server times out without sending anything
                 log = error_msg_time_out
                 done = True
-            except OSError as ose:
+            except ConnectionRefusedError as cae:
+                # Don't try to recover
+                log = error_msg_conn
+                log += str(cae)
+                done = False
+            except ConnectionError as ce:
+                # Try to recover
                 self.conn_attempt += 1
                 log = error_msg_conn
-                log += str(ose)
+                log += str(ce)
                 sleep(self.conn_wait_time)
+            except TimeoutError as te:
+                # Try to recover
+                self.conn_attempt += 1
+                log = error_msg_conn
+                log += str(te)
+                sleep(self.conn_wait_time)
+            except OSError as ose:
+                # Don't try to recover
+                log = error_msg_conn
+                log += str(ose)
+                done = False
             except Exception as excep:
-                log = "Something strange occurred!\n"
+                log += "Something strange occurred!\n"
                 log += str(excep)
                 done = True
 

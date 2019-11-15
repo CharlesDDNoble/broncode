@@ -41,12 +41,12 @@ An integer is defined as a number that can be written without a fractional compo
 In C, if we have an integer variable *i* ≥ **0**, i.e. we expect *i* to always be greater than or equal to **0**, then we may store it as an unsigned integer. Unsigned integers are represented by a string of bits, the length of which depends on the specific data type. 
 
 Let's assume an unsigned integer *u* is stored as a string of 8 bits (1 byte). If *u* = 20, then *u* would be stored like so,
-> 0001 0100
+> 00010100
 
 Notice that,
-> base-2(00010100) = 1\*(16) + 1\*(4)
-> base-2(00010100) = 0\*(128) + 0\*(64) + 0\*(32) + 1\*(16) + 0\*(8) + 1\*(4) + 0\*(2) + 0\*(1)
-> base-2(00010100) = 0 \* 2^7 + 0 \* 2^6 + 0 \* 2^5  + 1 \* 2^4  + 0 \* 2^3   + 1 \* 2^2  + 0 \* 2^1 + 0 \* 2^0 
+> base-2(00010100) = 1\*(16) + 1\*(4)<br>
+> base-2(00010100) = 0\*(128) + 0\*(64) + 0\*(32) + 1\*(16) + 0\*(8) + 1\*(4) + 0\*(2) + 0\*(1)<br>
+> base-2(00010100) = 0 \* 2^7 + 0 \* 2^6 + 0 \* 2^5  + 1 \* 2^4  + 0 \* 2^3   + 1 \* 2^2  + 0 \* 2^1 + 0 \* 2^0 <br>
 
 One important thing to note here is the fixed range of our example 8 bit unsigned integer. We can only represent so many unique values using 8-bits, in fact we can determine that number fairly easily. Observe that,
 > For a bitstring of size **1**:<br>
@@ -72,13 +72,13 @@ One bit, called the **sign bit**, is set aside from the number to represent whet
 Negative binary integers are stored as the **Two's Complement** of their positive counterparts. The Two's Complement of a binary value can be found by inverting every bit, i.e. turning **0**'s to **1**'s and vice versa, then adding **1** to the result. In essence, the Two's Complement of a binary value is its *additive inverse*. When a number and its additive inverse are summed, the result is **0**, likewise when a fixed length binary number and its **Two's Complement** are summed, the resulting bitstring will contain only zero's (although a special flag will be set, called the **carry** bit).
 
 A 8-bit signed integer *i* would be stored like so (each character is a single bit),
-> SBBB BBBB
-> 
-> S = Sign Bit
-> B = Binary representation of *i*
+> SBBBBBBB<br>
+> <br>
+> S = Sign Bit<br>
+> B = Binary representation of *i*<br>
 
 Now let's say *i* = 21, then *i* would be stored as,
-> 0001 0101<br>
+> 00010101<br>
 > ^------------ Notice the sign bit is **0**
 
 Now let's say *j* is a 8-bit signed integer where *j* = -21. Remember that a negative signed integer is the Two's complement its positive counterpart. Thus, to find the binary representation of *j*, we must first invert the bits of the binary representation of 21. In C bitwise inversion can be be done via the *bitwise not* operator (**~**).
@@ -101,9 +101,9 @@ Since we need to use one bit to represent the sign of integer, the range of a *n
 Now that we have an understanding of how integers are stored and the difference between signed and unsigned integers, we'll examine some specific integer data types in C along with their properties. 
 ## Storage Size and Ranges
 
-The maximum/minimum value that an integer can have depends on the data type of the integer. The integer data types are as follow in order of ascending size: char, short, int, long, long long. Again, each of these data types may be unsigned or signed with signed generally being the implicit representation, e.g. "short" vs. "unsigned short" and "int" vs. "unsigned int". The table below gives a detailed look at each data type and its properties. 
+The maximum/minimum value that an integer can have depends on the data type of the integer. The integer data types are as follow in order of ascending size: char, short, int, long, long long. Again, each of these data types may be unsigned or signed with signed generally being the implicit representation, e.g. "short" vs. "unsigned short" and "int" vs. "unsigned int". The table below gives a detailed look at various integer data types in C along with a few of their properties. 
 
-| Data Type        | Size (in bytes)\*| Typical Range\*                              |
+| Data Type        | Size (in bytes)\*| Range\*                                      |
 | ---------------- |:----------------:|:-------------------------------------------- |
 | char             | 1                | \*\*                                         |
 | signed char      | 1                | [-128, 127]                                  |
@@ -115,8 +115,7 @@ The maximum/minimum value that an integer can have depends on the data type of t
 | long             | 8                | [-9223372036854775808, 9223372036854775807]  |
 | unsigned long    | 8                | [0, 18446744073709551615]                    |
 
-*\*Note: the actual size/range of the data type varies on implementation, but <br>
-the data type is guaranteed to be >= size and contain the range given.* <br>
+*\*Note: the actual size/range of the data type varies on implementation.<br>
 *\*\*Note: The signedness of char is implementation specific.*
 
 # Real Numbers in C
@@ -148,7 +147,7 @@ Floating-point representation is very similar to Scientific-Notation. In computi
 
 **Precision** is the degree of accuracy of a representation, typically in number of digits. Precision goes hand and hand with the concept of significant digits, the more significant digits we use to approximate a number, the more precise our approximation. For example, we may say π ≈ 3, which is true although we may be more *precise* and say π ≈ 3.1415. On the other hand π ≈ 3.141500000 is no more precise than π ≈ 3.1415 or π ≈ 0003.1415.
 
-As stated above, floating-point arithmetic standards try to maximize both of these properties given a finite number of bits to represent a single number. One such standard is **IEEE-754**, which is perhaps the most common computing standard for storing floating point values.
+As stated above, floating-point arithmetic standards try to maximize both of these properties given a finite number of bits to represent a single number. One such standard is **IEEE-754**, which is perhaps the most common computing standard for storing floating point values. 
 
 ## Physical Storage and IEEE Standards
 
@@ -158,15 +157,72 @@ As stated above, floating-point arithmetic standards try to maximize both of the
 > E = Exponent bit<br>
 > M = Mantissa (coefficient/significand) bit<br>
 
+Note, that the base of the exponent can be 2 (likely) or 10 (less likely).
+
+Like integers, Floating-point values have a fixed range. However, unlike integers there exist some numbers with in a Floating-points range that cannot be exactly represented. This leads us to a division of floating-point numbers into two groups: **normalized** and **denormalized** (*subnormal*) numbers.
 
 ## Normalized vs. Denormalized
+A normalized floating-point value is a number that can be represented without leading zero's in the mantissa. Leading zero's can be gotten rid of by modifying the exponent of the floating-point, i.e. 0.0127 can be represented as 1.27 * 10^(-2). Note, that there are only a fixed number of bits in the exponent section of the floating-point, as such there is a minimum exponential value. This minimum value leads to the existence of denormalized numbers.
 
-## Overflow (INF/NAN)
+Denormalized numbers (now called *subnormal* since IEEE 754-2008) are numbers that must be stored with leading zero's because its exponent component is already as small as representable. This can lead to a loss of significance digits because the mantissa now must store some of the leading zero's of the number. See [this](https://en.wikipedia.org/wiki/Denormal_number#Performance_issues) for some interesting effects denormalized numbers can have on program performance.
+
+## Special Values (INF/NAN)
+In addition to the standard finite numbers that can be represented by a floating-point, IEE-754 also defines four special values: two types of Nan, positive Infinity, and negative Infinity.
+
+#### Nan (Not a number)
+Nan, short for not a number, is generally produced through some invalid operation on a number, such as taking the square root of a negative.
+
+#### +/- Infinity
++/- Inf is generally produced through division by zero or through overflow, i.e. the exponent value is greater than the size of the exponent component of the specific floating-point data type used.
 
 ## Equality
+An important thing to understand with floating-point values is the fact that they may not be exact. To illustrate this let's look at an example. 
 
-## Loss of Significance
+Let's try to represent 1/2 = 0.5 in binary,
+> 0.5 = 1/2 <br>
+> 0.5 = 1/(2^(1)) <br>
+> 0.5 = 1\*2^(-1) <br>
+> 0.5 = base-2(0.1) <br>
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^-------- Notice the radix point <br>
+
+Okay that wasn't so bad, now let's try 3/4,
+> 0.75 = 1/2 + 1/4 <br>
+> 0.75 = 1/(2^(1)) + 1/(2^(2)) <br>
+> 0.75 = 1\*2^(-1) + 1\*2^(-2) <br>
+> 0.75 = base-2(0.11) <br>
+
+Great, two for two. Now let's try 1/3,
+> 1/3 = 0.333333333333... <br>
+
+Uh oh! Representing 1/3 as the sum of negative powers of 2 is not exactly easy (or possible given a discrete number of bits). We can approximate it though.
+> 1/3 ≈ 1/4 + 1/16 = 0.3125
+
+We can try to get closer by adding smaller powers of 2,
+> 1/3 ≈ 1/4 + 1/16 + 1/64 + 1/256 = 0.33203125
+
+That's pretty close, but definitely not exact. This, and the fact that floats and doubles have different numbers of bits in their corresponding mantissas, makes the *equal to* operator in C (**==**) not extremely useful when dealing with floats. It is possible that a value like 1/3 is stored differently depending on your C compiler, its settings, and the CPU of your computer. When comparing two floating-point values, it is generally a better practice to check to see if they are within a certain value of each other (generally referred to as *epsilon*). Thus, our comparison would look like this in C:
+> double a = .1 <br>
+> double b = .1 <br>
+> double epsilon = 0.001 // Currently chosen arbitrarily<br>
+> if (abs(a-b) <= epsilon) { <br>
+> // the values are close enough... do something... <br>
+> } <br>
+
+## Machine Epsilon
+
+Given what we learned about normalized and denormalized floating-point numbers, we may assertain that there is some minimal positive (normalized) representable value. We restate this like so,
+> There exists a **minimal** floating-point value *epsilon* such that:<br>
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 + *epsilon* > 1
+
+This value is generally referred to as the *machine epsilon* and is important because it gives us an upper bound on the relative error generated by rounding operations.
 
 ## Storage Size and Ranges
+The table below gives a detailed look at each floating-point data type in C and some of its properties. 
 
-<INSERT_WORDS>
+| Data Type   | Sizes*| Minimum Positive Norm. Value* | Maximum Value* | Bits in Mantissa* | Guarenteed Precise Decimal Digits* |
+|-------------|-------|-------------------------------|----------------|-------------------|------------------------------------|
+| float       | 4     | 1.175494e-38                  | 3.402823e+28   | 24                | 6                                  |
+| double      | 8     | 2.225074e-308                 | 1.797693e+308  | 53                | 15                                 |
+| long double | 16    | 3.362103e-4932                | 1.189731e+4932 | 64                | 18                                 |
+
+\*Note: these values may vary on implementation.

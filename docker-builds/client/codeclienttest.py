@@ -45,9 +45,7 @@ class CodeClientTest(unittest.TestCase):
 
         #Testing code input with a compilation error in it
         code = "int main(int argc,char** argv){error;return 0;}\n"
-        exp = "Parsing gcc flags...\n" \
-              "Compiling code...\n" \
-              "gcc -o3 -o code code.c\n" \
+        exp = "gcc -o3 -o code code.c\n" \
               "Something went wrong compiling your code:\n" \
               "code.c: In function 'main':\n" \
               "code.c:1:32: error: 'error' undeclared (first use in this function)\n" \
@@ -57,21 +55,19 @@ class CodeClientTest(unittest.TestCase):
         handler = CodeClient(host,port,code,flags)
         handler.run()
         # GCC seems to use the curly quotes ‘’ instead of regular quote ''
-        out = handler.log.replace('‘','\'').replace('’','\'')
+        out = handler.compilation_log.replace('‘','\'').replace('’','\'')
         self.assertEqual(out,exp)
 
         #Testing code input that is correct (it should compile and run successfully)
         code = "int main(int argc,char** argv){printf(\"Hello!\\n\");return 0;}\n"
-        exp =   "Parsing gcc flags...\n" \
-                "Compiling code...\n" \
-                "gcc -o3 -o code code.c\n" \
+        exp =   "gcc -o3 -o code code.c\n" \
                 "Executing program...\n" \
-                "./code\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
+                "./code\n" \
                 "Hello!\n"
         handler = CodeClient(host,port,code,flags)
         handler.run()
-        out = handler.log.replace('‘','\'').replace('’','\'')
+        out = handler.compilation_log.replace('‘','\'').replace('’','\'')
         self.assertEqual(out,exp)
 
         #Testing code input that is an infinite loop (this should cause a timeout)
@@ -89,7 +85,7 @@ class CodeClientTest(unittest.TestCase):
         port = 4001
         flags = "" 
 
-        #Testing code input with a compilation error in it
+        # Testing code input with a compilation error in it
 
         code =  "print(Erro World!)"
         exp =   "python3 code.py\n" \
@@ -99,7 +95,7 @@ class CodeClientTest(unittest.TestCase):
                 "                   ^\n" \
                 "SyntaxError: invalid syntax\n"
 
-        handler = CodeClient(host,port,code,flags)
+        handler = CodeClient(host,port,code,flags,[])
         handler.run()
         out = handler.log
         self.assertEqual(out,exp)
@@ -118,12 +114,11 @@ class CodeClientTest(unittest.TestCase):
         code = "while True:\n\tpass\n"
         exp = "Something went wrong running your code:\n" \
               "It took too long to execute, so we stopped it!\n"
-        handler.max_time = 2
         handler = CodeClient(host,port,code,flags)
+        handler.max_time = 2
         handler.run()
         out = handler.log.replace('‘','\'').replace('’','\'')
         self.assertEqual(out,exp)
-
 
 if __name__ == '__main__':
     unittest.main()

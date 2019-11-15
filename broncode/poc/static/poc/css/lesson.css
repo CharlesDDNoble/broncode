@@ -35,20 +35,24 @@ html, body {
     
 }
 #compiler-flags-wrapper {
-    height: 7vh;
+    height: 5vh;
     background-color: rgb(20, 20, 30);
     /* padding: 0 1rem; */
     margin: 0;
 }
 #codemirror-wrapper {
-    min-height: 77vh;
-    max-height: 77vh;
+    min-height: 75vh;
+    max-height: 75vh;
     background-color: rgb(31, 30, 46);
     padding: 0;
 }
+#stdin-wrapper {
+    height: 5vh;
+    background-color: rgb(20, 20, 30);
+}
 #btn-submit-wrapper {
-    min-height: 6vh;
-    max-height: 6vh;
+    min-height: 5vh;
+    max-height: 5vh;
     background-color: rgb(31, 30, 46);
 }
 #btn-submit {

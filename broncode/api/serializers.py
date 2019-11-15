@@ -12,6 +12,8 @@ from poc.codeclient import CodeClient
 
 from django.core.exceptions import ObjectDoesNotExist
 
+import random
+
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
         model = Course
@@ -79,33 +81,13 @@ class CourseSerializer(serializers.ModelSerializer):
         # Changed `chapters` to `lessons`
         fields = ("id", "title", "lessons", "owners", "enrolled_users")
 
-def extract_code_output(log, language):
-    # takes the unedited output log of a program and extracts the actual program
-    # output from it. this is different from the log because there are some extra
-    # informational lines printed in the log such as "Executing program..." etc
-
-    # hack: code output will be after the first x lines
-    # x depends on the language (or more precisely, the docker container backend) that is used
-    code_output = ""
-    if language == "C":
-        code_output = "\n".join(log.split('\n')[6:])
-    elif language == "Python3":
-        code_output = "\n".join(log.split('\n')[2:])
-    
-    # hack: upon inputing a stdout sample when creating a testcase in the django
-    # admin panel, django will trim any excess whitespace. we should do that to
-    # our code output too.
-    code_output = code_output.rstrip()
-
-    return code_output
-
 class SubmissionSerializer(serializers.ModelSerializer):
     log = serializers.CharField(read_only=True)
     passed = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Submission
-        fields = ("id", "user", "lesson", "code", "compiler_flags", "log", "passed")
+        fields = ("id", "user", "lesson", "code", "compiler_flags", "user_tested", "stdin", "log", "passed")
     
     def save(self):
         """
@@ -123,39 +105,68 @@ class SubmissionSerializer(serializers.ModelSerializer):
         log = ''
         host = ''
         lesson = self.validated_data['lesson']
+        user_tested = self.validated_data['user_tested']
         if lesson.language == "C":
             port = 4000
         elif lesson.language == "Python3":
             port = 4001
+        elif lesson.language == "R":
+            port = 4002
         else:
             print("Unknown lesson type: {}".format(lesson.language))
+            raise "Unkown lesson type"
 
-        try:
-            solution_set = SolutionSet.objects.get(lesson=self.validated_data['lesson'])
-        except ObjectDoesNotExist:
-            solution_set = None
+        if not user_tested:
+            solution_sets = SolutionSet.objects.filter(lesson=self.validated_data['lesson'])
 
-        if solution_set:
-            passed_stdin = solution_set.stdin
+            if len(solution_sets) == 0:
+                solution_sets = []
         else:
-            passed_stdin = ""
+            solution_sets = []
+
+        inputs = []
+        if not user_tested:
+            for sset in solution_sets:
+                inputs.append(sset.stdin)
+        else:
+            if self.validated_data['stdin'] != "":
+                inputs.append(self.validated_data['stdin'])
 
         # handle the code execution using docker
         if code != '':
-            handler = CodeClient(host,port,code,flags,passed_stdin)
+            handler = CodeClient(host,port,code,flags,inputs)
             handler.run()
             log = handler.log
         else:
             log = "No code to run...\n"
 
-        code_output = extract_code_output(log, lesson.language)
+        passed_test = False
 
-        if solution_set:
-            passed_test = (code_output == solution_set.stdout)
+        tests_failed = []
+        if user_tested:
+            passed_test = False
+        elif inputs:
+            passed_test = True
+            for i in range(len(solution_sets)):
+                print(handler.run_logs[i].rstrip() + " vs " + solution_sets[i].stdout)
+                if handler.run_logs[i].rstrip() != solution_sets[i].stdout:
+                    tests_failed.append(str(solution_sets[i].number))
+                    passed_test = False
         else:
             passed_test = True
 
-        print("Creating submission object...")
+        if not user_tested:
+            if passed_test:
+                log = "You passed all tests!"
+            else:
+                log = "You didn't pass every test. You failed:\n"
+                if len(tests_failed) == 1:
+                    log += "Test {}.".format(tests_failed[0])
+                else:
+                    log += "Tests "
+                    for i in range(len(tests_failed) - 1):
+                        log += tests_failed[i] + ", "
+                    log += "and {}.".format(tests_failed[-1])
 
         # you can add additional data to serializers by calling save(newdata=data)
         # so after running the code and getting the necessary data, we just call

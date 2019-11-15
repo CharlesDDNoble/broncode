@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$1" == "" ]; then
+    echo "Usage: ./runserver-dev <port>"
+    exit -1
+fi
+
+source /home/sysadmin/broncode/dbcreds
+# -E preserves environment variables.
+sudo -E python3 ./manage.py runserver 0.0.0.0:$1
