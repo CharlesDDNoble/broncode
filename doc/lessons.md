@@ -103,7 +103,7 @@ Now that we have an understanding of how integers are stored and the difference 
 
 The maximum/minimum value that an integer can have depends on the data type of the integer. The integer data types are as follow in order of ascending size: char, short, int, long, long long. Again, each of these data types may be unsigned or signed with signed generally being the implicit representation, e.g. "short" vs. "unsigned short" and "int" vs. "unsigned int". The table below gives a detailed look at various integer data types in C along with a few of their properties. 
 
-| Data Type        | Size (in bytes)\*| Typical Range\*                              |
+| Data Type        | Size (in bytes)\*| Range\*                                      |
 | ---------------- |:----------------:|:-------------------------------------------- |
 | char             | 1                | \*\*                                         |
 | signed char      | 1                | [-128, 127]                                  |
