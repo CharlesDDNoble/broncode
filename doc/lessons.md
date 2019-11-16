@@ -10,7 +10,8 @@ In school, we are taught to represent numbers and do math using the decimal (bas
 ## Place-Value Notation (Decimal)
 
 To represent multi-digit numbers, we use place-value notation. Each base-10 number can be expanded as so,
-> base-10(127) = 100 + 20 + 7 = 1 \* 10^2 + 2 \* 10^1 + 7 \* 10^0
+
+    base-10(127) = 100 + 20 + 7 = 1 \* 10^2 + 2 \* 10^1 + 7 \* 10^0
 
 From now on, assume that all numbers are given in decimal unless otherwise stated. Notice that each digit in the number above is the coefficient of 10^*i* where *i* is the place of the digit with *i* = **0** for the ones (10^0) place, *i*= 1 for the tens (10^1) place, *i* = 2 for the hundreds (10^2) place, etc. The value of *i* may also be negative,  which we will discuss later on.
 
@@ -18,9 +19,10 @@ From now on, assume that all numbers are given in decimal unless otherwise state
 
 Similarly, in binary we may represent numbers other than 0 and 1
 using place-value notation. Observe that,
->   127 = 64 + 32 + 16 + 8 + 4 + 2 + 1<br>
->   127 = 1 \* 2^7 + 1 \* 2^6 + 1 \* 2^5 + 1 \* 2^4 + 1 \* 2^3 + 1 \* 2^2 + 1 \* 2^1 + 1 \* 2^0<br>
->   127 = base-2(1111111)<br>
+
+    127 = 64 + 32 + 16 + 8 + 4 + 2 + 1  
+    127 = 1 \* 2^7 + 1 \* 2^6 + 1 \* 2^5 + 1 \* 2^4 + 1 \* 2^3 + 1 \* 2^2 + 1 \* 2^1 + 1 \* 2^0  
+    127 = base-2(1111111)  
 
 ## Binary in Computing
 
@@ -41,23 +43,29 @@ An integer is defined as a number that can be written without a fractional compo
 In C, if we have an integer variable *i* ≥ **0**, i.e. we expect *i* to always be greater than or equal to **0**, then we may store it as an unsigned integer. Unsigned integers are represented by a string of bits, the length of which depends on the specific data type. 
 
 Let's assume an unsigned integer *u* is stored as a string of 8 bits (1 byte). If *u* = 20, then *u* would be stored like so,
-> 00010100
+
+    00010100  
+
 
 Notice that,
-> base-2(00010100) = 1\*(16) + 1\*(4)<br>
-> base-2(00010100) = 0\*(128) + 0\*(64) + 0\*(32) + 1\*(16) + 0\*(8) + 1\*(4) + 0\*(2) + 0\*(1)<br>
-> base-2(00010100) = 0 \* 2^7 + 0 \* 2^6 + 0 \* 2^5  + 1 \* 2^4  + 0 \* 2^3   + 1 \* 2^2  + 0 \* 2^1 + 0 \* 2^0 <br>
+
+    base-2(00010100) = 1\*(16) + 1\*(4)  
+    base-2(00010100) = 0\*(128) + 0\*(64) + 0\*(32) + 1\*(16) + 0\*(8) + 1\*(4) + 0\*(2) + 0\*(1)  
+    base-2(00010100) = 0 \* 2^7 + 0 \* 2^6 + 0 \* 2^5  + 1 \* 2^4  + 0 \* 2^3   + 1 \* 2^2  + 0 \* 2^1 + 0 \* 2^0  
+
 
 One important thing to note here is the fixed range of our example 8 bit unsigned integer. We can only represent so many unique values using 8-bits, in fact we can determine that number fairly easily. Observe that,
-> For a bitstring of size **1**:<br>
-> &nbsp;&nbsp;&nbsp;&nbsp;The unique strings are "**0**" and "**1**"<br>
-> &nbsp;&nbsp;&nbsp;----> **2** unique values.<br><br>
-> For a bitstring of size **2**:<br>
-> &nbsp;&nbsp;&nbsp;The unique strings are "**00**", "**01**", "**10**", and "**11**"<br>
-> &nbsp;&nbsp;&nbsp;----> **4** unique values.<br>
+
+    For a bitstring of size **1**:
+    The unique strings are "**0**" and "**1**"
+        ----> **2** unique values.
+    For a bitstring of size **2**:
+    The unique strings are "**00**", "**01**", "**10**", and "**11**"
+        ----> **4** unique values.
 
 Thus, the maximum number of unique values a bit string of size *n* ≥ 1 can have is
-> 2^*n*
+
+    2^*n*
 
 So an 8-bit unsigned integer can represent a total of 2^8 = **256** unique values. 
 
@@ -72,27 +80,34 @@ One bit, called the **sign bit**, is set aside from the number to represent whet
 Negative binary integers are stored as the **Two's Complement** of their positive counterparts. The Two's Complement of a binary value can be found by inverting every bit, i.e. turning **0**'s to **1**'s and vice versa, then adding **1** to the result. In essence, the Two's Complement of a binary value is its *additive inverse*. When a number and its additive inverse are summed, the result is **0**, likewise when a fixed length binary number and its **Two's Complement** are summed, the resulting bitstring will contain only zero's (although a special flag will be set, called the **carry** bit).
 
 A 8-bit signed integer *i* would be stored like so (each character is a single bit),
-> SBBBBBBB<br>
-> <br>
-> S = Sign Bit<br>
-> B = Binary representation of *i*<br>
+
+    SBBBBBBB  
+ 
+    S = Sign Bit  
+    B = Binary representation of *i*  
+
 
 Now let's say *i* = 21, then *i* would be stored as,
-> 00010101<br>
-> ^------------ Notice the sign bit is **0**
+
+    00010101
+    ^------------ Notice the sign bit is **0**
+
 
 Now let's say *j* is a 8-bit signed integer where *j* = -21. Remember that a negative signed integer is the Two's complement its positive counterpart. Thus, to find the binary representation of *j*, we must first invert the bits of the binary representation of 21. In C bitwise inversion can be be done via the *bitwise not* operator (**~**).
-> ~ (00010101) = 11101010
+
+    ~(00010101) = 11101010  
 
 Next we simply add the binary number one to the result,
-> 11101010 + 0000001 = 11101011 
+
+    11101010 + 0000001 = 11101011  
 
 Thus, for a 8-bit signed integer, base-2(11101011) = -21. Now, observe what happens when we add *i* and *j*.
-> &nbsp;&nbsp;&nbsp;0001 0101<br>
-> \+ 1110 1011 <br>
-> \---------------<br>
-> &nbsp;1&nbsp;0000 0000<br>
->&nbsp;^---- Notice that this bit exceeds our 8-bit storage size, therefore it is effectively **lost**, but as mentioned above the carry flag is set.
+    
+        00010101  
+    +   11101011  
+    ---------------  
+      1 00000000  
+      ^---- Notice that this bit exceeds our 8-bit storage size, therefore it is effectively **lost**, but as mentioned above the carry flag is set.  
 
 Thus *i* + *j* = base-2(00000000) = **0**!
 
@@ -128,17 +143,19 @@ Now that we can represent integers, we'll take a look at the interesting problem
 ## Scientific Notation
 Scientific-Notation is a way to represent very large and small numbers while making the significant digits
 clearly recognizable. Significant digits are defined as all digits except: 
--   All [leading zeros](https://en.wikipedia.org/wiki/Leading_zeros "Leading zeros"). For example, "013" has 2 significant figures: 1 and 3
--   [Trailing zeros](https://en.wikipedia.org/wiki/Trailing_zeros "Trailing zeros") when they are merely placeholders to indicate the scale of the number (exact rules are explained at [identifying significant figures](https://en.wikipedia.org/wiki/Significant_figures#Identifying_significant_figures))
--   [Spurious](https://en.wiktionary.org/wiki/spurious "wikt:spurious") digits introduced, for example, by calculations carried out to greater precision than that of the original data, or measurements reported to a greater precision than the equipment supports.
++ All [leading zeros](https://en.wikipedia.org/wiki/Leading_zeros "Leading zeros"). For example, "013" has 2 significant figures: 1 and 3
++ [Trailing zeros](https://en.wikipedia.org/wiki/Trailing_zeros "Trailing zeros") when they are merely placeholders to indicate the scale of the number (exact rules are explained at [identifying significant figures](https://en.wikipedia.org/wiki/Significant_figures#Identifying_significant_figures))
++ [Spurious](https://en.wiktionary.org/wiki/spurious "wikt:spurious") digits introduced, for example, by calculations carried out to greater precision than that of the original data, or measurements reported to a greater precision than the equipment supports.
 
 Using Scientific-Notation we represent a number like so,
->    *m* \* 10^*n*
+
+    m * 10^n
 
 Where *m* (the mantissa) is the sequence of significant digits of the number and *n* is the number of decimal places to the left or right the mantissa begins. The following are a list of base-10 numbers expressed in Scientific-Notation:
-> 1230000 = 1.23 * 10^6<br>
-> 0.00007 = 7.00 * 10^(-5)<br>
-> 1.50700 = 1.507 * 10^0<br>
+
+    1230000 = 1.23 * 10^6  
+    0.00007 = 7.00 * 10^(-5)  
+    1.50700 = 1.507 * 10^0  
 
 Floating-point representation is very similar to Scientific-Notation. In computing, floating-point arithmetic is defined as arithmetic using formulaic representation of real numbers as an approximation to support a trade-off between range and precision [(more here)](https://en.wikipedia.org/wiki/Floating-point_arithmetic). 
 
@@ -152,10 +169,11 @@ As stated above, floating-point arithmetic standards try to maximize both of the
 ## Physical Storage and IEEE Standards
 
 **IEEE-754** floats (4 bytes) or doubles (8 bytes) are composed of three parts: a sign bit to represent the whether the number is positive or negative, an exponent giving its order of magnitude, and a mantissa (the coefficient) which contains the significant digits of the number. An IEEE-754 float has a binary representation as follows (each character is a **bit**):
-> SEEEEEEE EMMMMMMM MMMMMMMM MMMMMMMM<br>
-> S = Sign bit<br>
-> E = Exponent bit<br>
-> M = Mantissa (coefficient/significand) bit<br>
+
+    SEEEEEEE EMMMMMMM MMMMMMMM MMMMMMMM  
+    S = Sign bit  
+    E = Exponent bit  
+    M = Mantissa (coefficient/significand) bit  
 
 Note, that the base of the exponent can be 2 (likely) or 10 (less likely).
 
@@ -179,34 +197,43 @@ Nan, short for not a number, is generally produced through some invalid operatio
 An important thing to understand with floating-point values is the fact that they may not be exact. To illustrate this let's look at an example. 
 
 Let's try to represent 1/2 = 0.5 in binary,
-> 0.5 = 1/2 <br>
-> 0.5 = 1/(2^(1)) <br>
-> 0.5 = 1\*2^(-1) <br>
-> 0.5 = base-2(0.1) <br>
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^-------- Notice the radix point <br>
 
+    0.5 = 1/2  
+    0.5 = 1/(2^(1))  
+    0.5 = 2^(-1)  
+    0.5 = base-2(0.1)  
+                  ^-------- Notice the radix point  
+     
 Okay that wasn't so bad, now let's try 3/4,
-> 0.75 = 1/2 + 1/4 <br>
-> 0.75 = 1/(2^(1)) + 1/(2^(2)) <br>
-> 0.75 = 1\*2^(-1) + 1\*2^(-2) <br>
-> 0.75 = base-2(0.11) <br>
+
+    0.75 = 1/2 + 1/4  
+    0.75 = 1/(2^(1)) + 1/(2^(2))  
+    0.75 = 2^(-1) + 2^(-2)  
+    0.75 = base-2(0.11)  
 
 Great, two for two. Now let's try 1/3,
-> 1/3 = 0.333333333333... <br>
+
+    1/3 = 0.333333333333...  
 
 Uh oh! Representing 1/3 as the sum of negative powers of 2 is not exactly easy (or possible given a discrete number of bits). We can approximate it though.
-> 1/3 ≈ 1/4 + 1/16 = 0.3125
+
+    1/3 ≈ 1/4 + 1/16 = 2^(-2) + 2^(-4) = 0.3125  
 
 We can try to get closer by adding smaller powers of 2,
-> 1/3 ≈ 1/4 + 1/16 + 1/64 + 1/256 = 0.33203125
+
+    1/3 ≈ 1/4 + 1/16 + 1/64 + 1/256 = 2^(-2) + 2^(-4) + 2^(-6) + 2^(-8) = 0.33203125  
 
 That's pretty close, but definitely not exact. This, and the fact that floats and doubles have different numbers of bits in their corresponding mantissas, makes the *equal to* operator in C (**==**) not extremely useful when dealing with floats. It is possible that a value like 1/3 is stored differently depending on your C compiler, its settings, and the CPU of your computer. When comparing two floating-point values, it is generally a better practice to check to see if they are within a certain value of each other (generally referred to as *epsilon*). Thus, our comparison would look like this in C:
-> double a = .1 <br>
-> double b = .1 <br>
-> double epsilon = 0.001 // Currently chosen arbitrarily<br>
-> if (abs(a-b) <= epsilon) { <br>
-> // the values are close enough... do something... <br>
-> } <br>
+```C
+    ...
+    double a = .1  
+    double b = .1  
+    double epsilon = 0.001 // Currently chosen arbitrarily  
+    if (abs(a-b) <= epsilon) {  
+        // the values are close enough... do something...  
+    }
+    ...
+```
 
 ## Machine Epsilon
 
