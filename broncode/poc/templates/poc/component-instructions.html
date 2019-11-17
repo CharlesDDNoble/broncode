@@ -1,11 +1,11 @@
 ﻿{% block instructions %}
 {% load static %}
-	<script src="{% static 'poc/js/showdown.min.js' %}"></script>
-    <script src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
+	<script type="text/javascript" src="{% static 'poc/js/showdown.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
 	
-    <script src="{% static 'poc/katex/katex.min.css' %}"></script>
-    <script src="{% static 'poc/katex/katex.min.js' %}"></script>
-    <script src="{% static 'poc/js/renderkatex.js' %}"></script>
+    <script type="text/css" src="{% static 'poc/katex/katex.min.css' %}"></script>
+    <script type="text/javascript" src="{% static 'poc/katex/katex.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'poc/js/renderkatex.js' %}"></script>
 
 	<div id="instructions">{{ lesson_text }}</div> <!-- needs to be one line! -->
 	<script>
