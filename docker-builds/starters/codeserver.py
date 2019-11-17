@@ -37,14 +37,14 @@ class CodeServer():
             has_lost_data = True
         return msg + bytes(('\0' * (self.BLOCK_SIZE-len(msg))),"utf-8")
 
-    def recv_msg(self, connection, is_test, msg=''):
+    def recv_msg(self, connection, msg='', is_test=False):
         if is_test:
             return msg
         else:
             msg = connection.recv(self.BLOCK_SIZE).decode("utf-8").replace('\0','')
         return msg
 
-    def send_msg(self, connection, is_test, msg=''):
+    def send_msg(self, connection, msg='', is_test=False):
         if is_test:
             self.results_log += msg
         else:
@@ -58,6 +58,7 @@ class CodeServer():
             serversocket.listen(1) # become a server socket, maximum 1 connections
 
         msg = ''
+        print(is_test)
 
         while not self.should_end:
             try:
@@ -68,13 +69,13 @@ class CodeServer():
                 print("got something.")
 
                 #get compiler flags and code, remove any null bytes from packing
-                flags = recv_msg(connection,is_test,self.flags)
-                code = recv_msg(connection,is_test,self.code)
-                num_inputs = recv_msg(connection,is_test,self.num_inputs)
+                flags = self.recv_msg(connection,self.flags,is_test)
+                code = self.recv_msg(connection,self.code,is_test)
+                num_inputs = self.recv_msg(connection,self.num_inputs,is_test)
 
                 inputs = []
                 for i in range(int(num_inputs)):
-                    inputs.append(recv_msg(connection,is_test,self.inputs[i]))
+                    inputs.append(self.recv_msg(connection,self.inputs[i],is_test))
 
                 #set alarm to time out in case of really long running programs
                 signal.alarm(self.max_time)
@@ -85,10 +86,10 @@ class CodeServer():
 
                 codex.execute()
                 
-                self.send_msg(connection,codex.compilation_log)
+                self.send_msg(connection,codex.compilation_log,is_test)
 
                 for log in codex.run_logs:
-                    self.send_msg(connection,log)
+                    self.send_msg(connection,log,is_test)
 
                 print("done.")
             except TimeoutError:

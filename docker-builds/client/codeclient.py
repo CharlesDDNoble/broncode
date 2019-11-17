@@ -110,7 +110,7 @@ class CodeClient():
                     log += "Output: \n" + self.run_logs[i] + "\n"
 
                 self.recv_time = time() - self.recv_time
-                
+
                 done = True
             except socket.timeout:
                 #in case the server times out without sending anything
