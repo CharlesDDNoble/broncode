@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         <!--Import thepage.css-->
-        <!-- <link type="text/css" rel="stylesheet" href="{% static 'poc/css/create-lesson.css' %}"> -->
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/create-lesson.css' %}">
 
         <!-- Jquery -->
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
@@ -19,11 +19,14 @@
         <!-- SHOWDOWN -->
         <script type="text/javascript" src="{% static 'poc/js/showdown.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
-        <!-- <script type="text/css" rel="stylesheet" src="{% static 'poc/css/markdown.css' %}"></script> -->
+        <script type="text/css" rel="stylesheet" src="{% static 'poc/css/markdown.css' %}"></script>
 
         <!-- KATEX -->
         <script type="text/css" rel="stylesheet" src="{% static 'poc/katex/katex.min.css' %}"></script>
-        <script defer type="text/javascript" src="{% static 'poc/js/renderkatex.js' %}"></script>
+            <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+<!--         <script defer type="text/javascript" src="{% static 'poc/js/renderkatex.js' %}"></script> -->
         <script defer type="text/javascript" src="{% static 'poc/katex/katex.min.js' %}"></script>
     </head>
     
