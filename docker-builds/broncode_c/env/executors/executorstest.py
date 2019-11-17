@@ -139,7 +139,38 @@ class CExecutorTest(unittest.TestCase):
         self.assertEqual(codex.run_logs[2], "16\n")
 
         os.remove("code")
-        os.remove("code.c")       
+        os.remove("code.c")
+
+    def test_multi_word_input(self):
+        code =  '#include <stdio.h>\n'\
+                'int main(int argc, char* argv[]) {\n'\
+                '    int number;\n'\
+                '    number = atoi(argv[1]);\n'\
+                '    printf("%d\\n", number * 2);\n'\
+                '    number = atoi(argv[2]);\n'\
+                '    printf("%d\\n", number * 2);\n'\
+                '}\n'
+        flags = ""
+        inputs = ["2 3", "4 5", "8 9"]
+
+        comp_log =  "gcc -o code code.c\n"\
+                    "Executing program...\n"\
+                    "Your code successfully compiled and ran, here's the output:\n"\
+                    "./code 2 3\n" \
+                    "./code 4 5\n" \
+                    "./code 8 9\n"
+
+        codex = CExecutor(code, flags, inputs)
+        codex.execute()
+
+        self.assertEqual(codex.compilation_log, comp_log)
+        self.assertEqual(len(codex.run_logs), 3)
+        self.assertEqual(codex.run_logs[0], "4\n6\n")
+        self.assertEqual(codex.run_logs[1], "8\n10\n")
+        self.assertEqual(codex.run_logs[2], "16\n18\n")
+
+        os.remove("code")
+        os.remove("code.c")  
 
 class PythonExecutorTest(unittest.TestCase):
 
