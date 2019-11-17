@@ -11,7 +11,7 @@ In school, we are taught to represent numbers and do math using the decimal (bas
 
 To represent multi-digit numbers, we use place-value notation. Each base-10 number can be expanded as so,
 ```katex
-    base\_10(127) = 100 + 20 + 7 = 1 \* 10^2 + 2 \* 10^1 + 7 \* 10^0
+    base_10(127) = 100 + 20 + 7 = 1 * 10^2 + 2 * 10^1 + 7 * 10^0
 ```
 
 From now on, assume that all numbers are given in decimal unless otherwise stated. Notice that each digit in the number above is the coefficient of 10^*i* where *i* is the place of the digit with *i* = **0** for the ones (10^0) place, *i*= 1 for the tens (10^1) place, *i* = 2 for the hundreds (10^2) place, etc. The value of *i* may also be negative,  which we will discuss later on.
@@ -22,8 +22,8 @@ Similarly, in binary we may represent numbers other than 0 and 1
 using place-value notation. Observe that,
 ```katex
     127 = 64 + 32 + 16 + 8 + 4 + 2 + 1  
-    127 = 1 \* 2^7 + 1 \* 2^6 + 1 \* 2^5 + 1 \* 2^4 + 1 \* 2^3 + 1 \* 2^2 + 1 \* 2^1 + 1 \* 2^0  
-    127 = base\_2(1111111)  
+    127 = 1 * 2^7 + 1 * 2^6 + 1 * 2^5 + 1 * 2^4 + 1 * 2^3 + 1 * 2^2 + 1 * 2^1 + 1 * 2^0  
+    127 = base_2(1111111)  
 ```
 
 ## Binary in Computing
@@ -51,9 +51,9 @@ Let's assume an unsigned integer *u* is stored as a string of 8 bits (1 byte). I
 
 Notice that,
 ```katex
-    base\_2(00010100) = 1\*(16) + 1\*(4)  
-    base\_2(00010100) = 0\*(128) + 0\*(64) + 0\*(32) + 1\*(16) + 0\*(8) + 1\*(4) + 0\*(2) + 0\*(1)  
-    base-2(00010100) = 0 \* 2^7 + 0 \* 2^6 + 0 \* 2^5  + 1 \* 2^4  + 0 \* 2^3 + 1 \* 2^2  + 0 \* 2^1 + 0 \* 2^0  
+    base_2(00010100) = 1*(16) + 1*(4)  
+    base_2(00010100) = 0*(128) + 0*(64) + 0*(32) + 1*(16) + 0*(8) + 1*(4) + 0*(2) + 0*(1)  
+    base_2(00010100) = 0 * 2^7 + 0 * 2^6 + 0 * 2^5  + 1 * 2^4  + 0 * 2^3 + 1 * 2^2  + 0 * 2^1 + 0 * 2^0  
 ```
 
 One important thing to note here is the fixed range of our example 8 bit unsigned integer. We can only represent so many unique values using 8-bits, in fact we can determine that number fairly easily. Observe that,
@@ -211,7 +211,7 @@ An important thing to understand with floating-point values is the fact that the
 
 Let's try to represent 1/2 = 0.5 in binary,
 ```katex
-    0.5 = 1/2  
+    0.5 = \frac{1}{2}  
     0.5 = \frac{1}{2^{1}}  
     0.5 = 2^{-1}  
     0.5 = base\_2(0.1)  
