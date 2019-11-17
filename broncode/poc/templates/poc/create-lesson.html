@@ -15,7 +15,15 @@
 
         <!-- Jquery -->
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
+        
+        <!-- SHOWDOWN -->
         <script type="text/javascript" src="{% static 'poc/js/showdown.min.js' %}"></script>
+
+
+        <!-- KATEX -->
+        <script src="{% static 'poc/katex/katex.min.css' %}"></script>
+        <script src="{% static 'poc/katex/katex.min.js' %}"></script>
+        <script src="{% static 'poc/js/renderkatex.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
     </head>
     
@@ -157,8 +165,8 @@
 
                     $("#textarea-markdown").on('change keyup paste', function() {
                         renderTextarea("#textarea-markdown");
+                        renderKatex();
                     });
-
 
                     // Floating Action Button
                     $('.fixed-action-btn').floatingActionButton();
