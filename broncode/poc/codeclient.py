@@ -92,6 +92,7 @@ class CodeClient():
                 sock.send(self.make_block(self.flags))
                 sock.send(self.make_block(self.code))
                 sock.send(self.make_block(str(len(self.inputs))))
+
                 for input in self.inputs:
                     sock.send(self.make_block(input))
                 
@@ -101,6 +102,7 @@ class CodeClient():
 
                 self.compilation_log = sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
                 self.run_logs = []
+
                 for _ in self.inputs:
                     self.run_logs.append(sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
 
