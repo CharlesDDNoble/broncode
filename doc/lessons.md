@@ -11,7 +11,7 @@ In school, we are taught to represent numbers and do math using the decimal (bas
 
 To represent multi-digit numbers, we use place-value notation. Each base-10 number can be expanded as so,
 ```katex
-    base_10(127) = 100 + 20 + 7 = 1 * 10^2 + 2 * 10^1 + 7 * 10^0
+    base_{10}(127) = 100 + 20 + 7 = 1 * 10^2 + 2 * 10^1 + 7 * 10^0
 ```
 
 From now on, assume that all numbers are given in decimal unless otherwise stated. Notice that each digit in the number above is the coefficient of 10^*i* where *i* is the place of the digit with *i* = **0** for the ones (10^0) place, *i*= 1 for the tens (10^1) place, *i* = 2 for the hundreds (10^2) place, etc. The value of *i* may also be negative,  which we will discuss later on.
@@ -23,7 +23,7 @@ using place-value notation. Observe that,
 ```katex
     127 = 64 + 32 + 16 + 8 + 4 + 2 + 1  
     127 = 1 * 2^7 + 1 * 2^6 + 1 * 2^5 + 1 * 2^4 + 1 * 2^3 + 1 * 2^2 + 1 * 2^1 + 1 * 2^0  
-    127 = base_2(1111111)  
+    127 = base_{2}(1111111)  
 ```
 
 ## Binary in Computing
