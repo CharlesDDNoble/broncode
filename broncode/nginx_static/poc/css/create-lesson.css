@@ -38,6 +38,10 @@ html, body {
 .brown-bg-color {
     background-color: #846C63 !important;
 } */
+
+.broncode-color {
+    background-color: rgb(20, 20, 30);
+}
 .collapsible-header {
     position: relative;
     right: 0;
@@ -58,6 +62,7 @@ html, body {
     max-width: 1280px;
     width: 90%;
 }
+
 @media only screen and (min-width: 601px) {
     .container {
       width: 85%;
@@ -69,24 +74,39 @@ html, body {
     }
 }
 /* IDs */
-#tabs-creation {
+/* #tabs-creation {
     padding: 0;
 }
 #tab-double-col {
     height:100%;
-}
-#tab-codemirror {
+}*/
+
+#codemirror-create-wrapper {
     background-color: rgb(31, 30, 46) !important;
     padding: 0;
 }
+#lesson-create-wrapper {
+    padding: 1rem;
+    border-radius: 1.5px;
+}
+#double-col {
+    margin-bottom: 0;
+}
 #textarea-markdown {
+    min-height: 45vh;
+    max-height: 150vh;
+    overflow-y: scroll;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
     border-bottom: none!important;
     box-shadow: none!important;
 }
 #preview-markdown {
-    height: 100%;
+    min-height: 50vh;
+    max-height: 150vh;
     overflow-y: auto;
     /* border-left: thin solid black; */
+    box-shadow: -5px 0px 2px -5px rgb(200, 200, 200);
 }
 #form-markdown {
     height: 100%;
