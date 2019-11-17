@@ -95,7 +95,7 @@ html, body {
 #textarea-markdown {
     min-height: 45vh;
     max-height: 150vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
     border-bottom: none!important;

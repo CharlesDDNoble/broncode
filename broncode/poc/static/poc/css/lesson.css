@@ -22,7 +22,7 @@ html, body {
     max-height: 90vh;
     background-color: rgb(235, 235, 235);
     overflow: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #compiler-and-flags-col {
