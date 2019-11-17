@@ -86,6 +86,7 @@ class CodeClient():
             try:
                 sock.connect((self.host,self.port))
 
+
                 self.send_time = time()
 
                 #TODO: handle case if message is too big.
@@ -110,8 +111,9 @@ class CodeClient():
                     log += "Output: \n" + self.run_logs[i] + "\n"
 
                 self.recv_time = time() - self.recv_time
-                
+
                 done = True
+                print("done")
             except socket.timeout:
                 #in case the server times out without sending anything
                 log = error_msg_time_out
