@@ -11,8 +11,7 @@ In school, we are taught to represent numbers and do math using the decimal (bas
 
 To represent multi-digit numbers, we use place-value notation. Each base-10 number can be expanded as so,
 ```katex
-    base_{10}(127) &= 100 + 20 + 7 \\ 
-    &= 1 * 10^2 + 2 * 10^1 + 7 * 10^0
+    base_10(127) = 100 + 20 + 7 = 1 * 10^2 + 2 * 10^1 + 7 * 10^0
 ```
 
 From now on, assume that all numbers are given in decimal unless otherwise stated. Notice that each digit in the number above is the coefficient of 10^*i* where *i* is the place of the digit with *i* = **0** for the ones (10^0) place, *i*= 1 for the tens (10^1) place, *i* = 2 for the hundreds (10^2) place, etc. The value of *i* may also be negative,  which we will discuss later on.
@@ -22,11 +21,9 @@ From now on, assume that all numbers are given in decimal unless otherwise state
 Similarly, in binary we may represent numbers other than 0 and 1
 using place-value notation. Observe that,
 ```katex
-    \begin{aligned}
-    127 &= 64 + 32 + 16 + 8 + 4 + 2 + 1  \\
-        &= 1 * 2^7 + 1 * 2^6 + 1 * 2^5 + 1 * 2^4 + 1 * 2^3 + 1 * 2^2 + 1 * 2^1 + 1 * 2^0  \\
-        &= base_{2}(1111111) \\
-    \end{aligned}
+    127 = 64 + 32 + 16 + 8 + 4 + 2 + 1  
+    127 = 1 * 2^7 + 1 * 2^6 + 1 * 2^5 + 1 * 2^4 + 1 * 2^3 + 1 * 2^2 + 1 * 2^1 + 1 * 2^0  
+    127 = base_2(1111111)  
 ```
 
 ## Binary in Computing
@@ -54,11 +51,9 @@ Let's assume an unsigned integer *u* is stored as a string of 8 bits (1 byte). I
 
 Notice that,
 ```katex
-    \begin{aligned}
-    base_{2}(00010100) &= 1*(16) + 1*(4) \\ 
-    &= 0*(128) + 0*(64) + 0*(32) + 1*(16) + 0*(8) + 1*(4) + 0*(2) + 0*(1) \\
-    &= 0 * 2^7 + 0 * 2^6 + 0 * 2^5  + 1 * 2^4  + 0 * 2^3 + 1 * 2^2  + 0 * 2^1 + 0 * 2^0
-    \end{aligned}
+    base_2(00010100) = 1*(16) + 1*(4)  
+    base_2(00010100) = 0*(128) + 0*(64) + 0*(32) + 1*(16) + 0*(8) + 1*(4) + 0*(2) + 0*(1)  
+    base_2(00010100) = 0 * 2^7 + 0 * 2^6 + 0 * 2^5  + 1 * 2^4  + 0 * 2^3 + 1 * 2^2  + 0 * 2^1 + 0 * 2^0  
 ```
 
 One important thing to note here is the fixed range of our example 8 bit unsigned integer. We can only represent so many unique values using 8-bits, in fact we can determine that number fairly easily. Observe that,
@@ -77,12 +72,12 @@ Thus, the maximum number of unique values a bit string of size *n* ≥ 1 can hav
 
 So an 8-bit unsigned integer can represent a total of 
 ```katex
-    2^8 = **256** \, unique \, values. 
+2^8 = **256** unique values. 
 ```
 
 Consequently, given a *n*-bit unsigned integer, its range can be expressed as
 ```katex
-    [0, 2^{n}-1]. 
+    [0, 2^{n} - 1]. 
 ```
 
 So the maximum value of a 8-bit unsigned integer is (2^8) - 1 = 256-1 = 255, and the minimum value is **0**. The inclusion of zero and exclusion of the value 2^*n* is out of convention. We could just as easily say make the range [1,2^n], but computer scientists have collectively recognized the value and importance of representing **0**. Now what about representing negative integers? That's where signed integers come into play.
@@ -170,8 +165,8 @@ Using Scientific-Notation we represent a number like so,
 
 Where *m* (the mantissa) is the sequence of significant digits of the number and *n* is the number of decimal places to the left or right the mantissa begins. The following are a list of base-10 numbers expressed in Scientific-Notation:
 ```katex
-    1230000 = 1.23 * 10^6  \\
-    0.00007 = 7.00 * 10^{-5} \\ 
+    1230000 = 1.23 * 10^6  
+    0.00007 = 7.00 * 10^{-5}  
     1.50700 = 1.507 * 10^0  
 ```
 
@@ -216,23 +211,19 @@ An important thing to understand with floating-point values is the fact that the
 
 Let's try to represent 1/2 = 0.5 in binary,
 ```katex
-    \begin{aligned}
-    0.5 &= \frac{1}{2}  
-    &= \frac{1}{2^{1}}  
-    &= 2^{-1}  
-    &= base_{2}(0.1)
-    \end{aligned}
+    0.5 = \frac{1}{2}  
+    0.5 = \frac{1}{2^{1}}  
+    0.5 = 2^{-1}  
+    0.5 = base\_2(0.1)  
+                  ^-------- Notice the radix point  
 ```
-Notice the radix point to represent negative exponent places.
 
 Okay that wasn't so bad, now let's try 3/4,
 ```katex
-    \begin{aligned}
-    0.75 &= \frac{1}{2} + \frac{1}{4}  
-    &= \frac{1}{2^1} + \frac{1}{2^2}  
-    &= 2^{-1} + 2^{-2}  
-    &= base-2(0.11)
-    \end{aligned}
+    0.75 = \frac{1}{2} + \frac{1}{4}  
+    0.75 = \frac{1}{2^1} + \frac{1}{2^2}  
+    0.75 = 2^{-1} + 2^{-2}  
+    0.75 = base-2(0.11)  
 ```
 
 Great, two for two. Now let's try 1/3,
@@ -242,12 +233,12 @@ Great, two for two. Now let's try 1/3,
 
 Uh oh! Representing 1/3 as the sum of negative powers of 2 is not exactly easy (or possible given a discrete number of bits). We can approximate it though.
 ```katex
-    \frac{1}{3} \approx \frac{1}{4} + \frac{1}{16} = 2^{-2} + 2^{-4} = 0.3125  
+    \frac{1}{3} ≈ \frac{1}{4} + \frac{1}{16} = 2^{-2} + 2^{-4} = 0.3125  
 ```
 
 We can try to get closer by adding smaller powers of 2,
 ```katex
-    \frac{1}{3} \approx \frac{1}{4} + \frac{1}{16} + \frac{1}{64} + \frac{1}{256} = 2^{-2} + 2^{-4} + 2^{-6} + 2^{-8} = 0.33203125  
+    \frac{1}{3} ≈ \frac{1}{4} + \frac{1}{16} + \frac{1}{64} + \frac{1}{256} = 2^{-2} + 2^{-4} + 2^{-6} + 2^{-8} = 0.33203125  
 ```
 
 That's pretty close, but definitely not exact. This, and the fact that floats and doubles have different numbers of bits in their corresponding mantissas, makes the *equal to* operator in C (**==**) not extremely useful when dealing with floats. It is possible that a value like 1/3 is stored differently depending on your C compiler, its settings, and the CPU of your computer. When comparing two floating-point values, it is generally a better practice to check to see if they are within a certain value of each other (generally referred to as *epsilon*). Thus, our comparison would look like this in C:
@@ -265,8 +256,8 @@ That's pretty close, but definitely not exact. This, and the fact that floats an
 ## Machine Epsilon
 
 Given what we learned about normalized and denormalized floating-point numbers, we may assertain that there is some minimal positive (normalized) representable value. We restate this like so,
-    There exists a **minimal** floating-point value *epsilon* such that:  
-    1 + *epsilon* > 1
+> There exists a **minimal** floating-point value *epsilon* such that:  
+> 1 + *epsilon* > 1
 
 This value is generally referred to as the *machine epsilon* and is important because it gives us an upper bound on the relative error generated by rounding operations.
 

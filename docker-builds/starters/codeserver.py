@@ -37,18 +37,16 @@ class CodeServer():
             has_lost_data = True
         return msg + bytes(('\0' * (self.BLOCK_SIZE-len(msg))),"utf-8")
 
-    def recv_msg(self, connection, is_test, msg=''):
-        if is_test:
-            return msg
-        else:
+    def recv_msg(self, connection, msg='', is_test=False):
+        if not is_test:
             msg = connection.recv(self.BLOCK_SIZE).decode("utf-8").replace('\0','')
         return msg
 
-    def send_msg(self, connection, is_test, msg=''):
-        if is_test:
-            self.results_log += msg
-        else:
+    def send_msg(self, connection, msg='', is_test=False):
+        if not is_test:
             connection.send(self.make_block(msg))
+        else:
+            self.results_log += msg
 
     def handle_connection(self, is_test=False):
         #set up server socket
@@ -68,13 +66,15 @@ class CodeServer():
                 print("got something.")
 
                 #get compiler flags and code, remove any null bytes from packing
-                flags = recv_msg(connection,is_test,self.flags)
-                code = recv_msg(connection,is_test,self.code)
-                num_inputs = recv_msg(connection,is_test,self.num_inputs)
+                flags = self.recv_msg(connection)
+                code = self.recv_msg(connection)
+                num_inputs = self.recv_msg(connection)
+
+                print("num:", num_inputs)
 
                 inputs = []
                 for i in range(int(num_inputs)):
-                    inputs.append(recv_msg(connection,is_test,self.inputs[i]))
+                    inputs.append(self.recv_msg(connection))
 
                 #set alarm to time out in case of really long running programs
                 signal.alarm(self.max_time)
