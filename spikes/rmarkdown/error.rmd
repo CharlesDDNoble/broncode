@@ -1,0 +1,4 @@
+```{r}
+i <- 1000
+i/nonDeclaredNumber
+```
