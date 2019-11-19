@@ -1,4 +1,4 @@
-#apt
+# apt
 + uwsgi
 + uwsgi-plugin-python3
 + nginx
@@ -10,12 +10,16 @@
 + libpq-dev
 + docker
 + r-base
++ pandocs (for rmarkdown)
 + python3 (>= 3.6)
 + gcc
 
-#pip3
+# pip3
 + django
 + djangorestframework
 + djangorestframework-jwt
 + psycopg2
 + matplotlib
+
+# R Packages
++ rmarkdown
