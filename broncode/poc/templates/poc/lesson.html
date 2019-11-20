@@ -6,6 +6,13 @@
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/materialize/css/materialize.min.css' %}"  media="screen,projection"/>
+
+        
+        <!--Import thepage.css-->
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/lesson.css' %}">
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/markdown.css' %}">
 
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -83,16 +90,6 @@
                     $('.sidenav').sidenav();
                 });
             </script>
-
-            <!-- SAVING CSS IMPORTS UNTIL LAST, SINCE RMARKDOWN INCLUDES SOME CSS -->
-            <!-- vvvvvvvvvv WE WANT THESE TO HAVE THE MOST PRECEDENCE vvvvvvvvvv -->
-
-            <!--Import thepage.css-->
-            <link type="text/css" rel="stylesheet" href="{% static 'poc/css/lesson.css' %}">
-            <link type="text/css" rel="stylesheet" href="{% static 'poc/css/markdown.css' %}">
-
-            <!--Import materialize.css-->
-            <link type="text/css" rel="stylesheet" href="{% static 'poc/materialize/css/materialize.min.css' %}"  media="screen,projection"/>
         </footer>
     </body>
     <script>loadDynamicData({{ profile.id }}, {{ lesson_id }});</script>
