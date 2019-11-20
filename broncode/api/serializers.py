@@ -67,8 +67,8 @@ class LessonSerializer(serializers.ModelSerializer):
         )
 
     def save(self):
-        print(self.validated_data)
-        name = "lesson"+self.validated_data['id']
+        # print(self.validated_data)
+        name = "lesson"+self.validated_data['number']
         md = self.validated_data['markdown']
         rmd_renderer = RMarkdownRenderer()
         res = rmd_renderer.render(name,md)
