@@ -13,7 +13,7 @@ from poc.codeclient import CodeClient
 from django.core.exceptions import ObjectDoesNotExist
 
 import random
-from rmarkdownrenderer import RMarkdownRenderer
+from api.rmarkdownrenderer import RMarkdownRenderer
 
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
