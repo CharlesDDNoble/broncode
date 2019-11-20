@@ -148,9 +148,8 @@ class SubmissionSerializer(serializers.ModelSerializer):
         elif inputs:
             passed_test = True
             for i in range(len(solution_sets)):
-                print(handler.run_logs[i].rstrip() + " vs " + solution_sets[i].stdout)
                 if handler.run_logs[i].rstrip() != solution_sets[i].stdout:
-                    tests_failed.append(str(solution_sets[i].number))
+                    tests_failed.append(solution_sets[i])
                     passed_test = False
         else:
             passed_test = True
@@ -161,12 +160,16 @@ class SubmissionSerializer(serializers.ModelSerializer):
             else:
                 log = "You didn't pass every test. You failed:\n"
                 if len(tests_failed) == 1:
-                    log += "Test {}.".format(tests_failed[0])
+                    log += "Test {}.\n".format(tests_failed[0].number)
                 else:
                     log += "Tests "
                     for i in range(len(tests_failed) - 1):
-                        log += tests_failed[i] + ", "
-                    log += "and {}.".format(tests_failed[-1])
+                        log += str(tests_failed[i].number) + ", "
+                    log += "and {}.\n".format(tests_failed[-1].number)
+
+                for test in tests_failed:
+                    if test.hint != "":
+                        log += "Hint for test {}: {}\n".format(test.number, test.hint)
 
         # you can add additional data to serializers by calling save(newdata=data)
         # so after running the code and getting the necessary data, we just call
@@ -176,4 +179,4 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class SolutionSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = SolutionSet
-        fields = ("id", "number", "lesson", "stdin", "stdout")
+        fields = ("id", "number", "lesson", "stdin", "stdout", "hint")

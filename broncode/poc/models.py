@@ -7,17 +7,6 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
-# class Chapter(models.Model):
-#     title = models.CharField(max_length=128)
-#     number = models.IntegerField()
-#     course = models.ForeignKey(Course, related_name='chapters', on_delete=models.CASCADE)
-
-#     class Meta:
-#         unique_together = ['course', 'number']
-
-#     def __str__(self):
-#         return self.title
-
 class Lesson(models.Model):
     title = models.CharField(max_length=128)
     number = models.IntegerField()
@@ -54,7 +43,7 @@ class SolutionSet(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="solution_sets")
     stdin = models.TextField()
     stdout = models.TextField()
-    hint = models.TextField(default="")
+    hint = models.TextField(default="", blank=True)
 
     class Meta:
         unique_together = ['lesson', 'number']
