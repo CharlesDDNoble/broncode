@@ -5,15 +5,17 @@
     <head>
         <!--Import Google Icon Font-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
         <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="{% static 'poc/materialize/css/materialize.min.css' %}"  media="screen,projection"/>
 
-        <!--Let browser know website is optimized for mobile-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+        
         <!--Import thepage.css-->
         <link type="text/css" rel="stylesheet" href="{% static 'poc/css/lesson.css' %}">
         <link type="text/css" rel="stylesheet" href="{% static 'poc/css/markdown.css' %}">
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
         <!-- JQUERY -->
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
@@ -31,9 +33,11 @@
         <div class="row" id="major-row">
             <!--Column for instructions on the left-->
             <div class="col s12 l4" id="markdown-content">
+                {% autoescape off %}
                 {% block instructions %}
                 {% include 'poc/component-instructions.html' %}
                 {% endblock instructions %}
+                {% endautoescape %}
             </div>
             <!--Column for both the the compilerflags and codemirror-->
             <div class="col s12 l4" id="compiler-and-flags-col">
