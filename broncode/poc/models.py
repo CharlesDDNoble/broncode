@@ -54,6 +54,7 @@ class SolutionSet(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="solution_sets")
     stdin = models.TextField()
     stdout = models.TextField()
+    hint = models.TextField(default="")
 
     class Meta:
         unique_together = ['lesson', 'number']
