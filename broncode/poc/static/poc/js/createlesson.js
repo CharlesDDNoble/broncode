@@ -4,6 +4,12 @@ $(document).ready(function(){
     $('.modal').modal();
 });
 
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    }
+});
+
 function delete_lesson(lesson_id) {
     console.log("delete_lesson("+lesson_id+")");
 
