@@ -35,6 +35,11 @@
             {% if lessons %}
                 <div class="col s12">
                 <ul class="collection">
+                <script type="text/javascript">
+                    $(document).ready(function(){
+                        $('.modal').modal();
+                    });
+                </script>
                 {% for lesson in lessons %}
                     <li class="collection-item" id="lesson_{{ lesson.id }}_list">
                         <div>
