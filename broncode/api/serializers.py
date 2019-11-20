@@ -13,6 +13,7 @@ from poc.codeclient import CodeClient
 from django.core.exceptions import ObjectDoesNotExist
 
 import random
+from rmarkdownrenderer import RMarkdownRenderer
 
 class CourseSerializerLite(serializers.ModelSerializer):
     class Meta:
@@ -64,6 +65,18 @@ class LessonSerializer(serializers.ModelSerializer):
             "compiler_flags",
             "language"
         )
+
+        def save(self):
+            name = "lesson"+self.validated_data['id']
+            md = self.validated_data['markdown']
+            rmd_renderer = RMarkdownRenderer()
+            res = rmd_renderer.render(name,md)
+            return super().save(markdown=res)
+
+
+
+
+
 
 # class ChapterSerializer(serializers.ModelSerializer):
 #     lessons = LessonSerializerLite(many=True, read_only=True)
