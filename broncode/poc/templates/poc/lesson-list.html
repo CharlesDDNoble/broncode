@@ -17,7 +17,10 @@
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/js/showdown.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
-            
+        
+        <!-- THE PAGE'S JS -->
+        <script type="text/javascript" src="{% static 'poc/static/js/createlesson.js' %}"></script>
+
     </head>
     
     <body>
@@ -35,11 +38,6 @@
             {% if lessons %}
                 <div class="col s12">
                 <ul class="collection">
-                <script type="text/javascript">
-                    $(document).ready(function(){
-                        $('.modal').modal();
-                    });
-                </script>
                 {% for lesson in lessons %}
                     <li class="collection-item" id="lesson_{{ lesson.id }}_list">
                         <div>
@@ -47,7 +45,7 @@
                             <a href="{% url 'lesson' course_id=course_id lesson_number=lesson.number %}" class="secondary-content"><i class="material-icons">arrow_forward</i></a>
                             {% if user.is_staff %}    
                                 <a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a>
-                                <a href="#lesson_{{ lesson.id }}_modal" class="secondary-content"><i class="material-icons">delete</i></a>
+                                <a href="#lesson_{{ lesson.id }}_modal" class="modal-trigger secondary-content"><i class="material-icons">delete</i></a>
                                 {% comment %} <a href="{% url 'lesson' course_id=course_id lesson_number=lesson.number %}" class="collection-item">{{ lesson.title }}</a> {% endcomment %}
                                 <!-- Modal For Lesson Deletion -->
                                 <div id="lesson_{{ lesson.id }}_modal" class="modal">

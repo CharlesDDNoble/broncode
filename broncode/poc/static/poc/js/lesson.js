@@ -41,29 +41,6 @@ function create_lesson() {
     });
 };
 
-function delete_lesson(lesson_number) {
-    console.log("delete_lesson("+lesson_number+")");
-
-    $.ajax({
-        url : 'http://broncode.cs.wmich.edu/api/lessons/' + lesson_number, // the endpoint
-        type : 'DELETE', // http method
-
-        data : {}, // data sent with the post request
-        dataType: 'json',
-        // handle a successful response
-        success : function(json) {
-            $("#list_"+lesson_number).remove();
-            $("#delete_modal_"+lesson_number).remove();
-            console.log(json);
-        },
-
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-};
-
 // AJAX for posting
 function delete_course(course_id) {
     console.log(course_id);
