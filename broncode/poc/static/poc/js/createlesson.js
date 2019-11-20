@@ -1,15 +1,21 @@
-
-// Set up modal interactivity 
-$(document).ready(function(){
-    $('.modal').modal();
-});
-
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+// This function gets cookie with a given name
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-});
+    return cookieValue;
+}
 
+// delete lesson with id=lesson_id
 function delete_lesson(lesson_id) {
     console.log("delete_lesson("+lesson_id+")");
 
@@ -34,3 +40,16 @@ function delete_lesson(lesson_id) {
         }
     });
 };
+
+
+// Set up modal interactivity 
+$(document).ready(function(){
+    $('.modal').modal();
+});
+
+// set up ajax to use csrf_token
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    }
+});
