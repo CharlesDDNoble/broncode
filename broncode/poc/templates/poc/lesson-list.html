@@ -50,6 +50,7 @@
                                 <!-- Modal For Lesson Deletion -->
                                 <div id="lesson_{{ lesson.id }}_modal" class="modal">
                                     <div class="modal-content">
+                                        {% csrf %}
                                         <h4>Delete Lesson</h4>
                                         <p>Are you sure you want to delete this lesson?</p>
                                         </div><div class="modal-footer">
