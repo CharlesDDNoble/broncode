@@ -72,6 +72,13 @@ def lesson(request, course_id, lesson_number):
     
     lesson_obj = Lesson.objects.filter(course=course_id, number=lesson_number)[0]
 
+    disable_codemirror_1 = ''
+    disable_codemirror_2 = ''
+    disable_codemirror = request.GET.get("disableCodemirror","False")
+
+    if not disable_codemirror == "False":
+        disable_codemirror_1 = '<!--'
+        disable_codemirror_2 = '-->'
 
     # grab lesson language
     lesson_lang = lesson_obj.language
@@ -106,8 +113,8 @@ def lesson(request, course_id, lesson_number):
             'profile': request.user.userprofile,
             'codemirror_lang_name': codemirror_lang_name,
             'codemirror_lang_args': codemirror_lang_args,
-            'disable_codemirror_1': '<!--',
-            'disable_codemirror_2': '-->'
+            'disable_codemirror_1': disable_codemirror_1,
+            'disable_codemirror_2': disable_codemirror_2
         }
 
     # Render the 'index.html' page
