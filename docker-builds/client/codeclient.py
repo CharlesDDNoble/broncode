@@ -55,7 +55,7 @@ class CodeClient():
             self.has_lost_data = True
         return msg + bytes(('\0' * (self.BLOCK_SIZE-len(msg))),"utf-8")
 
-    def handle_connection(self, is_test=True):
+    def handle_connection(self):
         """Handles the socket connection to a docker container."""
         error_msg_time_out = "Something went wrong running your code:\n" \
                              "It took too long to execute, so we stopped it!\n"

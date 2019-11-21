@@ -60,15 +60,16 @@ class CodeServerTest(unittest.TestCase):
 
     def thread_code_server(self,server):
         # filter out warnings about unclosed resources
-        warnings.filterwarnings(action="ignore", message="unclosed", 
-                         category=ResourceWarning)
+        warnings.filterwarnings(action="ignore", 
+                                message="unclosed", 
+                                category=ResourceWarning)
         server.handle_connection(is_test=True)
 
     # ToDo: Set this test up to use mock object for socket connection
     
     def test_handle_connection(self):
         server = CodeServer('',0,None)
-        server_thread = threading.Thread(target=self.thread_code_server,args=[server])
+        server_thread = threading.Thread(target=self.thread_code_server, args=[server])
         server_thread.start()
 
         # wait until a port has been assigned to the server
