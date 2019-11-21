@@ -105,7 +105,9 @@ def lesson(request, course_id, lesson_number):
             'lesson_code': lesson_code,
             'profile': request.user.userprofile,
             'codemirror_lang_name': codemirror_lang_name,
-            'codemirror_lang_args': codemirror_lang_args
+            'codemirror_lang_args': codemirror_lang_args,
+            'disable_codemirror_1': '<!--',
+            'disable_codemirror_2': '-->'
         }
 
     # Render the 'index.html' page

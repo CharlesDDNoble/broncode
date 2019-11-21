@@ -23,6 +23,7 @@
     <label>Coding Area
         <textarea id="codemirror" name="codearea">{{ lesson_code }}</textarea>
     </label>
+    {{ disable_codemirror_1 }}
     <script>
         var cEditor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
             lineNumbers: true,
@@ -34,5 +35,6 @@
         var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
         CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
     </script>
+    {{ disable_codemirror_2 }}
 
 {% endblock %}
