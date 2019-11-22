@@ -44,7 +44,7 @@ function create_course(param_course_name) {
             //     </div>
             //     `
             // ).insertBefore("#card-create-course").hide().show("slow");
-            window.location.replace("http://broncode.cs.wmich.edu/courses/"+json.id);
+            window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
             console.log(json);
         },
 
@@ -69,8 +69,8 @@ function delete_course(course_id) {
         success : function(json) {
 //             $("#card-create-course").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
             M.toast({html: 'Course deleted!', classes: 'rounded green lighten-3'});
-            $("#course_"+course_id+"_card").remove();
-            $("#course_"+course_id+"_modal").remove();
+            $("#course_"+toString(course_id)+"_card").remove();
+            $("#course_"+toString(course_id)+"_modal").remove();
             console.log(json);
         },
 
