@@ -3,6 +3,11 @@ $('#btn-create-lesson').on('click', function(event){
     create_lesson();
 });
 
+$('#btn-edit-lesson').on('click', function(event){
+    event.preventDefault();
+    edit_lesson();
+});
+
 // AJAX for posting
 function create_lesson() {
     console.log('create_lesson()');
@@ -11,10 +16,11 @@ function create_lesson() {
     course_id = $('#course-id').val();
     lesson_number = $('#new-lesson-number').val();
     code = cEditor.getValue();
-    selected_language = $("#select-language").val();
+    selected_language = $('#select-language').val();
+    textarea_compiler_flags = $('#compiler-flags').val();
 
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu/api/lessons/', // the endpoint
+        url : 'http://broncode.cs.wmich.edu:1209/api/lessons/', // the endpoint
         type : 'POST', // http method
 
         data : {
@@ -22,8 +28,50 @@ function create_lesson() {
             course : course_id,
             number : lesson_number,
             markdown : textarea_markdown,
+            compiler_flags: textarea_compiler_flags,
             example_code: code,
             language: selected_language
+
+        }, // data sent with the post request
+        dataType: 'json',
+        // handle a successful response
+        success : function(json) {
+            window.location.replace('http://broncode.cs.wmich.edu/course/' + json.course);
+
+            console.log(json);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
+// AJAX for posting
+function edit_lesson() {
+    console.log('edit_lesson()');
+    lesson_name = $('#lesson-name').val();
+    textarea_markdown = $('#textarea-markdown').val();
+    course_id = $('#course-id').val();
+    lesson_id = $('#lesson-id').val();
+    lesson_number = $('#lesson-number').val();
+    code = cEditor.getValue();
+    selected_language = $('#select-language').val();
+    textarea_compiler_flags = $('#compiler-flags').val();
+
+    $.ajax({
+        url : 'http://broncode.cs.wmich.edu:1209/api/lessons/' + lesson_id + '/', // the endpoint
+        type : 'PUT', // http method
+
+        data : {
+            title : lesson_name,
+            course : course_id,
+            number : lesson_number,
+            markdown : textarea_markdown,
+            compiler_flags : textarea_compiler_flags,
+            example_code : code,
+            language : selected_language
 
         }, // data sent with the post request
         dataType: 'json',

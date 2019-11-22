@@ -65,6 +65,20 @@ class LessonSerializer(serializers.ModelSerializer):
             "language"
         )
 
+    # Should update the object if created already
+    def create(self, validated_data):
+        lesson, created = Lesson.objects.update_or_create(
+            id=validated_data.get('id', None),
+            title=validated_data.get('title', None),
+            number = validated_data.get('number', None),
+            course = validated_data.get('course', None),
+            markdown = validated_data.get('markdown', None),
+            example_code = validated_data.get('example_code', None), 
+            compiler_flags = validated_data.get('compiler_flags', None),
+            language = validated_data.get('language', None),
+        )
+        return lesson
+
 # class ChapterSerializer(serializers.ModelSerializer):
 #     lessons = LessonSerializerLite(many=True, read_only=True)
 #     class Meta:
