@@ -6,6 +6,7 @@ function has_valid_template(rmarkdown) {
 // AJAX for posting
 function create_lesson() {
     console.log('create_lesson()');
+    textarea_markdown = $('#textarea-markdown').val();
 
     rmd_checkbox = $('#rmarkdown-checkbox');
     if (rmd_checkbox.is(":checked")) {
@@ -18,7 +19,6 @@ function create_lesson() {
     }
 
     lesson_name = $('#lesson-name').val();
-    textarea_markdown = $('#textarea-markdown').val();
     course_id = $('#course-id').val();
     lesson_number = $('#new-lesson-number').val();
     code = cEditor.getValue();
