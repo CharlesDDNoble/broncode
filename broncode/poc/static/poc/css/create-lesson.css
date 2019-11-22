@@ -13,10 +13,12 @@ html, body {
     /* color: rgb(235, 235, 235); */
 }
 
-/* General */
-html, body {
-    margin: 0;
-    padding: 0;
+ul.dropdown-content.select-dropdown li span {
+    color: black; /* no need for !important :) */
+}
+
+input.select-dropdown.dropdown-trigger {
+    color: white;
 }
 
 /* Navbar (override) */
@@ -24,7 +26,6 @@ html, body {
     background-color: rgb(20, 20, 30);
     /* box-shadow: 0 0 10px -4px black !important; */
 }
-
 /* Classes */
 /* .brand-logo {
     color: #846C63 !important;
@@ -39,8 +40,11 @@ html, body {
     background-color: #846C63 !important;
 } */
 
-.broncode-color {
+.broncode-dark-color {
     background-color: rgb(20, 20, 30);
+}
+.broncode-light-color {
+    background-color: rgb(220, 220, 220);
 }
 .collapsible-header {
     position: relative;
@@ -73,6 +77,8 @@ html, body {
       width: 80%;
     }
 }
+
+
 /* IDs */
 /* #tabs-creation {
     padding: 0;
@@ -80,7 +86,10 @@ html, body {
 #tab-double-col {
     height:100%;
 }*/
-
+#compiler-flags-create-wrapper {
+    /* background-color: rgb(31, 30, 46) !important; */
+    padding: 0;
+}
 #codemirror-create-wrapper {
     background-color: rgb(31, 30, 46) !important;
     padding: 0;
@@ -90,23 +99,28 @@ html, body {
     border-radius: 1.5px;
 }
 #double-col {
+    padding-top: 1rem;
     margin-bottom: 0;
 }
+#textarea-markdown-wrapper {
+    max-height: 150vh;
+    overflow: hidden;
+}
 #textarea-markdown {
-    min-height: 45vh;
+    min-height: 55vh;
     max-height: 150vh;
     overflow-y: auto;
+    
     padding-bottom: 0 !important;
     margin-bottom: 0 !important;
     border-bottom: none!important;
-    box-shadow: none!important;
 }
 #preview-markdown {
-    min-height: 50vh;
+    min-height: 60vh;
     max-height: 150vh;
     overflow-y: auto;
     /* border-left: thin solid black; */
-    box-shadow: -5px 0px 2px -5px rgb(200, 200, 200);
+    box-shadow: -5px 0px 2px -5px rgb(150, 150, 150);
 }
 #form-markdown {
     height: 100%;
