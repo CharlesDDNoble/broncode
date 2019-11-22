@@ -63,8 +63,7 @@ class LessonSerializer(serializers.ModelSerializer):
             "markdown",
             "example_code", 
             "compiler_flags",
-            "language",
-            "rmarkdown"
+            "language"
         )
 
     def save(self):
