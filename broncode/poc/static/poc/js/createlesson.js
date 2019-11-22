@@ -8,7 +8,52 @@ function validate_rmarkdown(input) {
     }
 }
 
+// AJAX for posting
+function create_lesson() {
+    console.log('create_lesson()');
+    lesson_name = $('#lesson-name').val();
+    textarea_markdown = $('#textarea-markdown').val();
+    course_id = $('#course-id').val();
+    lesson_number = $('#new-lesson-number').val();
+    code = cEditor.getValue();
+    selected_language = $('#select-language').val();
+    textarea_compiler_flags = $('#compiler-flags').val();
+
+    $.ajax({
+        url : 'http://broncode.cs.wmich.edu/api/lessons/', // the endpoint
+        type : 'POST', // http method
+
+        data : {
+            title : lesson_name,
+            course : course_id,
+            number : lesson_number,
+            markdown : textarea_markdown,
+            compiler_flags: textarea_compiler_flags,
+            example_code: code,
+            language: selected_language
+
+        }, // data sent with the post request
+        dataType: 'json',
+        // handle a successful response
+        success : function(json) {
+            window.location.replace('http://broncode.cs.wmich.edu/course/' + json.course);
+
+            console.log(json);
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+};
+
 $(document).ready(function(){
+    $('#btn-create-lesson').on('click', function(event){
+        event.preventDefault();
+        create_lesson();
+    });
+
     $('.sidenav').sidenav();
     // $('#login').attr('class', 'waves-effect waves-light btn-small brown');
     // $('#navbar-username').css("color", "rgb(132,108,99)");
