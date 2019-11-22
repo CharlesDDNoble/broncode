@@ -8,23 +8,9 @@ class RMarkdownRenderer():
         self.had_comp_error = False
         self.log = ""
 
-    def render(self,lesson_name,lesson_string):
-        if self.should_compile(lesson_name,lesson_string):
-            self.is_rmarkdown = True
-            return self.compile_rmarkdown(lesson_name,lesson_string[lesson_string.find('\n')+1:])
-        else:
-            return lesson_string
-
-    # check to see if the lesson is rmarkdown and should be compiled to html
-    # and return true or false
-    def should_compile(self,lesson_name,lesson_string):
-        line_end = lesson_string.find('\n')
-        line = lesson_string[0:line_end]
-        return (line == "rmarkdown")
-
     # compile lesson_string into html using Rscript and rmarkdown.
     # ToDo: consider os.chdir(/some/specific/directory/to/store/these)
-    def compile_rmarkdown(self,lesson_name,lesson_string):
+    def render(self,lesson_name,lesson_string):
         html = ""
         rmd_file_name = lesson_name+".rmd"
         outfile = lesson_name+".html"

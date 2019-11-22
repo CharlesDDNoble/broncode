@@ -71,7 +71,8 @@ class LessonSerializer(serializers.ModelSerializer):
         name = "course"+str(self.validated_data['course'].id)+"_lesson"+str(self.validated_data['number'])
         md = self.validated_data['markdown']
         rmd_renderer = RMarkdownRenderer()
-        res = rmd_renderer.render(name,md)
+        if validated_data['rmarkdown']:
+            res = rmd_renderer.render(name,md)
         print("Result of RMarkdownRenderer: "+res[0:100])
         return super().save(markdown=res)
 

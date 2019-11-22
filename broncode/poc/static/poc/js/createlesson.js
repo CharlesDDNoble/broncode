@@ -9,7 +9,9 @@ function create_lesson() {
     textarea_markdown = $('#textarea-markdown').val();
 
     rmd_checkbox = $('#rmarkdown-checkbox');
+    is_rmarkdown = false
     if (rmd_checkbox.is(":checked")) {
+        is_rmarkdown = true
         if (!has_valid_template(textarea_markdown)) {
             console.log('Invalid template for RMarkdown!');
             M.toast({html: 'Invalid template for RMarkdown!', classes: 'rounded red lighten-3'});
@@ -17,6 +19,7 @@ function create_lesson() {
             return;
         }
     }
+
 
     lesson_name = $('#lesson-name').val();
     course_id = $('#course-id').val();
@@ -36,8 +39,8 @@ function create_lesson() {
             markdown : textarea_markdown,
             compiler_flags: textarea_compiler_flags,
             example_code: code,
-            language: selected_language
-
+            language: selected_language,
+            rmarkdown: is_rmarkdown
         }, // data sent with the post request
         dataType: 'json',
         // handle a successful response
