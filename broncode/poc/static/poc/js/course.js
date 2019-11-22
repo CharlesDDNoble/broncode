@@ -44,7 +44,7 @@ function create_course(param_course_name) {
                 </div>
                 `
             ).insertBefore("#card-create-course").hide().show("slow");
-
+            window.location.replace("http://broncode.cs.wmich.edu/courses/");
             console.log(json);
         },
 
@@ -55,27 +55,7 @@ function create_course(param_course_name) {
     });
 };
 
-// AJAX for posting
-function delete_course(course_id) {
-    console.log(course_id);
-    $.ajax({
-        url : "http://broncode.cs.wmich.edu/api/courses/" + course_id, // the endpoint
-        type : "DELETE", // http method
-        dataType : "json",
-        // handle a successful response
-        success : function(json) {
-            $("#card-create-course").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
-            console.log(json);
-        },
-
-        // handle a non-successful response
-        error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-};
-
-// delete lesson with id=course_id
+// delete course with id=course_id
 function delete_course(course_id) {
     console.log("delete_course("+course_id+")");
 
@@ -87,6 +67,7 @@ function delete_course(course_id) {
         dataType: 'json',
         // handle a successful response
         success : function(json) {
+//             $("#card-create-course").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
             M.toast({html: 'Course deleted!', classes: 'rounded green lighten-3'});
             $("#course"+course_id+"_card").remove();
             $("#course_"+course_id+"_modal").remove();
