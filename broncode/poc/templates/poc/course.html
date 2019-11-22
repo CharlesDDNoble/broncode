@@ -39,7 +39,7 @@
 
                             {% if user.is_staff %}
                                 <!-- Modal 2 Trigger -->
-                                <button data-toggle="modal" data-target="#course_{{ course.id }}_modal" class="waves-effect waves-light modal-trigger right btn-flat red-text">Delete</button>
+                                <button data-toggle="modal" data-target="course_{{ course.id }}_modal" class="waves-effect waves-light modal-trigger right btn-flat red-text">Delete</button>
                             {% endif %}
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                 <div id="course_{{ course.id }}_modal" class="modal">
                     <div class="modal-content">
                         <h4>Delete Lesson</h4>
-                        <p>Are you sure you want to delete this lesson?</p>
+                        <p>Are you sure you want to delete this course?</p>
                         </div><div class="modal-footer">
                         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
                         <a href="#!" onclick="delete_course({{ course.id }})" class="modal-close waves-effect waves-green btn-flat">Delete</a>
