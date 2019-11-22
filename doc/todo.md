@@ -4,16 +4,16 @@
     + distinguish from test and submit
     + custom stdin
 + fix ports
-- write IEEE floating point tutorial?
++ write IEEE floating point tutorial?
 - finish manual
 + add R support in middle end
 + lesson/course creation page
-- accessability testing
++ accessability testing
 - usability testing
-- phone testing
-- mark deletion vs real deletion?
-- error messages on the login screen
-- different view for students/instructors
-- python/R syntax highlighting in codemirror box
-- secure the rest API
++ phone testing
++ mark deletion vs real deletion?
++ error messages on the login screen
++ different view for students/instructors
++ python/R syntax highlighting in codemirror box
++ secure the rest API
 - remove debug output
