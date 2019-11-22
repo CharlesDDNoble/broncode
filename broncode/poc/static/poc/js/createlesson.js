@@ -1,16 +1,22 @@
-function validate_rmarkdown(input) {
+function has_valid_template(rmarkdown) {
     valid_regex = /(output:)(.|\n){0,}(html_document:)(.|\n){0,}((theme: null)|(css: null)){1}(.|\n){0,}((theme: null)|(css: null)){1}/;
-    send_btn = $("#btn-create-lesson")
-    if (valid_regex.test(input)) {
-    } else {
-        M.toast({html: 'Invalid template for RMarkdown!', classes: 'rounded red lighten-3'});
-        M.toast({html: 'RMarkdown template must include:\noutput:\n\thtml_document:\n\t\tcss: null\n\t\ttheme: null', classes: 'rounded red lighten-3'});
-    }
+    return valid_regex.test(rmarkdown);
 }
 
 // AJAX for posting
 function create_lesson() {
     console.log('create_lesson()');
+
+    rmd_checkbox = $('#rmarkdown-checkbox');
+    if (rmd_checkbox.is(":checked")) {
+        if (!has_valid_template(textarea_markdown)) {
+            console.log('Invalid template for RMarkdown!');
+            M.toast({html: 'Invalid template for RMarkdown!', classes: 'rounded red lighten-3'});
+            M.toast({html: 'RMarkdown template must include:\noutput:\n\thtml_document:\n\t\tcss: null\n\t\ttheme: null', classes: 'rounded red lighten-3'});
+            return;
+        }
+    }
+
     lesson_name = $('#lesson-name').val();
     textarea_markdown = $('#textarea-markdown').val();
     course_id = $('#course-id').val();
