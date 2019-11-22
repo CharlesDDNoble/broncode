@@ -55,6 +55,7 @@ function create_course(param_course_name) {
                 </div>
                 `
             ).insertBefore("#card-create-course").hide().show("slow");
+            $('.modal').modal();
             console.log(json);
             // window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
         },
