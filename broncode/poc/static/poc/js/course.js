@@ -39,14 +39,24 @@ function create_course(param_course_name) {
                         <div class="card-action">
                             <a class="waves-effect waves-light btn-flat" href="` + json.id + `/">Lessons</a>
                             <!-- Modal Trigger -->
-                            <button data-toggle="modal" data-target="#modal2" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
+                            <button data-toggle="modal" data-target="course_`+json.id+`_modal" class="waves-effect waves-light modal-trigger right btn-flat red-text">Delete</button>
                         </div>
+                    </div>
+                </div>
+                <!-- Modal For Lesson Deletion -->
+                <div id="course_`+json.id+`_modal" class="modal">
+                    <div class="modal-content">
+                        <h4>Delete Lesson</h4>
+                        <p>Are you sure you want to delete this course?</p>
+                        </div><div class="modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        <a href="#!" onclick="delete_course({{ `+json.id+`}})" class="modal-close waves-effect waves-green btn-flat">Delete</a>
                     </div>
                 </div>
                 `
             ).insertBefore("#card-create-course").hide().show("slow");
             console.log(json);
-            window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
+            // window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
         },
 
         // handle a non-successful response
