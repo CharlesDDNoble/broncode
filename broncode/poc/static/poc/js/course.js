@@ -30,7 +30,7 @@ function create_course(param_course_name) {
         success : function(json) {
             // Since the card will not exist unless the page is refreshed, add it
             $(`
-                <div class="col s12 m6 l4">
+                <div id="course_`+json.id+`_card" class="col s12 m6 l4">
                     <div class="card small blue-grey darken-4">
                         <div class="card-content white-text">
                             <span class="card-title">` + json.title + `</span>
@@ -50,7 +50,7 @@ function create_course(param_course_name) {
                         <p>Are you sure you want to delete this course?</p>
                         </div><div class="modal-footer">
                         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-                        <a href="#!" onclick="delete_course({{ `+json.id+`}})" class="modal-close waves-effect waves-green btn-flat">Delete</a>
+                        <a href="#!" onclick="delete_course(`+json.id+`)" class="modal-close waves-effect waves-green btn-flat">Delete</a>
                     </div>
                 </div>
                 `
