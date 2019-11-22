@@ -44,7 +44,7 @@ function create_course(param_course_name) {
                     </div>
                 </div>
                 <!-- Modal For Lesson Deletion -->
-                <div id="course_`+json.id+`_modal" class="modal">
+                <div hidden id="course_`+json.id+`_modal" class="modal">
                     <div class="modal-content">
                         <h4>Delete Lesson</h4>
                         <p>Are you sure you want to delete this course?</p>
