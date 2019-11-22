@@ -62,6 +62,11 @@
                         </select>
                         <label>Language Select</label>
                     </div>
+                    <script>
+                        $(document).ready(function() {
+                            $('select option[value="{{lesson.language}}"]').attr("selected",true);
+                        });
+                    </script>
 
                     <!-- Uploading File -->
                     <div class="file-field input-field col s12">
@@ -79,7 +84,7 @@
                         <p>
                             <label>
                                 <input type="checkbox" class="filled-in" checked="checked" />
-                                <span>R-Markdown</span>
+                                <span>RMarkdown</span>
                             </label>
                         </p>
                     </div>

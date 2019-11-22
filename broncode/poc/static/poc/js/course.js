@@ -56,7 +56,7 @@ function create_course(param_course_name) {
                         <a href="#!" onclick="delete_course(`+json.id+`)" class="modal-close waves-effect waves-green btn-flat">Delete</a>
                     </div>
                 </div>
-            `).insertAfter("course_"+json.id+"_card").hide()
+            `).insertAfter("#course_"+json.id+"_card").hide()
             $('.modal').modal();
             console.log(json);
             // window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
