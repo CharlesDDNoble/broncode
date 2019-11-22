@@ -43,9 +43,12 @@ function create_course(param_course_name) {
                         </div>
                     </div>
                 </div>
+                `
+            ).insertBefore("#card-create-course").hide().show("slow");
+            $(`
                 <!-- Modal For Lesson Deletion -->
-                <div hidden id="course_`+json.id+`_modal" class="modal">
-                    <div hidden class="modal-content">
+                <div id="course_`+json.id+`_modal" class="modal">
+                    <div class="modal-content">
                         <h4>Delete Lesson</h4>
                         <p>Are you sure you want to delete this course?</p>
                         </div><div class="modal-footer">
@@ -53,8 +56,7 @@ function create_course(param_course_name) {
                         <a href="#!" onclick="delete_course(`+json.id+`)" class="modal-close waves-effect waves-green btn-flat">Delete</a>
                     </div>
                 </div>
-                `
-            ).insertBefore("#card-create-course").hide().show("slow");
+            `).insertAfter("course_"+json.id+"_card").hide()
             $('.modal').modal();
             console.log(json);
             // window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
