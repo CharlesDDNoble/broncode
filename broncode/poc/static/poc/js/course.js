@@ -28,24 +28,25 @@ function create_course(param_course_name) {
         dataType: "json",
         // handle a successful response
         success : function(json) {
-            // $(`
-            //     <div class="col s12 m6 l4">
-            //         <div class="card small blue-grey darken-4">
-            //             <div class="card-content white-text">
-            //                 <span class="card-title">` + json.title + `</span>
-            //                 <p></p>
-            //             </div>
-            //             <div class="card-action">
-            //                 <a class="waves-effect waves-light btn-flat" href="` + json.id + `/">Lessons</a>
-            //                 <!-- Modal Trigger -->
-            //                 <button data-toggle="modal" data-target="#modal2" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
-            //             </div>
-            //         </div>
-            //     </div>
-            //     `
-            // ).insertBefore("#card-create-course").hide().show("slow");
-            window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
+            // Since the card will not exist unless the page is refreshed, add it
+            $(`
+                <div class="col s12 m6 l4">
+                    <div class="card small blue-grey darken-4">
+                        <div class="card-content white-text">
+                            <span class="card-title">` + json.title + `</span>
+                            <p></p>
+                        </div>
+                        <div class="card-action">
+                            <a class="waves-effect waves-light btn-flat" href="` + json.id + `/">Lessons</a>
+                            <!-- Modal Trigger -->
+                            <button data-toggle="modal" data-target="#modal2" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
+                        </div>
+                    </div>
+                </div>
+                `
+            ).insertBefore("#card-create-course").hide().show("slow");
             console.log(json);
+            window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
         },
 
         // handle a non-successful response
