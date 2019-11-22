@@ -10,8 +10,9 @@
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        <!--Import thepage.css-->
+        <!-- PAGE SPECIFIC IMPORTS -->
         <link type="text/css" rel="stylesheet" href="{% static 'poc/css/create-lesson.css' %}">
+        <script type="text/javascript" src="{% static 'poc/js/createlesson.js' %}"></script>
 
         <!-- Jquery -->
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
@@ -43,11 +44,11 @@
             
             <form class="col s12">
             {% csrf_token %}
-                <div id="lesson-create-wrapper" class="row blue-grey darken-4">
+                <div id="lesson-create-wrapper" class="row broncode-dark-color">
 
                     <!-- Lesson Name -->
                     <div id="" class="input-field col s6">
-                        <input placeholder="Lesson Name" id="lesson-name" type="text" class="validate white-text">
+                        <input placeholder="" id="lesson-name" type="text" class="validate white-text">
                         <label for="lesson-name">Lesson Name</label>
                     </div>
 
@@ -72,23 +73,42 @@
                             <input class="file-path validate white-text" type="text" id="input-file-path">
                         </div>
                     </div>
+                    
+                    <!-- R-Markdown -->
+                    <div class="col s6">
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" checked="checked" />
+                                <span>R-Markdown</span>
+                            </label>
+                        </p>
+                    </div>
 
                     <!-- Markdown -->
-                    <div id="" class="col s12">
-                        <div id="double-col" class="row">
+                    <div class="col s12">
+                        <div id="double-col" class="row broncode-light-color">
                             <!-- Markdown Input -->
                             <div id="textarea-markdown-wrapper" class="input-field col s12 m6">
-                                <textarea placeholder="# Type or Upload File" id="textarea-markdown" class="materialize-textarea white-text"></textarea>
-                                <label for="textarea-markdown">Markdown</label>
+                                <textarea placeholder="" id="textarea-markdown" class="materialize-textarea black-text flow-text"></textarea>
+                                <label for="textarea-markdown" class="black-text">Markdown</label>
                             </div>
 
                             <!-- Markdown Preview -->
-                            <div id="preview-markdown" class="col s12 m6 white-text"></div>
+                            <label id="label-preview-markdown" class="black-text">Preview Markdown
+                                <div id="preview-markdown" class="col s12 m6 black-text"></div>
+                            </label>
                         </div>
                     </div>
 
+                    <!--Column for compilerflags-->
+                    <div id="compiler-flags-create-wrapper" class="col s12 broncode-dark-color">
+                        {% block compilerFlags%}
+                        {% include 'poc/component-flags.html' %}
+                        {% endblock compilerFlags %}
+                    </div>
+
                     <!-- Codemirror -->
-                    <div id="codemirror-create-wrapper" class="col s12 white">
+                    <div id="codemirror-create-wrapper" class="col s12">
                         {% block codemirror %}
                         {% include 'poc/component-codemirror.html' %}
                         {% endblock codemirror %}

@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/materialize/css/materialize.min.css' %}"  media="screen,projection"/>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <!--Import thepage.css-->
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/create-lesson.css' %}">
+
+        <!-- Jquery -->
+        <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
+        
+        <!-- SHOWDOWN -->
+        <script type="text/javascript" src="{% static 'poc/js/showdown.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
+        <link type="text/css" rel="stylesheet" src="{% static 'poc/css/markdown.css' %}">
+
+        <!-- KATEX -->
+        <link type="text/css" rel="stylesheet" src="{% static 'poc/katex/katex.min.css' %}">
+
+        <script defer type="text/javascript" src="{% static 'poc/js/renderkatex.js' %}"></script>
+        <script defer type="text/javascript" src="{% static 'poc/katex/katex.min.js' %}"></script>
+    </head>
+    
+    <body>
+        <header>
+            {% block navbar %}
+            {% include 'poc/component-navbar.html' %}
+            {% endblock %}
+        </header>
+
+        <!-- First Row -->
+        <div class="row container" id="courses-row">
+            <div class="col s12">
+                <h1 class="brown-color">Create a Lesson</h1>
+            </div>
+            
+            <form class="col s12">
+            {% csrf_token %}
+                <div id="lesson-create-wrapper" class="row broncode-dark-color">
+
+                    <!-- Lesson Name -->
+                    <div id="" class="input-field col s6">
+                        <input placeholder="" id="lesson-name" type="text" class="validate white-text">
+                        <label for="lesson-name">Lesson Name</label>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            $("#lesson-name").attr('value', '{{lesson.title}}');    
+                        });
+                    </script>
+
+                    <!-- Language -->
+                    <div class="input-field col s6">
+                        <select id="select-language">
+                            <option value="" style="color:white;" disabled selected>Choose Language</option>
+                            <option value="Python3">Python</option>
+                            <option value="C">C</option>
+                            <option value="R">R</option>
+                        </select>
+                        <label>Language Select</label>
+                    </div>
+                    <script>
+                        $(document).ready(function() {
+                            $('select option[value="{{lesson.language}}"]').attr("selected",true);
+                        });
+                    </script>
+
+                    <!-- Uploading File -->
+                    <div class="file-field input-field col s12">
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" id="input-file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate white-text" type="text" id="input-file-path">
+                        </div>
+                    </div>
+
+                    <!-- R-Markdown -->
+                    <div class="col s6">
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" checked="checked" />
+                                <span>R-Markdown</span>
+                            </label>
+                        </p>
+                    </div>
+
+                    <!-- Markdown -->
+                    <div class="col s12">
+                        <div id="double-col" class="row broncode-light-color">
+                            <!-- Markdown Input -->
+                            <div id="textarea-markdown-wrapper" class="input-field col s12 m6">
+                                <textarea placeholder="" id="textarea-markdown" class="materialize-textarea black-text flow-text"></textarea>
+                                <label for="textarea-markdown" class="black-text">Markdown</label>
+                            </div>
+
+                            <!-- Markdown Preview -->
+                            <label id="label-preview-markdown" class="black-text">Preview Markdown
+                                <div id="preview-markdown" class="col s12 m6 black-text"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!--Column for compilerflags-->
+                    <div id="compiler-flags-create-wrapper" class="col s12 broncode-dark-color">
+                        {% block compilerFlags%}
+                        {% include 'poc/component-flags.html' %}
+                        {% endblock compilerFlags %}
+                    </div>
+
+                    <!-- Codemirror -->
+                    <div id="codemirror-create-wrapper" class="col s12">
+                        {% block codemirror %}
+                        {% include 'poc/component-codemirror.html' %}
+                        {% endblock codemirror %}
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <input type="hidden" id="course-id" value="{{ course_id }}">
+        <!-- Get the lastest lesson number -->
+        <input type="hidden" id="lesson-id" value="{{ lesson.id }}">
+        <input type="hidden" id="lesson-number" value="{{ lesson.number }}">
+        <div class="fixed-action-btn">
+            <a href="#!" id="btn-edit-lesson" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">send</i></a> 
+        </div>
+        <footer>
+            <!--JavaScript at end of body for optimized loading-->
+            <script type="text/javascript" src="{% static 'poc/js/lesson.js' %}"></script>
+            <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
+            <script>
+                $(document).ready(function(){
+                    // Side navbar for mobile
+                    $('.sidenav').sidenav();
+
+                    // Render the tabs
+                    $('.tabs').tabs({
+                        swipeable: true
+                    });
+
+                    // Render select
+                    $('select').formSelect();
+
+                    // Render markdown realtime
+                    function renderTextarea(textarea_id) {
+                        $("#preview-markdown").html($(textarea_id).val());
+                        renderMarkdownClass("#preview-markdown");
+                        renderKatex();
+                    }
+
+                    // INITIALIZE DEFAULT TEXTAREA
+                    /*
+                     * The reason this has to be done through a get request
+                     * rather than using the passing in `lesson` object
+                     * is because the markdown text contains codeblocks.
+                     * The code blocks start with backticks (`).
+                     * In javascript the backticks start a block string.
+                     * So for example 'this is a single line string'.
+                     * Meaning that I can just use single or double quotes.
+                     * But `this 
+                     * is a 
+                     * multiline
+                     * string`.
+                     * So codeblocks break the string since they themselves use
+                     * backticks.
+                     */
+                    $.ajax({
+                        url :  "http://broncode.cs.wmich.edu/api/lessons/" + {{lesson.id}},
+                        type : "GET",
+                        success : function(json) {	
+                            // cEditor is the codemirror object
+                            $('#textarea-markdown').val(json.markdown);
+                            renderTextarea($('#textarea-markdown'));
+                            M.textareaAutoResize($('#textarea-markdown'));
+                        },
+
+                        // handle a non-successful response
+                        error : function(xhr,errmsg,err) {
+                            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                        }
+                    });
+            
+
+                    $("#textarea-markdown").on('change keyup paste', function() {
+                        renderTextarea("#textarea-markdown");
+                    });
+
+                    // Floating Action Button
+                    $('.fixed-action-btn').floatingActionButton();
+
+                    // Set codemirror size (Variable declared in `component-codemirror.html`)
+                    cEditor.setSize('100%', '70vh');
+
+                    // Grabbing input file
+                    // Reference: https://stackoverflow.com/questions/31746837/reading-uploaded-text-file-contents-in-html
+                    $('#input-file').change(getFile);
+
+                    function getFile(event) {
+                        const input = event.target;
+                        if ('files' in input && input.files.length > 0) {
+                            placeFileContent($('#textarea-markdown'), input.files[0]);
+                        }
+                    }
+
+                    function placeFileContent(target, file) {
+                        readFileContent(file).then(content => {
+                            console.log(content);
+                            $(target).val(content);
+                            var textarea = target;
+                            renderTextarea(textarea);
+                            M.textareaAutoResize($(target));
+                        }).catch(error => console.log(error))
+                    }
+
+                    function readFileContent(file) {
+                        const reader = new FileReader()
+                        return new Promise((resolve, reject) => {
+                            reader.onload = event => resolve(event.target.result);
+                            reader.onerror = error => reject(error);
+                            reader.readAsText(file);
+                        })
+                    }
+
+
+                    // INITIALIZE DEFAULT CODE AREA
+                    $.ajax({
+                        url :  "http://broncode.cs.wmich.edu/api/lessons/" + {{lesson.id}},
+                        type : "GET",
+                        success : function(json) {	
+                            // cEditor is the codemirror object
+                            console.log(json.example_code);
+                            
+                            // Define in component-codemirror as global variable
+                            cEditor.getDoc().setValue(json.example_code);
+                        },
+
+                        // handle a non-successful response
+                        error : function(xhr,errmsg,err) {
+                            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                        }
+                    });
+                });
+            </script>
+        </footer>
+    </body>
+    
+</html>
