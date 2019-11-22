@@ -50,6 +50,11 @@
                         <input placeholder="" id="lesson-name" type="text" class="validate white-text">
                         <label for="lesson-name">Lesson Name</label>
                     </div>
+                    <script>
+                        $(document).ready(function() {
+                            $("#lesson-name").attr('value', '{{lesson.title}}');    
+                        });
+                    </script>
 
                     <!-- Language -->
                     <div class="input-field col s6">
@@ -61,6 +66,11 @@
                         </select>
                         <label>Language Select</label>
                     </div>
+                    <script>
+                        $(document).ready(function() {
+                            $('select option[value="{{lesson.language}}"]').attr("selected",true);
+                        });
+                    </script>
 
                     <!-- Uploading File -->
                     <div class="file-field input-field col s12">
@@ -72,7 +82,7 @@
                             <input class="file-path validate white-text" type="text" id="input-file-path">
                         </div>
                     </div>
-                    
+
                     <!-- R-Markdown -->
                     <div class="col s6">
                         <p>
@@ -116,48 +126,12 @@
             </form>
         </div>
 
-        {% comment %} <!-- First Row -->
-        <div class="row container" id="courses-row">
-            <div class="col s12">
-                <h1 class="brown-color">Create a Lesson</h1>
-            </div>
-            <div id="tabs-creation" class="col s12">
-                <ul class="tabs">
-                    <li class="tab col s3"><a href="#tab-information">Information</a></li>
-                    <li class="tab col s3"><a href="#tab-markdown">Markdown</a></li>
-                    <li class="tab col s3"><a href="#tab-codemirror">Default Code</a></li>
-                </ul>
-            </div>
-            <div id="tab-information" class="col s12 white">
-            
-            </div>
-            <div id="tab-markdown" class="col s12 white">
-                <div id="tab-double-col" class="row">
-                    <form id="form-markdown" class="col s6 z-depth-1">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <textarea id="textarea-markdown" class="materialize-textarea"></textarea>
-                                <label for="textarea-markdown">Markdown</label>
-                            </div>
-                        </div>
-                    </form>
-                    <div id="preview-markdown" class="col s6 z-depth-1">
-                        <h5><span class="grey-text lighten-2">Markdown Preview...<span></h5>
-                    </div>
-                </div>
-            </div>
-            <div id="tab-codemirror" class="col s12 white">
-                {% block codemirror %}
-                {% include 'poc/component-codemirror.html' %}
-                {% endblock codemirror %}
-            </div>
-        </div> {% endcomment %}
         <input type="hidden" id="course-id" value="{{ course_id }}">
         <!-- Get the lastest lesson number -->
-        <input type="hidden" id="new-lesson-number" value="{{ new_lesson_number }}"> 
+        <input type="hidden" id="lesson-id" value="{{ lesson.id }}">
+        <input type="hidden" id="lesson-number" value="{{ lesson.number }}">
         <div class="fixed-action-btn">
-            <a href="#!" id="btn-create-lesson" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">send</i></a> 
+            <a href="#!" id="btn-edit-lesson" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">send</i></a> 
         </div>
         <footer>
             <!--JavaScript at end of body for optimized loading-->
@@ -165,9 +139,8 @@
             <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
             <script>
                 $(document).ready(function(){
+                    // Side navbar for mobile
                     $('.sidenav').sidenav();
-                    // $('#login').attr('class', 'waves-effect waves-light btn-small brown');
-                    // $('#navbar-username').css("color", "rgb(132,108,99)");
 
                     // Render the tabs
                     $('.tabs').tabs({
@@ -181,19 +154,49 @@
                     function renderTextarea(textarea_id) {
                         $("#preview-markdown").html($(textarea_id).val());
                         renderMarkdownClass("#preview-markdown");
+                        renderKatex();
                     }
+
+                    // INITIALIZE DEFAULT TEXTAREA
+                    /*
+                     * The reason this has to be done through a get request
+                     * rather than using the passing in `lesson` object
+                     * is because the markdown text contains codeblocks.
+                     * The code blocks start with backticks (`).
+                     * In javascript the backticks start a block string.
+                     * So for example 'this is a single line string'.
+                     * Meaning that I can just use single or double quotes.
+                     * But `this 
+                     * is a 
+                     * multiline
+                     * string`.
+                     * So codeblocks break the string since they themselves use
+                     * backticks.
+                     */
+                    $.ajax({
+                        url :  "http://broncode.cs.wmich.edu:1209/api/lessons/" + {{lesson.id}},
+                        type : "GET",
+                        success : function(json) {	
+                            // cEditor is the codemirror object
+                            $('#textarea-markdown').val(json.markdown);
+                            renderTextarea($('#textarea-markdown'));
+                            M.textareaAutoResize($('#textarea-markdown'));
+                        },
+
+                        // handle a non-successful response
+                        error : function(xhr,errmsg,err) {
+                            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                        }
+                    });
+            
 
                     $("#textarea-markdown").on('change keyup paste', function() {
                         renderTextarea("#textarea-markdown");
-                        renderKatex();
                     });
 
                     // Floating Action Button
                     $('.fixed-action-btn').floatingActionButton();
 
-                    // Set comiler flag options
-                    editor.setSize('100%', '5vh');
-                    
                     // Set codemirror size (Variable declared in `component-codemirror.html`)
                     cEditor.setSize('100%', '70vh');
 
@@ -227,8 +230,25 @@
                         })
                     }
 
+
+                    // INITIALIZE DEFAULT CODE AREA
+                    $.ajax({
+                        url :  "http://broncode.cs.wmich.edu:1209/api/lessons/" + {{lesson.id}},
+                        type : "GET",
+                        success : function(json) {	
+                            // cEditor is the codemirror object
+                            console.log(json.example_code);
+                            
+                            // Define in component-codemirror as global variable
+                            cEditor.getDoc().setValue(json.example_code);
+                        },
+
+                        // handle a non-successful response
+                        error : function(xhr,errmsg,err) {
+                            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                        }
+                    });
                 });
-                
             </script>
         </footer>
     </body>
