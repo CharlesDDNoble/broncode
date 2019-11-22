@@ -101,6 +101,8 @@ $(function() {
 });
 
 $(document).ready(function(){
+    lesson_id = $("#lesson-id").val()
+
     // Side navbar for mobile
     $('.sidenav').sidenav();
 
@@ -136,7 +138,7 @@ $(document).ready(function(){
      * backticks.
      */
     $.ajax({
-        url :  "http://broncode.cs.wmich.edu/api/lessons/" + {{lesson.id}},
+        url :  "http://broncode.cs.wmich.edu/api/lessons/" + lesson_id,
         type : "GET",
         success : function(json) {  
             // cEditor is the codemirror object
@@ -195,7 +197,7 @@ $(document).ready(function(){
 
     // INITIALIZE DEFAULT CODE AREA
     $.ajax({
-        url :  "http://broncode.cs.wmich.edu/api/lessons/" + {{lesson.id}},
+        url :  "http://broncode.cs.wmich.edu/api/lessons/" + lesson_id,
         type : "GET",
         success : function(json) {  
             // cEditor is the codemirror object
