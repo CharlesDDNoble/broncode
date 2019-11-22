@@ -1,5 +1,9 @@
 from .codeclient import CodeClient
 import unittest
+import threading
+import warnings
+import signal
+import socket
 import os
 
 class CodeClientTest(unittest.TestCase):
@@ -37,152 +41,76 @@ class CodeClientTest(unittest.TestCase):
         self.assertEqual(len(out),handler.BLOCK_SIZE)
         self.assertEqual(out,exp)
 
-    # ToDo: Set this test up to use mock object for socket connection
-    def test_run_c(self):
-        host = ''
-        port = 4000
-        flags = "-O3" 
+    def thread_code_client(self,client):
+        warnings.filterwarnings(action="ignore", 
+                                message="unclosed", 
+                                category=ResourceWarning)
+        client.run()
+        pass
 
-        #Testing code input with a compilation error in it
-        code = "int main(int argc,char** argv){error;return 0;}\n"
-        exp = "gcc -O3 -o code code.c\n" \
-              "Something went wrong compiling your code:\n" \
-              "code.c: In function 'main':\n" \
-              "code.c:1:32: error: 'error' undeclared (first use in this function)\n" \
-              " int main(int argc,char** argv){error;return 0;}\n" \
-              "                                ^~~~~\n" \
-              "code.c:1:32: note: each undeclared identifier is reported only once for each function it appears in\n"
-        handler = CodeClient(host,port,code,flags)
-        handler.run()
-        # GCC seems to use the curly quotes ‘’ instead of regular quote ''
-        out = handler.compilation_log.replace('‘','\'').replace('’','\'')
-        self.assertEqual(out,exp)
+    def alarm_handler(self, signum, frame):
+        raise TimeoutError('Timeout!')
 
-        #Testing code input that is correct (it should compile and run successfully)
-        code = "int main(int argc,char** argv){printf(\"Hello!\\n\");return 0;}\n"
-        exp =   "gcc -O3 -o code code.c\n" \
-                "Executing program...\n" \
-                "Your code successfully compiled and ran, here's the output:\n" \
-                "./code\n" \
-                "Hello!\n"
-        handler = CodeClient(host,port,code,flags)
-        handler.run()
-        out = handler.compilation_log.replace('‘','\'').replace('’','\'')
-        self.assertEqual(out,exp)
+    # ToDo: add test for infinite loop i.e. the server does not send back before timeout
+    def test_handle_connection(self):
+        # set up server socket
+        serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        serversocket.bind(('', 0))
+        port = serversocket.getsockname()[1]
+        serversocket.listen(1) # become a server socket, maximum 1 connections
+    
+        code = "print(\"Hello\")"
+        flags = "-g -O3"
+        inputs = ["INPUT_0","INPUT_1","INPUT_2"]
 
-        #Testing code input that is an infinite loop (this should cause a timeout)
-        code = "int main(int argc,char** argv){while(1);return 0;}\n"
-        exp = "Something went wrong running your code:\n" \
-              "It took too long to execute, so we stopped it!\n"
-        handler = CodeClient(host,port,code,flags)
-        handler.max_time = 2
-        handler.run()
-        out = handler.log.replace('‘','\'').replace('’','\'')
-        self.assertEqual(out,exp)
+        client = CodeClient('',port,code,flags,inputs)
+        client_thread = threading.Thread(target=self.thread_code_client,args=[client])
+        client_thread.start()
 
-        #Testing code input that uses command lines
-        code = \
-            "#include <stdio.h>\n" \
-            "int main(int argc, char* argv[]) {\n" \
-            "    printf(\"%s\\n\", argv[1]);\n" \
-            "    return 0;\n" \
-            "}\n"
+        signal.signal(signal.SIGALRM, self.alarm_handler)
+        signal.alarm(5)
+        connection, address = serversocket.accept()
+        
+        # reset alarm
+        signal.alarm(10)
 
-        exp = "input!\n"
-        handler = CodeClient(host,port,code,flags,["input!"])
-        handler.run()
-        out = handler.run_logs[0].replace('‘','\'').replace('’','\'')
-        self.assertEqual(out,exp)
+        # recv flags code num_inputs inputs
+        client_flags = connection.recv(client.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+        client_code = connection.recv(client.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")
+        client_num_inputs = int(connection.recv(client.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
+        client_inputs = []
+        for i in range(client_num_inputs):
+            client_inputs += [connection.recv(client.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8")]
+        
+        # send comp log and outputs
+        comp_log = "COMPILATION LOG\n"
+        connection.send(client.make_block(comp_log))
+        
+        # send run logs
+        run_logs = []
+        for i in range(client_num_inputs):
+            run_logs += ["OUTPUT_"+str(i)]
+            connection.send(client.make_block(run_logs[i]))
+        serversocket.close()
 
-        code = \
-            "#include <stdio.h>\n" \
-            "int main(int argc, char* argv[]) {\n" \
-            "    printf(\"%s\\n\", argv[1]);\n" \
-            "    printf(\"%s\\n\", argv[2]);\n" \
-            "    return 0;\n" \
-            "}\n"
+        client_thread.join()
 
-        exp = "input!\noutput!\n"
-        handler = CodeClient(host,port,code,flags,["input! output!"])
-        handler.run()
-        out = handler.run_logs[0].replace('‘','\'').replace('’','\'')
-        self.assertEqual(out,exp)
+        # check that all messages were sent properly
+        self.assertEqual(code,client_code)
+        self.assertEqual(flags,client_flags)
+        self.assertEqual(len(inputs),client_num_inputs)
+        self.assertEqual(comp_log,client.compilation_log)
+        for i in range(len(run_logs)):
+            self.assertEqual(run_logs[i],client.run_logs[i])
 
-    def test_run_python(self):
-        host = ''
-        port = 4001
-        flags = "" 
+        # build the final expected log
+        exp_log = comp_log
+        for i in range(len(inputs)):
+            exp_log += "Input: " + inputs[i] + "\n"
+            exp_log += "Output: \n" + run_logs[i] + "\n"
 
-        # Testing code input with a compilation error in it
-        code =  "print(Erro World!)"
-        exp =   "python3 code.py\n" \
-                "Something went wrong running your code:\n" \
-                "  File \"code.py\", line 1\n" \
-                "    print(Erro World!)\n" \
-                "                   ^\n" \
-                "SyntaxError: invalid syntax\n"
+        self.assertEqual(exp_log,client.log)
 
-        handler = CodeClient(host,port,code,flags,[])
-        handler.run()
-        out = handler.compilation_log
-        self.assertEqual(out,exp)
-
-        #Testing code input that is correct (it should compile and run successfully)
-        code = "print(\"Hello World!\")"
-        exp =  "python3 code.py\n" \
-                "Your code successfully compiled and ran, here's the output:\n" \
-                "Hello World!\n"
-        handler = CodeClient(host,port,code,flags)
-        handler.run()
-        out = handler.compilation_log
-        self.assertEqual(out,exp)
-
-        #Testing code input that is an infinite loop (this should cause a timeout)
-        code = "while True:\n\tpass\n"
-        exp = "Something went wrong running your code:\n" \
-              "It took too long to execute, so we stopped it!\n"
-        handler = CodeClient(host,port,code,flags)
-        handler.max_time = 2
-        handler.run()
-        out = handler.log.replace('‘','\'').replace('’','\'')
-        self.assertEqual(out,exp)
-
-    def test_run_r(self):
-        host = ''
-        port = 4002
-        flags = "" 
-
-        # Testing code input with a compilation error in it
-        code =  "this is bad code"
-        exp =   "Rscript code.r\n" \
-                "Something went wrong running your code:\n" \
-                "Error: unexpected symbol in \"this is\"\n" \
-                "Execution halted\n"
-
-        handler = CodeClient(host,port,code,flags)
-        handler.run()
-        out = handler.compilation_log
-        self.assertEqual(out,exp)
-
-        #Testing code input that is correct (it should compile and run successfully)
-        code = "hello <- \"Hello, World!\"\nprint(hello)"
-        exp =   "Rscript code.r\n" \
-                "Your code successfully compiled and ran, here's the output:\n" \
-                "[1] \"Hello, World!\"\n"
-        handler = CodeClient(host,port,code,flags)
-        handler.run()
-        out = handler.compilation_log
-        self.assertEqual(out,exp)
-
-        #Testing code input that is an infinite loop (this should cause a timeout)
-        code = "while (TRUE)\{\}\n"
-        exp = "Something went wrong running your code:\n" \
-              "It took too long to execute, so we stopped it!\n"
-        handler = CodeClient(host,port,code,flags)
-        handler.max_time = 2
-        handler.run()
-        out = handler.log.replace('‘','\'').replace('’','\'')
-        self.assertEqual(out,exp)
 
 if __name__ == '__main__':
     unittest.main()
