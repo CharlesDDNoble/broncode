@@ -20,7 +20,7 @@ function create_lesson() {
     textarea_compiler_flags = $('#compiler-flags').val();
 
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu:1209/api/lessons/', // the endpoint
+        url : 'http://broncode.cs.wmich.edu/api/lessons/', // the endpoint
         type : 'POST', // http method
 
         data : {
@@ -61,7 +61,7 @@ function edit_lesson() {
     textarea_compiler_flags = $('#compiler-flags').val();
 
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu:1209/api/lessons/' + lesson_id + '/', // the endpoint
+        url : 'http://broncode.cs.wmich.edu/api/lessons/' + lesson_id + '/', // the endpoint
         type : 'PUT', // http method
 
         data : {
