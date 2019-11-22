@@ -82,7 +82,6 @@ def lesson(request, course_id, lesson_number):
         codemirror_lang_name = "python"
         codemirror_lang_args = ", version: 3, singleLineStringErrors: false"
 
-    print("lesson_obj=---===============",lesson_obj)
     print(lesson_obj.id)
 
     # grab lesson text
@@ -152,3 +151,16 @@ def createLesson(request, course_id):
     context = {'course_id': course_id, 'new_lesson_number': new_lesson_number}
 
     return render(request, 'poc/create-lesson.html', context)
+
+@login_required
+def editLesson(request, course_id, lesson_number):
+    assert isinstance(request, HttpRequest)
+    print("COURSE_ID:", course_id)
+
+    lesson = Lesson.objects.filter(course=course_id,number=lesson_number)[0]
+    print("LESSON HERE", lesson)
+
+    # Initialize context
+    context = {'course_id': course_id, 'lesson': lesson}
+
+    return render(request, 'poc/edit-lesson.html', context)
