@@ -10,12 +10,13 @@
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        <!--Import thepage.css-->
-        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/create-lesson.css' %}">
-
         <!-- Jquery -->
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
         
+        <!-- PAGE SPECIFIC IMPORTS -->
+        <link type="text/css" rel="stylesheet" href="{% static 'poc/css/create-lesson.css' %}">
+        <script type="text/javascript" src="{% static 'poc/js/createlesson.js' %}"></script>
+
         <!-- SHOWDOWN -->
         <script type="text/javascript" src="{% static 'poc/js/showdown.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/js/rendermarkdownfile.js' %}"></script>
@@ -61,6 +62,11 @@
                         </select>
                         <label>Language Select</label>
                     </div>
+                    <script>
+                        $(document).ready(function() {
+                            $('select option[value="{{lesson.language}}"]').attr("selected",true);
+                        });
+                    </script>
 
                     <!-- Uploading File -->
                     <div class="file-field input-field col s12">
@@ -73,12 +79,12 @@
                         </div>
                     </div>
                     
-                    <!-- R-Markdown -->
+                    <!-- RMarkdown -->
                     <div class="col s6">
                         <p>
                             <label>
                                 <input type="checkbox" class="filled-in" checked="checked" />
-                                <span>R-Markdown</span>
+                                <span>RMarkdown</span>
                             </label>
                         </p>
                     </div>
@@ -161,75 +167,8 @@
         </div>
         <footer>
             <!--JavaScript at end of body for optimized loading-->
-            <script type="text/javascript" src="{% static 'poc/js/lesson.js' %}"></script>
+            <script type="text/javascript" src="{% static 'poc/js/createlesson.js' %}"></script>
             <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
-            <script>
-                $(document).ready(function(){
-                    $('.sidenav').sidenav();
-                    // $('#login').attr('class', 'waves-effect waves-light btn-small brown');
-                    // $('#navbar-username').css("color", "rgb(132,108,99)");
-
-                    // Render the tabs
-                    $('.tabs').tabs({
-                        swipeable: true
-                    });
-
-                    // Render select
-                    $('select').formSelect();
-
-                    // Render markdown realtime
-                    function renderTextarea(textarea_id) {
-                        $("#preview-markdown").html($(textarea_id).val());
-                        renderMarkdownClass("#preview-markdown");
-                    }
-
-                    $("#textarea-markdown").on('change keyup paste', function() {
-                        renderTextarea("#textarea-markdown");
-                        renderKatex();
-                    });
-
-                    // Floating Action Button
-                    $('.fixed-action-btn').floatingActionButton();
-
-                    // Set comiler flag options
-                    editor.setSize('100%', '5vh');
-                    
-                    // Set codemirror size (Variable declared in `component-codemirror.html`)
-                    cEditor.setSize('100%', '70vh');
-
-                    // Grabbing input file
-                    // Reference: https://stackoverflow.com/questions/31746837/reading-uploaded-text-file-contents-in-html
-                    $('#input-file').change(getFile);
-
-                    function getFile(event) {
-                        const input = event.target;
-                        if ('files' in input && input.files.length > 0) {
-                            placeFileContent($('#textarea-markdown'), input.files[0]);
-                        }
-                    }
-
-                    function placeFileContent(target, file) {
-                        readFileContent(file).then(content => {
-                            console.log(content);
-                            $(target).val(content);
-                            var textarea = target;
-                            renderTextarea(textarea);
-                            M.textareaAutoResize($(target));
-                        }).catch(error => console.log(error))
-                    }
-
-                    function readFileContent(file) {
-                        const reader = new FileReader()
-                        return new Promise((resolve, reject) => {
-                            reader.onload = event => resolve(event.target.result);
-                            reader.onerror = error => reject(error);
-                            reader.readAsText(file);
-                        })
-                    }
-
-                });
-                
-            </script>
         </footer>
     </body>
     

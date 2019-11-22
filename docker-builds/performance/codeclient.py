@@ -19,21 +19,7 @@ class CodeClient():
     """
 
     def to_dict(self):
-        return {"host" : self.host,
-                "port" : self.port,
-                "code" : self.code,
-                "flags" : self.flags,
-                "inputs" : self.inputs,
-                "log" : self.log,
-                "send_time" : self.send_time,
-                "recv_time" : self.recv_time,
-                "run_time" : self.run_time,
-                "max_time" : self.max_time,
-                "max_connection_attempts" : self.max_connection_attempts,
-                "conn_wait_time" : self.conn_wait_time,
-                "conn_attempt" : self.conn_attempt,
-                "BLOCK_SIZE" : self.BLOCK_SIZE,
-                "has_lost_data" : self.has_lost_data}
+        return vars(self)
 
     def __init__(self, host = '', port = 4000, code = '', flags = '', inputs = []):
         """Constructor for the CodeHandler class."""

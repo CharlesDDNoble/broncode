@@ -10,7 +10,7 @@ class CodeServer():
     def alarm_handler(self, signum, frame):
         raise TimeoutError('Timeout!')
 
-    def __init__(self,host,port,Executor,code='',flags='',num_inputs='',inputs=[]):
+    def __init__(self,host,port,Executor):
         signal.signal(signal.SIGALRM, self.alarm_handler)
         self.host = host
         self.port = port
@@ -19,12 +19,13 @@ class CodeServer():
         self.should_end = False
         self.BLOCK_SIZE = 4096 #send/recv message size
         
-        # for testing
-        self.results_log = ''
-        self.code = code
-        self.flags = code
-        self.inputs = inputs
-        self.num_inputs = num_inputs
+        # We initialize these here for testing purposes
+        self.flags = ''
+        self.code = ''
+        self.num_inputs = ''
+        self.inputs = []
+
+
 
     def make_block(self,msg):
         """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
@@ -37,64 +38,65 @@ class CodeServer():
             has_lost_data = True
         return msg + bytes(('\0' * (self.BLOCK_SIZE-len(msg))),"utf-8")
 
-    def recv_msg(self, connection, msg='', is_test=False):
-        if not is_test:
-            msg = connection.recv(self.BLOCK_SIZE).decode("utf-8").replace('\0','')
-        return msg
-
-    def send_msg(self, connection, msg='', is_test=False):
-        if not is_test:
-            connection.send(self.make_block(msg))
-        else:
-            self.results_log += msg
 
     def handle_connection(self, is_test=False):
         #set up server socket
-        if not is_test:
-            serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            serversocket.bind((self.host, self.port))
-            serversocket.listen(1) # become a server socket, maximum 1 connections
-
+        serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        serversocket.bind((self.host, self.port))
+        serversocket.listen(1) # become a server socket, maximum 1 connections
+        
+        # The OS will assign a random open port since one is not specified
+        if is_test:
+            self.port = serversocket.getsockname()[1]
+        
         msg = ''
 
         while not self.should_end:
             try:
                 #block until a connection is made
-                print("waiting...")
-                if not is_test:
-                    connection, address = serversocket.accept()
-                print("got something.")
+                # print("waiting...")
+                connection, address = serversocket.accept()
+                # print("got something.")
 
                 #get compiler flags and code, remove any null bytes from packing
-                flags = self.recv_msg(connection)
-                code = self.recv_msg(connection)
-                num_inputs = self.recv_msg(connection)
+                self.flags = connection.recv(self.BLOCK_SIZE).decode("utf-8").replace('\0','')
+                self.code = connection.recv(self.BLOCK_SIZE).decode("utf-8").replace('\0','')
+                self.num_inputs = connection.recv(self.BLOCK_SIZE).decode("utf-8").replace('\0','')
 
-                print("num:", num_inputs)
+                # print("num:", num_inputs)
 
-                inputs = []
-                for i in range(int(num_inputs)):
-                    inputs.append(self.recv_msg(connection))
+                self.inputs = []
+                for i in range(int(self.num_inputs)):
+                    self.inputs.append(connection.recv(self.BLOCK_SIZE).decode("utf-8").replace('\0',''))
+
+                ## we'll just test whether the send/recv functionality of the server works
+                if is_test:
+                    for i in range(int(self.num_inputs)):
+                        connection.send(self.make_block("OUTPUT_"+str(i)))
+                    serversocket.close()
+                    return
 
                 #set alarm to time out in case of really long running programs
                 signal.alarm(self.max_time)
 
-                codex = self.Executor(code,flags,inputs)
+                codex = self.Executor(self.code,self.flags,self.inputs)
 
                 assert(isinstance(codex,CodeExecutor))
 
                 codex.execute()
                 
-                self.send_msg(connection,codex.compilation_log)
+                connection.send(self.make_block(codex.compilation_log))
 
                 for log in codex.run_logs:
-                    self.send_msg(connection,log)
+                    connection.send(self.make_block(log))
 
-                print("done.")
+                # print("done.")
             except TimeoutError:
-                serversocket.close()
-                print("timed out.")
-                raise SystemExit
-            except OSError as ose:
-                print(ose)
+                # print("timed out.")
                 self.should_end = True
+            except OSError as ose:
+                # print(ose)
+                self.should_end = True
+            finally:
+                serversocket.close()
+

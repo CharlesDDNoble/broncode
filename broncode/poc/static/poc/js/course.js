@@ -12,10 +12,6 @@ $('#btn-create-course').on('click', function(event){
     create_course();
 });
 
-// $('#btn-delete-course').on('click', function(event){
-//     event.preventDefault();
-//     delete_course();
-// });
 
 // AJAX for posting
 function create_course(param_course_name) {
@@ -32,8 +28,9 @@ function create_course(param_course_name) {
         dataType: "json",
         // handle a successful response
         success : function(json) {
+            // Since the card will not exist unless the page is refreshed, add it
             $(`
-                <div class="col s12 m6 l4">
+                <div id="course_`+json.id+`_card" class="col s12 m6 l4">
                     <div class="card small blue-grey darken-4">
                         <div class="card-content white-text">
                             <span class="card-title">` + json.title + `</span>
@@ -42,14 +39,27 @@ function create_course(param_course_name) {
                         <div class="card-action">
                             <a class="waves-effect waves-light btn-flat" href="` + json.id + `/">Lessons</a>
                             <!-- Modal Trigger -->
-                            <button data-toggle="modal" data-target="#modal2" class="waves-effect waves-light modal-trigger right btn-flat">Delete</button>
+                            <button data-toggle="modal" data-target="course_`+json.id+`_modal" class="waves-effect waves-light modal-trigger right btn-flat red-text">Delete</button>
                         </div>
                     </div>
                 </div>
                 `
             ).insertBefore("#card-create-course").hide().show("slow");
-
+            $(`
+                <!-- Modal For Lesson Deletion -->
+                <div id="course_`+json.id+`_modal" class="modal">
+                    <div class="modal-content">
+                        <h4>Delete Lesson</h4>
+                        <p>Are you sure you want to delete this course?</p>
+                        </div><div class="modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+                        <a href="#!" onclick="delete_course(`+json.id+`)" class="modal-close waves-effect waves-green btn-flat">Delete</a>
+                    </div>
+                </div>
+            `).insertAfter("#course_"+json.id+"_card").hide()
+            $('.modal').modal();
             console.log(json);
+            // window.location.replace("http://broncode.cs.wmich.edu/course/"+json.id);
         },
 
         // handle a non-successful response
@@ -59,25 +69,33 @@ function create_course(param_course_name) {
     });
 };
 
-// AJAX for posting
+// delete course with id=course_id
 function delete_course(course_id) {
-    console.log(course_id);
+    console.log("delete_course("+course_id+")");
+
     $.ajax({
-        url : "http://broncode.cs.wmich.edu/api/courses/" + course_id, // the endpoint
-        type : "DELETE", // http method
-        dataType : "json",
+        url : 'http://broncode.cs.wmich.edu/api/courses/' + course_id, // the endpoint
+        type : 'DELETE', // http method
+
+        data : {}, // data sent with the post request
+        dataType: 'json',
         // handle a successful response
         success : function(json) {
-            $("#card-create-course").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
+//             $("#card-create-course").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
+            M.toast({html: 'Course deleted!', classes: 'rounded green lighten-3'});
+            $("#course_"+course_id+"_card").remove();
+            $("#course_"+course_id+"_modal").remove();
             console.log(json);
         },
 
         // handle a non-successful response
         error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            M.toast({html: 'There was an error deleting the course!', classes: 'rounded red lighten-3'});
+            console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
 };
+
 
 $(function() {
 
