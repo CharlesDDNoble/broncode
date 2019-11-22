@@ -74,7 +74,7 @@ function delete_course(course_id) {
     console.log("delete_course("+course_id+")");
 
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu/api/courses/' + course_id, // the endpoint
+        url : 'http://broncode.cs.wmich.edu/api/courses/', // the endpoint
         type : 'DELETE', // http method
 
         data : {}, // data sent with the post request
