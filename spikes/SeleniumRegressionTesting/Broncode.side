@@ -10,7 +10,7 @@
       "id": "8f05a1c5-1b11-4e52-b5fb-1ff983d50c29",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu/lesson/2/",
+      "target": "http://broncode.cs.wmich.edu/course/4/lesson/8/",
       "targets": [],
       "value": ""
     }, {
@@ -70,14 +70,14 @@
       "id": "82da9b9d-2fc0-4a5c-9c44-4861f0c4e9d9",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu/lesson/2/",
+      "target": "http://broncode.cs.wmich.edu/course/4/lesson/8/",
       "targets": [],
       "value": ""
     }, {
       "id": "f61bdac8-27a7-4791-ad6b-03f8181f96a5",
       "comment": "",
       "command": "click",
-      "target": "css=div:nth-child(4) > .CodeMirror-line > span",
+      "target": "css=div:nth-child(1) > .CodeMirror-line",
       "targets": [
         ["css=div:nth-child(4) > .CodeMirror-line > span", "css:finder"],
         ["xpath=//div[@id='codemirror-wrapper']/div/div[6]/div/div/div/div/div[5]/div[4]/pre/span", "xpath:idRelative"],
@@ -89,7 +89,7 @@
       "id": "9ebfd61d-b4c7-4261-8c39-a5a6b3b4b70a",
       "comment": "",
       "command": "type",
-      "target": "xpath=//div[@id='codemirror-wrapper']/div/div/textarea",
+      "target": "css=.CodeMirror-focused textarea",
       "targets": [
         ["id=codemirror-wrapper", "id"],
         ["css=#codemirror-wrapper", "css:finder"],
@@ -97,26 +97,32 @@
         ["xpath=//form[@id='major-form']/div[2]", "xpath:idRelative"],
         ["xpath=//form/div[2]", "xpath:position"]
       ],
-      "value": "\"ERROR\""
+      "value": "\\nERROR"
     }, {
       "id": "9349e6bc-1cfd-4f34-b913-4a6f2ba742ef",
       "comment": "",
       "command": "mouseOver",
-      "target": "id=btn-submit",
+      "target": "id=btn-test",
       "targets": [],
       "value": ""
     }, {
       "id": "af8f998a-3f2d-49cc-aa75-80673cbef9af",
       "comment": "",
       "command": "click",
-      "target": "id=btn-submit",
-      "targets": [],
+      "target": "id=btn-test",
+      "targets": [
+        ["id=btn-test", "id"],
+        ["css=#btn-test", "css:finder"],
+        ["xpath=//button[@id='btn-test']", "xpath:attributes"],
+        ["xpath=//div[@id='btn-submit-wrapper']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"]
+      ],
       "value": ""
     }, {
       "id": "ad75f37f-94ea-4871-96ea-a23b084d052a",
       "comment": "",
       "command": "mouseOut",
-      "target": "id=btn-submit",
+      "target": "id=btn-test",
       "targets": [],
       "value": ""
     }, {
@@ -134,68 +140,52 @@
       "id": "33671c64-f258-4716-8b2f-53fc6087b02c",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu/lesson/2/",
+      "target": "http://broncode.cs.wmich.edu/course/4/lesson/8/",
       "targets": [],
       "value": ""
     }, {
-      "id": "8253acf4-e4b6-4de1-ade1-57d41c3620c3",
+      "id": "9f45fe15-54a1-4160-b490-f447f52e9b00",
       "comment": "",
       "command": "click",
-      "target": "css=.cm-variable:nth-child(1)",
+      "target": "css=div:nth-child(1) > .CodeMirror-line",
       "targets": [
-        ["css=.cm-variable:nth-child(1)", "css:finder"],
-        ["xpath=//div[@id='codemirror-wrapper']/div/div[6]/div/div/div/div/div[5]/div[3]/pre/span/span", "xpath:idRelative"],
-        ["xpath=//div[3]/pre/span/span", "xpath:position"]
+        ["css=div:nth-child(1) > .CodeMirror-line", "css:finder"],
+        ["xpath=//div[@id='codemirror-wrapper']/label/div/div[6]/div/div/div/div/div[5]/div/pre", "xpath:idRelative"],
+        ["xpath=//div[5]/div/pre", "xpath:position"],
+        ["xpath=//pre[contains(.,'print(\"h\")')]", "xpath:innerText"]
       ],
       "value": ""
     }, {
-      "id": "703f2d83-2a43-4712-8074-432620d03fbf",
+      "id": "7c6be54c-bb94-4f6c-b1f0-132de0564470",
       "comment": "",
       "command": "type",
-      "target": "xpath=//div[@id='codemirror-wrapper']/div/div/textarea",
+      "target": "css=.CodeMirror-focused textarea",
       "targets": [
-        ["id=codemirror-wrapper", "id"],
-        ["css=#codemirror-wrapper", "css:finder"],
-        ["xpath=//div[@id='codemirror-wrapper']", "xpath:attributes"],
-        ["xpath=//form[@id='major-form']/div[2]", "xpath:idRelative"],
-        ["xpath=//form/div[2]", "xpath:position"]
+        ["css=.CodeMirror-focused textarea", "css:finder"],
+        ["xpath=//div[@id='codemirror-wrapper']/label/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//div[2]/label/div/div/textarea", "xpath:position"]
       ],
-      "value": "ntf(\"Beginning inf loop\");while(1){printf(\"whee!\");};pri"
+      "value": "\\ninfinite=True\\nwhile infinite: print(\"forever\")"
     }, {
-      "id": "64f346d6-fe22-48dc-bc95-e17adfb7b729",
-      "comment": "",
-      "command": "mouseOver",
-      "target": "id=btn-submit",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "dd05ba92-16fb-4cfe-85a0-ce63cba61e62",
+      "id": "b18ace9b-6df6-4a03-8939-cd2c780881bb",
       "comment": "",
       "command": "click",
-      "target": "id=btn-submit",
-      "targets": [],
+      "target": "id=btn-test",
+      "targets": [
+        ["id=btn-test", "id"],
+        ["css=#btn-test", "css:finder"],
+        ["xpath=//button[@id='btn-test']", "xpath:attributes"],
+        ["xpath=//div[@id='btn-submit-wrapper']/button[2]", "xpath:idRelative"],
+        ["xpath=//button[2]", "xpath:position"]
+      ],
       "value": ""
     }, {
-      "id": "f5158ffd-ba6e-4be6-b324-ef4a358b210d",
-      "comment": "",
-      "command": "mouseOut",
-      "target": "id=btn-submit",
-      "targets": [],
-      "value": ""
-    }, {
-      "id": "1e4d48a8-6e95-48ca-94f6-06e8f5e26497",
+      "id": "a2b27373-7a1e-445e-8fc3-e29f313bcf9f",
       "comment": "",
       "command": "assertText",
       "target": "id=output-box",
-      "targets": [
-        ["id=output-box", "id"],
-        ["css=#output-box", "css:finder"],
-        ["xpath=//p[@id='output-box']", "xpath:attributes"],
-        ["xpath=//div[@id='results']/p", "xpath:idRelative"],
-        ["xpath=//div[3]/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Something went wrong running your code:\nIt took too long to execute, so we stopped it!\n')]", "xpath:innerText"]
-      ],
-      "value": "Something went wrong running your code:\\nIt took too long to execute, so we stopped it!"
+      "targets": [],
+      "value": "Something went wrong running your code:\\\\nIt took too long to execute, so we stopped it!"
     }]
   }, {
     "id": "0ebef774-4dab-4e83-8758-94d57769c4e9",
@@ -486,7 +476,7 @@
       "id": "32cdf734-fa36-495d-9c82-ec465c2c04a4",
       "comment": "",
       "command": "open",
-      "target": "http://broncode.cs.wmich.edu/main/",
+      "target": "http://broncode.cs.wmich.edu/course/",
       "targets": [],
       "value": ""
     }, {
@@ -628,6 +618,37 @@
       "target": "css=.errorlist > li",
       "targets": [],
       "value": "Please enter a correct username and password. Note that both fields may be case-sensitive"
+    }]
+  }, {
+    "id": "3b48afe9-4aa9-4d91-a237-e3e0444ac528",
+    "name": "Lesson Selection",
+    "commands": [{
+      "id": "192d081f-b269-42e5-a048-bd0ac1c637c6",
+      "comment": "",
+      "command": "open",
+      "target": "http://broncode.cs.wmich.edu/course/4/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5609e87a-9877-4539-8094-37a13f88b8c3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col:nth-child(2) a",
+      "targets": [
+        ["css=.col:nth-child(2) a", "css:finder"],
+        ["xpath=//a[contains(text(),'Tutorial')]", "xpath:link"],
+        ["xpath=//div[@id='courses-row']/div[2]/div/div[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/poc/tutorial')]", "xpath:href"],
+        ["xpath=//div[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e2ea0c98-c809-4e4a-a791-5c53f5064969",
+      "comment": "",
+      "command": "assertElementNotPresent",
+      "target": "xpath=//div[@id='summary']/h1",
+      "targets": [],
+      "value": "Page not found (404)"
     }]
   }],
   "suites": [{
