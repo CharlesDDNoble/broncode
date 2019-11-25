@@ -1,0 +1,18 @@
+<!--To be put in a form-->
+{% block hiddentests %}
+    {% load static %}
+    <!--Stylesheets-->
+    <link rel="stylesheet" type="text/css" href="{% static 'poc/css/component-hiddentests.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'poc/css/component-testinputrow.css' %}">
+
+    <label id="label-command-line-flags">Automated Tests<br>
+        <div class="btn">
+            <span>Add Test Case</span>
+        </div>
+
+        {% block testinputrow %}
+        {% include 'poc/component-testinputrow.html' %}
+        {% endblock testinputrow %}
+    </label>
+
+{% endblock %}

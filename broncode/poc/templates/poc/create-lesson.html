@@ -118,47 +118,17 @@
                         {% include 'poc/component-codemirror.html' %}
                         {% endblock codemirror %}
                     </div>
+
+                    <!-- Tests -->
+                    <div id="tests-wrapper" class="col s12 broncode-light-color">
+                        {% block hiddentests %}
+                        {% include 'poc/component-hiddentests.html' %}
+                        {% endblock hiddentests %}
+                    </div>
                 </div>
             </form>
         </div>
 
-        {% comment %} <!-- First Row -->
-        <div class="row container" id="courses-row">
-            <div class="col s12">
-                <h1 class="brown-color">Create a Lesson</h1>
-            </div>
-            <div id="tabs-creation" class="col s12">
-                <ul class="tabs">
-                    <li class="tab col s3"><a href="#tab-information">Information</a></li>
-                    <li class="tab col s3"><a href="#tab-markdown">Markdown</a></li>
-                    <li class="tab col s3"><a href="#tab-codemirror">Default Code</a></li>
-                </ul>
-            </div>
-            <div id="tab-information" class="col s12 white">
-            
-            </div>
-            <div id="tab-markdown" class="col s12 white">
-                <div id="tab-double-col" class="row">
-                    <form id="form-markdown" class="col s6 z-depth-1">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <textarea id="textarea-markdown" class="materialize-textarea"></textarea>
-                                <label for="textarea-markdown">Markdown</label>
-                            </div>
-                        </div>
-                    </form>
-                    <div id="preview-markdown" class="col s6 z-depth-1">
-                        <h5><span class="grey-text lighten-2">Markdown Preview...<span></h5>
-                    </div>
-                </div>
-            </div>
-            <div id="tab-codemirror" class="col s12 white">
-                {% block codemirror %}
-                {% include 'poc/component-codemirror.html' %}
-                {% endblock codemirror %}
-            </div>
-        </div> {% endcomment %}
         <input type="hidden" id="course-id" value="{{ course_id }}">
         <!-- Get the lastest lesson number -->
         <input type="hidden" id="new-lesson-number" value="{{ new_lesson_number }}"> 

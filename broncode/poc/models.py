@@ -41,7 +41,7 @@ class SolutionSet(models.Model):
     # and have it always refer to the same test
     number = models.IntegerField()
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="solution_sets")
-    stdin = models.TextField()
+    stdin = models.TextField(default="", blank=True)
     stdout = models.TextField()
     hint = models.TextField(default="", blank=True)
 

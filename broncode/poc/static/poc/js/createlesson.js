@@ -1,4 +1,5 @@
-// AJAX for posting
+var BRONCODE_URL = "http://broncode.cs.wmich.edu:8080"
+
 function create_lesson() {
     console.log('create_lesson()');
     lesson_name = $('#lesson-name').val();
@@ -10,7 +11,7 @@ function create_lesson() {
     textarea_compiler_flags = $('#compiler-flags').val();
 
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu/api/lessons/', // the endpoint
+        url : BRONCODE_URL + '/api/lessons/', // the endpoint
         type : 'POST', // http method
 
         data : {
@@ -26,7 +27,7 @@ function create_lesson() {
         dataType: 'json',
         // handle a successful response
         success : function(json) {
-            window.location.replace('http://broncode.cs.wmich.edu/course/' + json.course);
+            window.location.replace(BRONCODE_URL + '/course/' + json.course);
 
             console.log(json);
         },
@@ -126,7 +127,7 @@ $(document).ready(function(){
     // Floating Action Button
     $('.fixed-action-btn').floatingActionButton();
 
-    // Set comiler flag options
+    // Set compiler flag options
     editor.setSize('100%', '5vh');
     
     // Set codemirror size (Variable declared in `component-codemirror.html`)

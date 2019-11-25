@@ -1,0 +1,25 @@
+<!--To be put in a form-->
+{% block testinputrow %}
+    {% load static %}
+
+    <div class="row testinputrow">
+        <div class="col s4 input-field" id="1">
+            <input placeholder="" type="text">
+            <label for="1">Command Line Arguments (Optional)</label>
+        </div>
+        <div class="col s3 input-field" id="2">
+            <input placeholder="" type="text">
+            <label for="2">Expected Output</label>
+        </div>
+        <div class="col s4 input-field" id="3">
+            <input placeholder="" type="text">
+            <label for="3">Hint Upon Failure (Optional)</label>
+        </div>
+        <div class="col s1 testinputdeletecol">
+            <div class="btn testinputdeletebtn">
+                <span>remove</span>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

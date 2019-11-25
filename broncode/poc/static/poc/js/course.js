@@ -1,6 +1,7 @@
 // Submit post on submit
 var d_user_id = -1 // django_user_id
 var d_lesson_id = -1 // django_lesson_id
+var BRONCODE_URL = "http://broncode.cs.wmich.edu:8080"
 
 function loadDynamicData(user, lesson, code) {
     d_user_id = user;
@@ -20,7 +21,7 @@ function create_course(param_course_name) {
     console.log(course_name);
 
     $.ajax({
-        url : "http://broncode.cs.wmich.edu/api/courses/", // the endpoint
+        url : BRONCODE_URL + "/api/courses/", // the endpoint
         type : "POST", // http method
         data : {
             title : course_name
@@ -74,7 +75,7 @@ function delete_course(course_id) {
     console.log("delete_course("+course_id+")");
 
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu/api/courses/' + course_id, // the endpoint
+        url : BRONCODE_URL + '/api/courses/' + course_id, // the endpoint
         type : 'DELETE', // http method
 
         data : {}, // data sent with the post request
