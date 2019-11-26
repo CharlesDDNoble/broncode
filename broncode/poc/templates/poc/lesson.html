@@ -33,11 +33,9 @@
         <div class="row" id="major-row">
             <!--Column for instructions on the left-->
             <div class="col s12 l4" id="markdown-content">
-                {% autoescape off %}
                 {% block instructions %}
                 {% include 'poc/component-instructions.html' %}
                 {% endblock instructions %}
-                {% endautoescape %}
             </div>
             <!--Column for both the the compilerflags and codemirror-->
             <div class="col s12 l4" id="compiler-and-flags-col">
