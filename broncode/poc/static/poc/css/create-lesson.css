@@ -126,3 +126,7 @@ input.select-dropdown.dropdown-trigger {
     height: 100%;
     overflow-y: auto;
 }
+
+#tests-wrapper {
+    padding: 1rem;
+}

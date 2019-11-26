@@ -1,7 +1,6 @@
 var BRONCODE_URL = "http://broncode.cs.wmich.edu:8080"
 
 function create_lesson() {
-    console.log('create_lesson()');
     lesson_name = $('#lesson-name').val();
     textarea_markdown = $('#textarea-markdown').val();
     course_id = $('#course-id').val();
@@ -9,6 +8,7 @@ function create_lesson() {
     code = cEditor.getValue();
     selected_language = $('#select-language').val();
     textarea_compiler_flags = $('#compiler-flags').val();
+    lesson_id = "";
 
     $.ajax({
         url : BRONCODE_URL + '/api/lessons/', // the endpoint
@@ -27,9 +27,9 @@ function create_lesson() {
         dataType: 'json',
         // handle a successful response
         success : function(json) {
-            window.location.replace(BRONCODE_URL + '/course/' + json.course);
-
             console.log(json);
+            lesson_id = json.id;
+            create_test_cases(lesson_id);
         },
 
         // handle a non-successful response
@@ -38,6 +38,114 @@ function create_lesson() {
         }
     });
 };
+
+function create_test_cases(lesson_id) {
+    var testcases = $(".testinputrow");
+
+    if (testcases.length != 0) {
+        asyncs = [];
+        $.each(testcases, function(idx, row) {
+            var data = extract_test_data_from_row(row);
+            waitfor = $.ajax({
+                url : BRONCODE_URL + '/api/solutionsets/', // the endpoint
+                type : 'POST', // http method
+        
+                data : {
+                    number: idx + 1,
+                    lesson: lesson_id,
+                    stdin: data.command_line,
+                    stdout: data.expected,
+                    hint: data.hint
+                }, // data sent with the post request
+                dataType: 'json',
+                // handle a non-successful response
+                success : function(json) {
+                    //
+                },
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+            asyncs.push(waitfor);
+        });
+        // wait for all requests to be done
+        // https://stackoverflow.com/questions/5627284/pass-in-an-array-of-deferreds-to-when
+        $.when.apply($, asyncs).then(function() {
+            finish();
+        });
+    } else {
+        // no test cases to add, just finish up
+        finish();
+    }
+}
+
+function finish() {
+    window.location.replace(BRONCODE_URL + '/course/' + $('#course-id').val());
+}
+
+function extract_test_data_from_row(row) {
+    var id = row.id.split("_")[2];
+    var data = {};
+
+    data.command_line = $("#command_line_" + id).val();
+    data.expected = $("#expected_" + id).val();
+    data.hint = $("#hint_" + id).val();
+
+    return data;
+}
+
+var next_test_input_id = 0;
+function add_new_testcase() {
+    var handle = document.getElementById("tests-wrapper");
+
+    var div = document.createElement("div");
+    div.classList.add("row", "testinputrow");
+    div.id = "test_row_" + next_test_input_id;
+
+    var command_line = create_input_div(4, "command_line_" + next_test_input_id, "Command Line Arguments (Optional)");
+    var expected = create_input_div(3, "expected_" + next_test_input_id, "Expected Output");
+    var hint = create_input_div(4, "hint_" + next_test_input_id, "Hint Upon Failure (Optional)");
+    
+    var deletebuttoncol = document.createElement("div");
+    deletebuttoncol.classList.add("col", "s1", "testinputdeletecol");
+    var deletebutton = document.createElement("div");
+    deletebutton.classList.add("btn", "testinputdeletebtn");
+    var deletebuttontext = document.createElement("span");
+    deletebuttontext.innerHTML = "remove";
+    
+    deletebutton.appendChild(deletebuttontext);
+    deletebuttoncol.appendChild(deletebutton);
+    
+    div.appendChild(command_line);
+    div.appendChild(expected);
+    div.appendChild(hint);
+    div.appendChild(deletebuttoncol);
+    
+    deletebutton.onclick = function() {
+        this.parentElement.parentElement.remove();
+    };
+    
+    next_test_input_id++;
+    handle.appendChild(div);
+}
+
+function create_input_div(size, id, label) {
+    var div = document.createElement("div");
+    div.classList.add("col", "s" + size, "input-field");
+
+    var input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "hi";
+    input.id = id;
+
+    var labelElem = document.createElement("label");
+    labelElem.innerHTML = label;
+
+    div.appendChild(input);
+    div.appendChild(labelElem);
+    
+    return div;
+}
 
 $(function() {
 
@@ -96,10 +204,16 @@ $(function() {
 
 
 $(document).ready(function(){
-    $('#btn-create-lesson').on('click', function(event){
+    // for some reason, using jquery syntax causes the event to fire twice.
+    document.getElementById("btn-create-lesson").onclick = function(event) {
         event.preventDefault();
         create_lesson();
-    });
+    };
+
+    document.getElementById("btn-hidden-test-add").onclick = function(event) {
+        event.preventDefault();
+        add_new_testcase();
+    };
 
     $('.sidenav').sidenav();
     // $('#login').attr('class', 'waves-effect waves-light btn-small brown');

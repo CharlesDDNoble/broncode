@@ -5,14 +5,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'poc/css/component-hiddentests.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'poc/css/component-testinputrow.css' %}">
 
-    <label id="label-command-line-flags">Automated Tests<br>
-        <div class="btn">
+    <label id="label-hidden-tests">Automated Tests<br>
+        <div class="btn" id="btn-hidden-test-add">
             <span>Add Test Case</span>
         </div>
-
-        {% block testinputrow %}
-        {% include 'poc/component-testinputrow.html' %}
-        {% endblock testinputrow %}
     </label>
 
 {% endblock %}
