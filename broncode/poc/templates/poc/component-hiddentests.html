@@ -10,7 +10,7 @@
             <span>Add Test Case</span>
         </div>
         {% for test in test_cases %}
-        <div class="row testinputrow">
+        <div class="row testinputrow" id="test_row_{{ test.id }}">
             <div class="col s4 input-field">
                 <input value="{{ test.stdin }}" type="text" id="command_line_{{ test.id }}">
                 <label for="command_line_{{ test.id }}">Command Line Arguments (Optional)</label>
@@ -28,6 +28,7 @@
                     <span>remove</span>
                 </div>
             </div>
+            <input type="hidden" id="number_{{ test.id }}" value="{{ test.number }}">
         </div>
         {% endfor %}
     </label>

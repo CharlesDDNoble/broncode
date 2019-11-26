@@ -12,6 +12,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 from .forms import CustomUserCreationForm, UserProfileForm
 from .models import Lesson, Course, SolutionSet
@@ -143,6 +144,7 @@ def lessonList(request, course_id):
     return render(request, 'poc/lesson-list.html', context)
 
 @login_required
+@staff_member_required
 def createLesson(request, course_id):
     assert isinstance(request, HttpRequest)
     print("COURSE_ID:", course_id)
@@ -162,6 +164,7 @@ def createLesson(request, course_id):
     return render(request, 'poc/create-lesson.html', context)
 
 @login_required
+@staff_member_required
 def editLesson(request, course_id, lesson_number):
     assert isinstance(request, HttpRequest)
     print("COURSE_ID:", course_id)

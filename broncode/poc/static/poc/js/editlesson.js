@@ -1,10 +1,122 @@
 var BRONCODE_URL = "http://broncode.cs.wmich.edu:8080"
 
-$('#btn-edit-lesson').on('click', function(event){
-    event.preventDefault();
-    edit_lesson();
-});
+var recorded_cases = []
+function record_cases() {
+    var testcases = $(".testinputrow");
 
+    $.each(testcases, function(idx, row) {
+        recorded_cases.push(extract_test_data_from_row(row));
+    });
+}
+
+function case_is_in(test_case, array) {
+    for (var i in array) {
+        if (test_case.id == array[i].id) {
+            console.log(test_case);
+            console.log("in");
+            console.log(array);
+            return true;
+        }
+    }
+    console.log(test_case);
+    console.log("not in");
+    console.log(array);
+    return false;
+}
+
+function find_next_number(recorded, current) {
+    var numbers = [0];
+    for (var i in recorded) {
+        if (recorded[i].number != undefined) {
+            numbers.push(parseInt(recorded[i].number, 10));
+        }
+    }
+    for (var i in current) {
+        if (current[i].number != undefined) {
+            numbers.push(parseInt(current[i].number, 10));
+        }
+    }
+    console.log(numbers);
+    return Math.max(...numbers) + 1;
+}
+
+function commit_case_changes() {
+    var current_cases = [];
+    var defers = [];
+
+    $.each($(".testinputrow"), function(idx, row) {
+        current_cases.push(extract_test_data_from_row(row));
+    });
+
+    console.log(current_cases);
+    console.log(recorded_cases);
+
+    for (var i in recorded_cases) {
+        console.log("case:" + recorded_cases[i].id);
+        console.log("i:" + i);
+        if (!case_is_in(recorded_cases[i], current_cases)) {
+            // delete
+            console.log("deleting" + recorded_cases[i].id);
+            console.log("i:" + i);
+            action = $.ajax({
+                url :  BRONCODE_URL + "/api/solutionsets/" + recorded_cases[i].id,
+                type : "DELETE",
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+            defers.push(action);
+        }
+    }
+
+    // make sure each new case has a number
+    for (i in current_cases) {
+        if (current_cases[i].number == undefined) {
+            current_cases[i].number = find_next_number(recorded_cases, current_cases);
+        }
+    }
+
+    for (i in current_cases) {
+        if (current_cases[i].id < 0) {
+            // new
+            action = $.ajax({
+                url :  BRONCODE_URL + "/api/solutionsets/",
+                type : "POST",
+                data : {
+                    "stdin": current_cases[i].command_line,
+                    "stdout": current_cases[i].expected,
+                    "hint": current_cases[i].hint,
+                    "lesson": $('#lesson-id').val(),
+                    "number": current_cases[i].number
+                },
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+            defers.push(action);
+        } else {
+            // old
+            action = $.ajax({
+                url :  BRONCODE_URL + "/api/solutionsets/" + current_cases[i].id + "/",
+                type : "PUT",
+                data : {
+                    "stdin": current_cases[i].command_line,
+                    "stdout": current_cases[i].expected,
+                    "hint": current_cases[i].hint,
+                    "lesson": $('#lesson-id').val(),
+                    "number": current_cases[i].number
+                },
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+            defers.push(action);
+        }
+    }
+
+    // wait for all defers
+
+}
 
 // AJAX for posting
 function edit_lesson() {
@@ -48,7 +160,6 @@ function edit_lesson() {
 };
 
 $(function() {
-
     // This function gets cookie with a given name
     function getCookie(name) {
         var cookieValue = null;
@@ -104,6 +215,26 @@ $(function() {
 
 $(document).ready(function(){
     lesson_id = $("#lesson-id").val()
+
+    document.getElementById("btn-hidden-test-add").onclick = function(event) {
+        event.preventDefault();
+        add_new_testcase();
+    };
+
+    $('#btn-edit-lesson').on('click', function(event){
+        event.preventDefault();
+        edit_lesson();
+    });
+
+    // rig current delete buttons to delete
+    buttons = document.getElementsByClassName("testinputdeletebtn");
+    for (i in buttons) {
+        buttons[i].onclick = function() {
+            this.parentElement.parentElement.remove();
+        };
+    }
+
+    record_cases();
 
     // Side navbar for mobile
     $('.sidenav').sidenav();
