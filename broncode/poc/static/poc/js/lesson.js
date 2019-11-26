@@ -88,6 +88,7 @@ function resetExampleCode() {
     });
 }
 
+
 function add_try_buttons() {
     // try button html
     try_btn = "<div class=\"try-btn\" style=\"padding = .1 em;\"><a href=\"#!\" class=\"left waves-effect waves-light btn-small\">Try!</a></div>";
