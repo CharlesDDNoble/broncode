@@ -25,7 +25,7 @@ function add_new_testcase() {
     div.id = "test_row_" + next_test_input_id;
 
     var command_line = create_input_div(4, "command_line_" + next_test_input_id, "Command Line Arguments (Optional)");
-    var expected = create_input_div(3, "expected_" + next_test_input_id, "Expected Output");
+    var expected = create_input_div(3, "expected_" + next_test_input_id, "Expected Output", "testcase-input-output");
     var hint = create_input_div(4, "hint_" + next_test_input_id, "Hint Upon Failure (Optional)");
     
     var deletebuttoncol = document.createElement("div");
@@ -51,7 +51,7 @@ function add_new_testcase() {
     handle.appendChild(div);
 }
 
-function create_input_div(size, id, label) {
+function create_input_div(size, id, label, cls = "") {
     var div = document.createElement("div");
     div.classList.add("col", "s" + size, "input-field");
 
@@ -60,6 +60,10 @@ function create_input_div(size, id, label) {
     input.placeholder = "";
     input.id = id;
 
+    if (cls != "") {
+        input.classList.add(cls);
+    }
+
     var labelElem = document.createElement("label");
     labelElem.innerHTML = label;
 
@@ -67,4 +71,32 @@ function create_input_div(size, id, label) {
     div.appendChild(labelElem);
     
     return div;
+}
+
+function validate_input() {
+    if ($('#lesson-name').val() == "") {
+        M.toast({html: 'Lesson name cannot be blank.'})
+        return false;
+    }
+    if ($('#textarea-markdown').val() == "") {
+        M.toast({html: 'Markdown content cannot be blank'})
+        return false;
+    }
+    if ($('#select-language').val() == null) {
+        M.toast({html: 'Please choose a language.'})
+        return false;
+    }
+    if (cEditor.getValue() == "") {
+        M.toast({html: 'Please provide some example code.'})
+        return false;
+    }
+    expecteds = document.getElementsByClassName("testcase-input-output");
+    for (var i in expecteds) {
+        if (expecteds[i].value == "") {
+            M.toast({html: 'Test cases require at least an expected output.'})
+            return false;
+        }
+    }
+
+    return true;
 }

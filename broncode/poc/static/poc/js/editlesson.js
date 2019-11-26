@@ -1,4 +1,4 @@
-var BRONCODE_URL = "http://broncode.cs.wmich.edu:8080"
+var BRONCODE_URL = "http://broncode.cs.wmich.edu"
 
 var recorded_cases = []
 function record_cases() {
@@ -12,15 +12,9 @@ function record_cases() {
 function case_is_in(test_case, array) {
     for (var i in array) {
         if (test_case.id == array[i].id) {
-            console.log(test_case);
-            console.log("in");
-            console.log(array);
             return true;
         }
     }
-    console.log(test_case);
-    console.log("not in");
-    console.log(array);
     return false;
 }
 
@@ -36,7 +30,6 @@ function find_next_number(recorded, current) {
             numbers.push(parseInt(current[i].number, 10));
         }
     }
-    console.log(numbers);
     return Math.max(...numbers) + 1;
 }
 
@@ -48,16 +41,9 @@ function commit_case_changes() {
         current_cases.push(extract_test_data_from_row(row));
     });
 
-    console.log(current_cases);
-    console.log(recorded_cases);
-
     for (var i in recorded_cases) {
-        console.log("case:" + recorded_cases[i].id);
-        console.log("i:" + i);
         if (!case_is_in(recorded_cases[i], current_cases)) {
             // delete
-            console.log("deleting" + recorded_cases[i].id);
-            console.log("i:" + i);
             action = $.ajax({
                 url :  BRONCODE_URL + "/api/solutionsets/" + recorded_cases[i].id,
                 type : "DELETE",
@@ -115,12 +101,17 @@ function commit_case_changes() {
     }
 
     // wait for all defers
-
+    if (defers.length > 0) {
+        $.when.apply($, defers).then(function() {
+            finish_edit()
+        });
+    } else {
+        finish_edit();
+    }
 }
 
 // AJAX for posting
 function edit_lesson() {
-    console.log('edit_lesson()');
     lesson_name = $('#lesson-name').val();
     textarea_markdown = $('#textarea-markdown').val();
     course_id = $('#course-id').val();
@@ -129,6 +120,10 @@ function edit_lesson() {
     code = cEditor.getValue();
     selected_language = $('#select-language').val();
     textarea_compiler_flags = $('#compiler-flags').val();
+
+    if (!validate_input()) {
+        return false;
+    }
 
     $.ajax({
         url : BRONCODE_URL + '/api/lessons/' + lesson_id + '/', // the endpoint
@@ -147,9 +142,7 @@ function edit_lesson() {
         dataType: 'json',
         // handle a successful response
         success : function(json) {
-            window.location.replace(BRONCODE_URL + '/course/' + json.course);
-
-            console.log(json);
+            commit_case_changes();
         },
 
         // handle a non-successful response
@@ -157,7 +150,13 @@ function edit_lesson() {
             console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
+
+    return true;
 };
+
+function finish_edit() {
+    window.location.replace(BRONCODE_URL + '/course/' + $('#course-id').val());
+}
 
 $(function() {
     // This function gets cookie with a given name
@@ -310,7 +309,6 @@ $(document).ready(function(){
 
     function placeFileContent(target, file) {
         readFileContent(file).then(content => {
-            console.log(content);
             $(target).val(content);
             var textarea = target;
             renderTextarea(textarea);
@@ -334,8 +332,6 @@ $(document).ready(function(){
         type : "GET",
         success : function(json) {  
             // cEditor is the codemirror object
-            console.log(json.example_code);
-            
             // Define in component-codemirror as global variable
             cEditor.getDoc().setValue(json.example_code);
         },

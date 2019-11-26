@@ -1,4 +1,4 @@
-var BRONCODE_URL = "http://broncode.cs.wmich.edu:8080"
+var BRONCODE_URL = "http://broncode.cs.wmich.edu"
 
 function create_lesson() {
     lesson_name = $('#lesson-name').val();
@@ -9,6 +9,10 @@ function create_lesson() {
     selected_language = $('#select-language').val();
     textarea_compiler_flags = $('#compiler-flags').val();
     lesson_id = "";
+
+    if (!validate_input()) {
+        return false;
+    }
 
     $.ajax({
         url : BRONCODE_URL + '/api/lessons/', // the endpoint
@@ -27,7 +31,6 @@ function create_lesson() {
         dataType: 'json',
         // handle a successful response
         success : function(json) {
-            console.log(json);
             lesson_id = json.id;
             create_test_cases(lesson_id);
         },
@@ -37,6 +40,8 @@ function create_lesson() {
             console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
+
+    return true;
 };
 
 function create_test_cases(lesson_id) {
@@ -71,15 +76,15 @@ function create_test_cases(lesson_id) {
         // wait for all requests to be done
         // https://stackoverflow.com/questions/5627284/pass-in-an-array-of-deferreds-to-when
         $.when.apply($, asyncs).then(function() {
-            finish();
+            finish_create();
         });
     } else {
         // no test cases to add, just finish up
-        finish();
+        finish_create();
     }
 }
 
-function finish() {
+function finish_create() {
     window.location.replace(BRONCODE_URL + '/course/' + $('#course-id').val());
 }
 
@@ -196,7 +201,6 @@ $(document).ready(function(){
 
     function placeFileContent(target, file) {
         readFileContent(file).then(content => {
-            console.log(content);
             $(target).val(content);
             var textarea = target;
             renderTextarea(textarea);
