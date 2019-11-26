@@ -127,6 +127,9 @@ $(document).ready(function (){
         submitCodeForTesting();
     });
 
+    // Make tables responsive to size of screen
+    $("table").wrap("<div style=\"overflow-x: auto;\"></div>");
+
     add_try_buttons()
 });
 
