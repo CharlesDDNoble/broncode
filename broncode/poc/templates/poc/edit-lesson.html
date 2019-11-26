@@ -122,6 +122,13 @@
                         {% include 'poc/component-codemirror.html' %}
                         {% endblock codemirror %}
                     </div>
+
+                    <!-- Test cases -->
+                    <div id="tests-wrapper" class="col s12 broncode-light-color">
+                        {% block hiddentests %}
+                        {% include 'poc/component-hiddentests.html' %}
+                        {% endblock hiddentests %}
+                    </div>
                 </div>
             </form>
         </div>

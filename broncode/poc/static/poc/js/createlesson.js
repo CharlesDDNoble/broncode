@@ -135,7 +135,7 @@ function create_input_div(size, id, label) {
 
     var input = document.createElement("input");
     input.type = "text";
-    input.placeholder = "hi";
+    input.placeholder = "";
     input.id = id;
 
     var labelElem = document.createElement("label");

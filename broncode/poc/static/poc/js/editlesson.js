@@ -1,3 +1,5 @@
+var BRONCODE_URL = "http://broncode.cs.wmich.edu:8080"
+
 $('#btn-edit-lesson').on('click', function(event){
     event.preventDefault();
     edit_lesson();
@@ -17,7 +19,7 @@ function edit_lesson() {
     textarea_compiler_flags = $('#compiler-flags').val();
 
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu/api/lessons/' + lesson_id + '/', // the endpoint
+        url : BRONCODE_URL + '/api/lessons/' + lesson_id + '/', // the endpoint
         type : 'PUT', // http method
 
         data : {
@@ -33,7 +35,7 @@ function edit_lesson() {
         dataType: 'json',
         // handle a successful response
         success : function(json) {
-            window.location.replace('http://broncode.cs.wmich.edu/course/' + json.course);
+            window.location.replace(BRONCODE_URL + '/course/' + json.course);
 
             console.log(json);
         },
@@ -138,7 +140,7 @@ $(document).ready(function(){
      * backticks.
      */
     $.ajax({
-        url :  "http://broncode.cs.wmich.edu/api/lessons/" + lesson_id,
+        url :  BRONCODE_URL + "/api/lessons/" + lesson_id,
         type : "GET",
         success : function(json) {  
             // cEditor is the codemirror object
@@ -197,7 +199,7 @@ $(document).ready(function(){
 
     // INITIALIZE DEFAULT CODE AREA
     $.ajax({
-        url :  "http://broncode.cs.wmich.edu/api/lessons/" + lesson_id,
+        url :  BRONCODE_URL + "/api/lessons/" + lesson_id,
         type : "GET",
         success : function(json) {  
             // cEditor is the codemirror object

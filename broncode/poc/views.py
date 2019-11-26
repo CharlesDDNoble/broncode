@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from .forms import CustomUserCreationForm, UserProfileForm
-from .models import Lesson, Course
+from .models import Lesson, Course, SolutionSet
 from .codeclient import CodeClient
 
 
@@ -169,7 +169,9 @@ def editLesson(request, course_id, lesson_number):
     lesson = Lesson.objects.filter(course=course_id,number=lesson_number)[0]
     print("LESSON HERE", lesson)
 
+    test_cases = SolutionSet.objects.filter(lesson=lesson.id)
+
     # Initialize context
-    context = {'course_id': course_id, 'lesson': lesson}
+    context = {'course_id': course_id, 'lesson': lesson, 'test_cases' : test_cases}
 
     return render(request, 'poc/edit-lesson.html', context)
