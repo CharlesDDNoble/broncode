@@ -97,7 +97,7 @@ function add_try_buttons() {
 
     // set up button to send contents of code block to code mirror editor
     $('.try-btn').on('click', function() {
-            code = $(this).find("code").text();
+            code = $(this).parent().find("code").text();
             cEditor.setValue(code)
         }
     );
