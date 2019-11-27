@@ -20,7 +20,7 @@
         <!-- JQUERY -->
         <script type="text/javascript" src="{% static 'poc/jquery/jquery-3.4.0.js' %}"></script>
         <script type="text/javascript" src="{% static 'poc/materialize/js/materialize.min.js' %}"></script>
-        <script src="{% static 'poc/js/cmAjax.js' %}"></script>
+        <script src="{% static 'poc/js/lesson.js' %}"></script>
     </head>
     
     <body>
@@ -33,11 +33,9 @@
         <div class="row" id="major-row">
             <!--Column for instructions on the left-->
             <div class="col s12 l4" id="markdown-content">
-                {% autoescape off %}
                 {% block instructions %}
                 {% include 'poc/component-instructions.html' %}
                 {% endblock instructions %}
-                {% endautoescape %}
             </div>
             <!--Column for both the the compilerflags and codemirror-->
             <div class="col s12 l4" id="compiler-and-flags-col">

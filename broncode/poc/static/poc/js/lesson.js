@@ -7,14 +7,6 @@ function loadDynamicData(user, lesson, code) {
     d_lesson_id = lesson;
 }
 
-$(document).ready(function (){
-    $('#major-form').on('submit', function(event){
-        event.preventDefault();
-        $('#output-box').text("Testing your code...");
-        submitCodeForTesting();
-    });
-});
-
 // AJAX for posting
 function submitCodeForTesting() {
     $.ajax({
@@ -95,6 +87,58 @@ function resetExampleCode() {
         }
     });
 }
+
+function add_try_buttons() {
+    // try button html
+    try_btn = "<div class=\"try-btn\" style=\"padding = .1 em;\"><a href=\"#!\" class=\"left waves-effect waves-light btn-small\">Try!</a></div>";
+    
+    // add buttons to pre before code blocks... filter out blocks with no languange and katex code blocks  
+    $('pre > code[class*=language]').not(".katex").parent().append(try_btn);
+
+    // set up button to send contents of code block to code mirror editor
+    $('.try-btn').on('click', function() {
+            code = $(this).parent().find("code").text();
+            cEditor.setValue(code)
+        }
+    );
+    $('.try-btn').hide();
+
+    // set buttons to appear on hover
+    $('pre').hover(
+        function() {
+            btn = $(this).find(".try-btn")
+            btn.slideDown(200);
+            btn.delay(1000)
+        },
+        function() {
+            btn = $(this).find(".try-btn")
+            btn.clearQueue();
+            btn.delay(500);
+            btn.slideUp(200);
+        }
+    );
+}
+
+
+$(document).ready(function (){
+    $('#major-form').on('submit', function(event){
+        event.preventDefault();
+        $('#output-box').text("Testing your code...");
+        submitCodeForTesting();
+    });
+
+    add_try_buttons()
+
+    // Markdown styling fixes -----------------------------------------
+    
+    // Make tables responsive to size of screen
+    $("table").wrap("<div style=\"overflow-x: auto;\"></div>");
+
+    // Style markdown list a bit better
+    $("#markdown-content ul").wrap("<div class=\"markdown-list\" style=\"padding-left: 2em;\"></div>");
+    $(".markdown-list > ul > li").css("list-style-type","circle");
+    // END Markdown styling fixes --------------------------------------
+});
 
 $(function() {
     //adapted from code written by Github user @mjhea0 at https://github.com/realpython/django-form-fun
