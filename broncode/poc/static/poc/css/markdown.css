@@ -226,7 +226,7 @@ table tfoot td {
 }
 
 /*Modified the table to be more inline with github*/
-
+/*
 img {
   max-width: 100%;
 }
@@ -319,7 +319,7 @@ span.float-right > span {
   text-align: right;
 }
 
-
+*/
 code, tt {
   margin: 0 2px;
   padding: 0 5px;
