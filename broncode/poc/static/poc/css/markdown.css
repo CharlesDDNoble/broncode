@@ -96,43 +96,43 @@ h6 {
 }
 
 p, blockquote, ul, ol, dl, li, table, pre {
-  margin: 15px 0;
+  margin: 15px 0 !important;
 }
 
 hr {
   border: 0 none;
   color: #cccccc;
   height: 4px;
-  padding: 0;
+  padding: 0 !important;
 }
 
 h2:first-child {
-  margin-top: 0;
-  padding-top: 0;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 h1:first-child {
-  margin-top: 0;
-  padding-top: 0;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 h1:first-child + h2 {
-  margin-top: 0;
-  padding-top: 0;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 h3:first-child, h4:first-child, h5:first-child, h6:first-child {
-  margin-top: 0;
-  padding-top: 0;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
-  margin-top: 0;
-  padding-top: 0;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 li p.first {
@@ -140,18 +140,18 @@ li p.first {
 }
 
 ul, ol {
-  padding-left: 30px;
+  padding-left: 30px !important;
 }
 
 ul :first-child, ol :first-child {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 ul :last-child, ol :last-child {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
-dl {
+/*dl {
   padding: 0;
 }
 
@@ -187,7 +187,7 @@ dl dd > :first-child {
 dl dd > :last-child {
       margin-bottom: 0; 
 }
-
+*/
 /*Modified the table to be more inline with github*/
 table {
   font-family: Arial, Helvetica, sans-serif;
@@ -226,6 +226,7 @@ table tfoot td {
 }
 
 /*Modified the table to be more inline with github*/
+
 /*
 img {
   max-width: 100%;
