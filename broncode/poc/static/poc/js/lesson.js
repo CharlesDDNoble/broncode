@@ -92,8 +92,8 @@ function add_try_buttons() {
     // try button html
     try_btn = "<div class=\"try-btn\" style=\"padding = .1 em;\"><a href=\"#!\" class=\"left waves-effect waves-light btn-small\">Try!</a></div>";
     
-    // add buttons to pre before code blocks... filter out katex code blocks  
-    $('pre > code').not(".katex").parent().append(try_btn);
+    // add buttons to pre before code blocks... filter out blocks with no languange and katex code blocks  
+    $('pre > code[class*=language]').not(".katex").parent().append(try_btn);
 
     // set up button to send contents of code block to code mirror editor
     $('.try-btn').on('click', function() {
