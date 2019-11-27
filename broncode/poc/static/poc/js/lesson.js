@@ -127,10 +127,17 @@ $(document).ready(function (){
         submitCodeForTesting();
     });
 
+    add_try_buttons()
+
+    // Markdown styling fixes -----------------------------------------
+    
     // Make tables responsive to size of screen
     $("table").wrap("<div style=\"overflow-x: auto;\"></div>");
 
-    add_try_buttons()
+    // Style markdown list a bit better
+    $("#markdown-content ul").wrap("<div class=\"markdown-list\" style=\"padding-left: 2em;\"></div>");
+    $(".markdown-list > ul > li").css("list-style-type","circle");
+    // END Markdown styling fixes --------------------------------------
 });
 
 $(function() {
