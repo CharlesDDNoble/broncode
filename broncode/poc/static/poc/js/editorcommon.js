@@ -79,7 +79,7 @@ function validate_input() {
         return false;
     }
     if ($('#textarea-markdown').val() == "") {
-        M.toast({html: 'Markdown content cannot be blank'})
+        M.toast({html: 'Markdown content cannot be blank.'})
         return false;
     }
     if ($('#select-language').val() == null) {
