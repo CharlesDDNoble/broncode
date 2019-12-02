@@ -17,13 +17,13 @@ function extract_test_data_from_row(row) {
 }
 
 var test_id = 1;
-$(document).ready(
+$(document).ready(function() {
     // if there are already tests, then the next id is the last test id + 1
     if (! $("[id|=test-row]").isEmptyObject()) {
         var last_id = $("[id|=test-row]:last").attr("id");
         test_id = parseInt(last_id.split("-")[2]) + 1;
     }
-);
+});
 
 
 function add_new_testcase() {
