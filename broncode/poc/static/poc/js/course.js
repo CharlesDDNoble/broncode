@@ -15,9 +15,9 @@ $('#btn-create-course').on('click', function(event){
 
 
 // AJAX for posting
-function create_course(param_course_name) {
-    // var course_name = $("#course-name").val();
-    var course_name = param_course_name;
+function create_course() {
+    var course_name = $("#course-name").val();
+    // var course_lang = $("#course-language").val();
     console.log(course_name);
 
     $.ajax({
@@ -25,6 +25,7 @@ function create_course(param_course_name) {
         type : "POST", // http method
         data : {
             title : course_name
+            // title : course_lang
         }, // data sent with the post request
         dataType: "json",
         // handle a successful response
