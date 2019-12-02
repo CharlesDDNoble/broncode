@@ -35,7 +35,7 @@ function add_new_testcase() {
     var deletebuttontext = document.createElement("span");
     deletebuttontext.innerHTML = "remove";
     
-    var add_test_btn = document.getElementById("add-test-btn"); 
+    var add_test_wrapper = document.getElementById("add-test-wrapper"); 
 
     deletebutton.appendChild(deletebuttontext);
     deletebuttoncol.appendChild(deletebutton);
@@ -50,7 +50,7 @@ function add_new_testcase() {
     };
     
     next_test_input_id--;
-    handle.insertBefore(div,add_test_btn);
+    handle.insertBefore(div,add_test_wrapper);
 }
 
 function create_input_div(size, id, label, cls = "") {
