@@ -80,24 +80,28 @@
                     <div class="row">
                         {% comment %} <!-- Action is provided in `static/poc/js/createcourse.js` -->
                         <form action="" class="col s12" method="post" id="form-create-course">
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <select>
-                                    <option value="" disabled selected>Choose your option</option>
+                        {% csrf_token %}
+
+                            <!-- Lesson Name -->
+                            <div class="input-field col s12">
+                                <input placeholder="" id="course-name" type="text" class="validate white-text">
+                                <label for="course-name">Course Name</label>
+                            </div>
+
+                            <!-- Language -->
+                            <div class="input-field col s12">
+                                <select id="select-language">
+                                    <option value="" style="color:white;" disabled selected>Choose Language</option>
                                     <option value="Python3">Python</option>
                                     <option value="C">C</option>
                                     <option value="R">R</option>
-                                    </select>
-                                    <label>Select Course</label>
-                                </div>
+                                </select>
+                                <label>Language Select</label>
                             </div>
-                        </form> {% endcomment %}
-                        <div class="collection">
-                            <a href="#!" onclick="create_course('Python3')" class="collection-item">Python</a>
-                            <a href="#!" onclick="create_course('C')" class="collection-item">C</a>
-                            <a href="#!" onclick="create_course('R')" class="collection-item">R</a>
-                        </div>
+                            <div class="fixed-action-btn">
+                                <a href="#!" id="btn-create-course" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">send</i></a> 
+                            </div>
+                        </form> 
                     </div>
                 </div>
             </div>
