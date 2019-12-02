@@ -16,42 +16,84 @@ function extract_test_data_from_row(row) {
     return data;
 }
 
-var next_test_input_id = 1;
+var test_id = 1;
+$(document).ready(
+    // if there are already tests, then the next id is the last test id + 1
+    if (! $("[id|=test-row]").isEmptyObject()) {
+        var last_id = $("[id|=test-row]:last").attr("id");
+        test_id = parseInt(last_id.split("-")[2]) + 1;
+    }
+);
+
+
 function add_new_testcase() {
-    var handle = document.getElementById("tests-wrapper");
-
-    var div = document.createElement("div");
-    div.classList.add("row", "testinputrow", "valign-wrapper");
-    div.id = "test-row-" + next_test_input_id;
-
-    var command_line = create_input_div(3, "command_line-" + next_test_input_id, "Input (Optional)");
-    var expected = create_input_div(3, "expected-" + next_test_input_id, "Expected Output", "testcase-input-output");
-    var hint = create_input_div(3, "hint-" + next_test_input_id, "Hint (Optional)");
-    
-    var deletebuttoncol = document.createElement("div");
-    deletebuttoncol.classList.add("col", "s3", "testinputdeletecol", "center-align");
-    var deletebutton = document.createElement("div");
-    deletebutton.classList.add("btn", "testinputdeletebtn", "red", "accent-4");
-    var deletebuttontext = document.createElement("span");
-    deletebuttontext.innerHTML = "remove";
-    
-    var add_test_wrapper = document.getElementById("add-test-wrapper"); 
-
-    deletebutton.appendChild(deletebuttontext);
-    deletebuttoncol.appendChild(deletebutton);
-    
-    div.appendChild(command_line);
-    div.appendChild(expected);
-    div.appendChild(hint);
-    div.appendChild(deletebuttoncol);
-    
-    deletebutton.onclick = function() {
-        this.parentElement.parentElement.remove();
-    };
-    
-    next_test_input_id++;
-    handle.insertBefore(div,add_test_wrapper);
+    var row = $(`
+        <div class="row testinputrow valign-wrapper" id="test-row-${test_id}">
+            <div class="col s3 input-field">
+                <input value="{{ test.stdin }}" type="text" id="command-line-${test_id}">
+                <label for="command-line-${test_id}">Input (Optional)</label>
+            </div>
+            <div class="col s3 input-field">
+                <input value="{{ test.stdout }}" type="text" id="expected-${test_id}" class="testcase-input-output"> 
+                <label for="expected-${test_id}">Expected Output</label>
+            </div>
+            <div class="col s3 input-field">
+                <input value="{{ test.hint }}" type="text" id="hint-${test_id}">
+                <label for="hint-${test_id}">Hint (Optional)</label>
+            </div>
+            <div class="col s3 testinputdeletecol">
+                <div class="btn center-align testinputdeletebtn">
+                <span>remove</span>
+                </div>
+            </div>
+            <input type="hidden" id="number-${test_id}" value="${test_id}">
+        </div>
+    `);
+    row.insertBefore("#add-test-wrapper").hide();
+    row.slideDown("slow",function(){});
+    row.children(".testinputdeletebtn").click(function() {
+        this.parent().slideUp("slow", function() {
+            this.parent().empty();
+        })
+    });
+    test_id++;
 }
+
+// function add_new_testcase() {
+//     var handle = document.getElementById("tests-wrapper");
+
+//     var div = document.createElement("div");
+//     div.classList.add("row", "testinputrow", "valign-wrapper");
+//     div.id = "test-row-" + test_id;
+
+//     var command_line = create_input_div(3, "command_line-" + test_id, "Input (Optional)");
+//     var expected = create_input_div(3, "expected-" + test_id, "Expected Output", "testcase-input-output");
+//     var hint = create_input_div(3, "hint-" + test_id, "Hint (Optional)");
+    
+//     var deletebuttoncol = document.createElement("div");
+//     deletebuttoncol.classList.add("col", "s3", "testinputdeletecol", "center-align");
+//     var deletebutton = document.createElement("div");
+//     deletebutton.classList.add("btn", "testinputdeletebtn", "red", "accent-4");
+//     var deletebuttontext = document.createElement("span");
+//     deletebuttontext.innerHTML = "remove";
+    
+//     var add_test_wrapper = document.getElementById("add-test-wrapper"); 
+
+//     deletebutton.appendChild(deletebuttontext);
+//     deletebuttoncol.appendChild(deletebutton);
+    
+//     div.appendChild(command_line);
+//     div.appendChild(expected);
+//     div.appendChild(hint);
+//     div.appendChild(deletebuttoncol);
+    
+//     deletebutton.onclick = function() {
+//         this.parentElement.parentElement.remove();
+//     };
+    
+//     test_id++;
+//     handle.insertBefore(div,add_test_wrapper);
+// }
 
 function create_input_div(size, id, label, cls = "") {
     var div = document.createElement("div");
