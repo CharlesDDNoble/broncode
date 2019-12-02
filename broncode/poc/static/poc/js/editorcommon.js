@@ -50,10 +50,10 @@ function add_new_testcase() {
         </div>
     `);
     row.insertBefore("#add-test-wrapper").hide();
-    row.slideDown();
-    row.find("div .testinputdeletebtn").click(function() {
-        this.target.parent().slideUp("slow", function() {
-            this.target.parent().empty();
+    row.slideDown("slow",function(){});
+    row.find("div .testinputdeletebtn").click(function(event) {
+        $(event.target).parent().slideUp("slow", function(event) {
+            $(event.target).parent().empty();
         });
     });
     test_id++;
