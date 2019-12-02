@@ -41,8 +41,8 @@ function add_new_testcase() {
                 <input value="" type="text" id="hint-${test_id}">
                 <label for="hint-${test_id}">Hint (Optional)</label>
             </div>
-            <div class="col s3 testinputdeletecol">
-                <div class="btn center-align testinputdeletebtn">
+            <div class="col s3 center-align testinputdeletecol">
+                <div class="btn red accent-4 testinputdeletebtn">
                 <span>remove</span>
                 </div>
             </div>
@@ -57,64 +57,6 @@ function add_new_testcase() {
         });
     });
     test_id++;
-}
-
-// function add_new_testcase() {
-//     var handle = document.getElementById("tests-wrapper");
-
-//     var div = document.createElement("div");
-//     div.classList.add("row", "testinputrow", "valign-wrapper");
-//     div.id = "test-row-" + test_id;
-
-//     var command_line = create_input_div(3, "command_line-" + test_id, "Input (Optional)");
-//     var expected = create_input_div(3, "expected-" + test_id, "Expected Output", "testcase-input-output");
-//     var hint = create_input_div(3, "hint-" + test_id, "Hint (Optional)");
-    
-//     var deletebuttoncol = document.createElement("div");
-//     deletebuttoncol.classList.add("col", "s3", "testinputdeletecol", "center-align");
-//     var deletebutton = document.createElement("div");
-//     deletebutton.classList.add("btn", "testinputdeletebtn", "red", "accent-4");
-//     var deletebuttontext = document.createElement("span");
-//     deletebuttontext.innerHTML = "remove";
-    
-//     var add_test_wrapper = document.getElementById("add-test-wrapper"); 
-
-//     deletebutton.appendChild(deletebuttontext);
-//     deletebuttoncol.appendChild(deletebutton);
-    
-//     div.appendChild(command_line);
-//     div.appendChild(expected);
-//     div.appendChild(hint);
-//     div.appendChild(deletebuttoncol);
-    
-//     deletebutton.onclick = function() {
-//         this.parentElement.parentElement.remove();
-//     };
-    
-//     test_id++;
-//     handle.insertBefore(div,add_test_wrapper);
-// }
-
-function create_input_div(size, id, label, cls = "") {
-    var div = document.createElement("div");
-    div.classList.add("col", "s" + size, "input-field");
-
-    var input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "";
-    input.id = id;
-
-    if (cls != "") {
-        input.classList.add(cls);
-    }
-
-    var labelElem = document.createElement("label");
-    labelElem.innerHTML = label;
-
-    div.appendChild(input);
-    div.appendChild(labelElem);
-    
-    return div;
 }
 
 function validate_input() {
