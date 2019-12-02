@@ -24,12 +24,12 @@ function add_new_testcase() {
     div.classList.add("row", "testinputrow");
     div.id = "test_row_" + next_test_input_id;
 
-    var command_line = create_input_div(4, "command_line_" + next_test_input_id, "Command Line Arguments (Optional)");
+    var command_line = create_input_div(3, "command_line_" + next_test_input_id, "Command Line Arguments (Optional)");
     var expected = create_input_div(3, "expected_" + next_test_input_id, "Expected Output", "testcase-input-output");
-    var hint = create_input_div(4, "hint_" + next_test_input_id, "Hint Upon Failure (Optional)");
+    var hint = create_input_div(3, "hint_" + next_test_input_id, "Hint Upon Failure (Optional)");
     
     var deletebuttoncol = document.createElement("div");
-    deletebuttoncol.classList.add("col", "s1", "testinputdeletecol");
+    deletebuttoncol.classList.add("col", "s3", "testinputdeletecol", "valign-wrapper", "center-align");
     var deletebutton = document.createElement("div");
     deletebutton.classList.add("btn", "testinputdeletebtn");
     var deletebuttontext = document.createElement("span");
