@@ -51,10 +51,10 @@ function add_new_testcase() {
     `);
     row.insertBefore("#add-test-wrapper").hide();
     row.slideDown();
-    row.children(".testinputdeletebtn").click(function() {
-        this.parent().slideUp("slow", function() {
-            this.parent().empty();
-        })
+    row.find("div .testinputdeletebtn").click(function() {
+        this.target.parent().slideUp("slow", function() {
+            this.target.parent().empty();
+        });
     });
     test_id++;
 }
