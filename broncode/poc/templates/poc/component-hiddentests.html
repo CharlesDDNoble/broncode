@@ -7,11 +7,6 @@
 
     <label id="label-hidden-tests">Automated Tests<br>
     </label>
-    <div class="valign-wrapper">
-        <div class="btn right-align" id="btn-hidden-test-add">
-            <span>Add Test Case</span>
-        </div>
-    </div>
     {% for test in test_cases %}
     <div class="row testinputrow valign-wrapper" id="test_row_{{ test.id }}">
         <div class="col s3 input-field">
@@ -34,5 +29,10 @@
         <input type="hidden" id="number_{{ test.id }}" value="{{ test.number }}">
     </div>
     {% endfor %}
+    <div id="add-test-wrapper" class="right-align">
+        <div class="btn" id="btn-hidden-test-add">
+            <span>Add Test Case</span>
+        </div>
+    </div>
 
 {% endblock %}

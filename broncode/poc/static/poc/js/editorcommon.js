@@ -29,12 +29,14 @@ function add_new_testcase() {
     var hint = create_input_div(3, "hint_" + next_test_input_id, "Hint (Optional)");
     
     var deletebuttoncol = document.createElement("div");
-    deletebuttoncol.classList.add("col", "s3", "testinputdeletecol", "center-align", "red accent-4");
+    deletebuttoncol.classList.add("col", "s3", "testinputdeletecol", "center-align", "red", "accent-4");
     var deletebutton = document.createElement("div");
     deletebutton.classList.add("btn", "testinputdeletebtn");
     var deletebuttontext = document.createElement("span");
     deletebuttontext.innerHTML = "remove";
     
+    var add_test_btn = document.getElementById("add-test-btn"); 
+
     deletebutton.appendChild(deletebuttontext);
     deletebuttoncol.appendChild(deletebutton);
     
@@ -48,7 +50,7 @@ function add_new_testcase() {
     };
     
     next_test_input_id--;
-    handle.appendChild(div);
+    handle.insertBefore(div,add_test_btn);
 }
 
 function create_input_div(size, id, label, cls = "") {
