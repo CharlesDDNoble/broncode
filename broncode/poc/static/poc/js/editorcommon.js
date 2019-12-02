@@ -52,8 +52,8 @@ function add_new_testcase() {
     row.insertBefore("#add-test-wrapper").hide();
     row.slideDown("slow",function(){});
     row.find("div .testinputdeletebtn").click(function(event) {
-        $(event.target).parent().parent().slideUp("slow", function(event) {
-            $(event.target).parent().parent().empty();
+        row.slideUp("slow", function(event) {
+            row.empty();
         });
     });
     test_id++;
