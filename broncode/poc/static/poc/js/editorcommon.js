@@ -50,9 +50,9 @@ function add_new_testcase() {
         </div>
     `);
     row.insertBefore("#add-test-wrapper").hide();
-    row.slideDown("slow",function(){});
+    row.slideDown();
     row.find("div .testinputdeletebtn").click(function(event) {
-        row.slideUp("slow", function(event) {
+        row.slideUp("", function(event) {
             row.empty();
         });
     });
