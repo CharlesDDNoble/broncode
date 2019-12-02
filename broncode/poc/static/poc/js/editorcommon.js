@@ -19,7 +19,7 @@ function extract_test_data_from_row(row) {
 var test_id = 1;
 $(document).ready(function() {
     // if there are already tests, then the next id is the last test id + 1
-    if ($("[id|=test-row]").length == 0) {
+    if ($("[id|=test-row]").length > 0) {
         var last_id = $("[id|=test-row]:last").attr("id");
         test_id = parseInt(last_id.split("-")[2]) + 1;
     }
