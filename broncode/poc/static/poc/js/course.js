@@ -83,9 +83,8 @@ function delete_course(course_id) {
         dataType: 'json',
         // handle a successful response
         success : function(json) {
-//             $("#card-create-course").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
             M.toast({html: 'Course deleted!', classes: 'rounded green lighten-3'});
-            $("#course_"+course_id+"_card").remove();
+            $("#course_"+course_id+"_card").prev().hide("slow", function(){$("#card-create-course").prev().remove()});
             $("#course_"+course_id+"_modal").remove();
             console.log(json);
         },
