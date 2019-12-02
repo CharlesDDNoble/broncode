@@ -30,15 +30,15 @@ function add_new_testcase() {
     var row = $(`
         <div class="row testinputrow valign-wrapper" id="test-row-${test_id}">
             <div class="col s3 input-field">
-                <input value="{{ test.stdin }}" type="text" id="command-line-${test_id}">
+                <input value="" type="text" id="command-line-${test_id}">
                 <label for="command-line-${test_id}">Input (Optional)</label>
             </div>
             <div class="col s3 input-field">
-                <input value="{{ test.stdout }}" type="text" id="expected-${test_id}" class="testcase-input-output"> 
+                <input value="" type="text" id="expected-${test_id}" class="testcase-input-output"> 
                 <label for="expected-${test_id}">Expected Output</label>
             </div>
             <div class="col s3 input-field">
-                <input value="{{ test.hint }}" type="text" id="hint-${test_id}">
+                <input value="" type="text" id="hint-${test_id}">
                 <label for="hint-${test_id}">Hint (Optional)</label>
             </div>
             <div class="col s3 testinputdeletecol">
@@ -50,7 +50,7 @@ function add_new_testcase() {
         </div>
     `);
     row.insertBefore("#add-test-wrapper").hide();
-    row.slideDown("slow",function(){});
+    row.slideDown();
     row.children(".testinputdeletebtn").click(function() {
         this.parent().slideUp("slow", function() {
             this.parent().empty();
