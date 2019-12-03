@@ -72,12 +72,15 @@ function validate_input() {
         return false;
     }
     
-    $.each($(".testcase-output"), function(idx, input) {
-        if (input.value == "") {
+    $.each($(".testinputrow"), function(idx, row) {
+        jquery_row = $("#"+row.id);
+        // if the row has no exp output and it was not deleted
+        if (jquery_row.find(".testcase-output").val() === "" 
+            && jquery_row.find("[id|='was-deleted'").val() === "false") {
             M.toast({html: 'Test cases require at least an expected output.'})
             return false;
         }
-    }
+    });
     return true;
 }
 
