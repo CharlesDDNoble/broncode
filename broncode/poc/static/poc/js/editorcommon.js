@@ -88,7 +88,7 @@ function validate_input() {
 
 
 // AJAX API REQUESTS
-function post_test_case(idx, jquery_row) {
+function post_test_case(idx, jquery_row, lesson_id) {
     test_id = jquery_row.attr("id").split("-")[2];
     input = jquery_row.find("[id|='command-line']").val();
     output = jquery_row.find("[id|='expected']").val();
@@ -101,7 +101,7 @@ function post_test_case(idx, jquery_row) {
             "stdin": input,
             "stdout": output,
             "hint": hint,
-            "lesson": $('#lesson-id').val(),
+            "lesson": lesson_id,
             "number": test_id
         },
         dataType: 'json',
@@ -163,7 +163,7 @@ function handle_test_cases(lesson_id) {
             // if this test case is new --> is not in database yet
             if (jquery_row.find("[id|='is-new']").val() === "true") {
                 if (jquery_row.find("[id|='was-deleted']").val() === "false") {
-                    var action = post_test_case(idx,jquery_row);
+                    var action = post_test_case(idx,jquery_row,lesson_id);
                 } else {
                     // since its not in the database yet, just delete it
                     jquery_row.empty();
