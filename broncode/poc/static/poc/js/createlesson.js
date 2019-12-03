@@ -44,10 +44,6 @@ function create_lesson() {
     return true;
 };
 
-function finish_create() {
-    window.location.replace(BRONCODE_URL + '/course/' + $('#course-id').val());
-}
-
 $(function() {
 
     // This function gets cookie with a given name

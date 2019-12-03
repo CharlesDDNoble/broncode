@@ -178,11 +178,11 @@ function handle_test_cases(lesson_id) {
         // wait for all requests to be done
         // https://stackoverflow.com/questions/5627284/pass-in-an-array-of-deferreds-to-when
         $.when.apply($, asyncs).then(function() {
-            finish_create();
+            window.location.replace(BRONCODE_URL + '/course/' + $('#course-id').val());
         });
     } else {
         // no test cases to add, just finish up
-        finish_create();
+        window.location.replace(BRONCODE_URL + '/course/' + $('#course-id').val());
     }
 }
 
