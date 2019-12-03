@@ -1,4 +1,4 @@
-var BRONCODE_URL = "http://broncode.cs.wmich.edu"
+var BRONCODE_URL = "http://broncode.cs.wmich.edu:12000"
 
 function create_lesson() {
     lesson_name = $('#lesson-name').val();
@@ -32,7 +32,7 @@ function create_lesson() {
         // handle a successful response
         success : function(json) {
             lesson_id = json.id;
-            create_test_cases(lesson_id);
+            handle_test_cases(lesson_id);
         },
 
         // handle a non-successful response
@@ -43,104 +43,6 @@ function create_lesson() {
 
     return true;
 };
-
-
-function post_test_case(idx, jquery_row) {
-    test_id = jquery_row.attr("id").split("-")[2];
-    input = jquery_row.find("[id|='command-line']");
-    output = jquery_row.find("[id|='expected']");
-    hint = jquery_row.find("[id|='hint']");
-
-    return $.ajax({
-        url : BRONCODE_URL + '/api/solutionsets/', // the endpoint
-        type : 'POST', // http method
-        data : {
-            "stdin": input,
-            "stdout": output,
-            "hint": hint,
-            "lesson": $('#lesson-id').val(),
-            "number": test_id
-        },
-        dataType: 'json',
-        // handle a non-successful response
-        success : function(json) {
-            //
-        },
-        error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-}
-
-function update_test_case(idx, jquery_row) {
-    test_id = jquery_row.attr("id").split("-")[2];
-    input = jquery_row.find("[id|='command-line']");
-    output = jquery_row.find("[id|='expected']");
-    hint = jquery_row.find("[id|='hint']");
-    
-    return $.ajax({
-        url :  BRONCODE_URL + "/api/solutionsets/" + test_id + "/",
-        type : "PUT",
-        data : {
-            "stdin": input,
-            "stdout": output,
-            "hint": hint,
-            "lesson": $('#lesson-id').val(),
-            "number": test_id
-        },
-        error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-}
-
-function delete_test_case(idx, jquery_row) {
-    return $.ajax({
-        test_id = jquery_row.attr("id").split("-")[2];
-        url :  BRONCODE_URL + "/api/solutionsets/" + test_id,
-        type : "DELETE",
-        error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-        }
-    });
-}
-
-function handle_test_cases(lesson_id) {
-    var testcases = $(".testinputrow");
-
-    if (testcases.length != 0) {
-        asyncs = [];
-
-        $.each(testcases, function(idx, row) {
-            jquery_row = $("#"+row.id);
-            if (jquery_row.find("[id|='is-new']").val() === "true") {
-                if (jquery_row.find("[id|='was-deleted']").val() === "false") {
-                    action = post_test_case(idx,jquery_row);
-                } else {
-                    // since its not in the database yet, just delete it
-                    jquery_row.empty();
-                }
-            } else { // is old test case --> already in database
-                if (jquery_row.find("[id|='was-deleted']").val() === "false") {
-                    action = update_test_case(idx,jquery_row);
-                } else {
-                    action = delete_test_case(idx,jquery_row);
-                    jquery_row.empty();
-                }
-            }
-            asyncs.push(action);
-        });
-
-        // wait for all requests to be done
-        // https://stackoverflow.com/questions/5627284/pass-in-an-array-of-deferreds-to-when
-        $.when.apply($, asyncs).then(function() {
-            finish_create();
-        });
-    } else {
-        // no test cases to add, just finish up
-        finish_create();
-    }
-}
 
 function finish_create() {
     window.location.replace(BRONCODE_URL + '/course/' + $('#course-id').val());
@@ -211,7 +113,7 @@ $(document).ready(function(){
 
     document.getElementById("btn-hidden-test-add").onclick = function(event) {
         event.preventDefault();
-        add_new_testcase();
+        add_testcase_row();
     };
 
     $('.sidenav').sidenav();
