@@ -44,35 +44,93 @@ function create_lesson() {
     return true;
 };
 
-function create_test_cases(lesson_id) {
+
+function post_test_case(idx, jquery_row) {
+    test_id = jquery_row.attr("id").split("-")[2];
+    input = jquery_row.find("[id|='command-line']");
+    output = jquery_row.find("[id|='expected']");
+    hint = jquery_row.find("[id|='hint']");
+
+    return $.ajax({
+        url : BRONCODE_URL + '/api/solutionsets/', // the endpoint
+        type : 'POST', // http method
+        data : {
+            "stdin": input,
+            "stdout": output,
+            "hint": hint,
+            "lesson": $('#lesson-id').val(),
+            "number": test_id
+        },
+        dataType: 'json',
+        // handle a non-successful response
+        success : function(json) {
+            //
+        },
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
+
+function update_test_case(idx, jquery_row) {
+    test_id = jquery_row.attr("id").split("-")[2];
+    input = jquery_row.find("[id|='command-line']");
+    output = jquery_row.find("[id|='expected']");
+    hint = jquery_row.find("[id|='hint']");
+    
+    return $.ajax({
+        url :  BRONCODE_URL + "/api/solutionsets/" + test_id + "/",
+        type : "PUT",
+        data : {
+            "stdin": input,
+            "stdout": output,
+            "hint": hint,
+            "lesson": $('#lesson-id').val(),
+            "number": test_id
+        },
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
+
+function delete_test_case(idx, jquery_row) {
+    return $.ajax({
+        test_id = jquery_row.attr("id").split("-")[2];
+        url :  BRONCODE_URL + "/api/solutionsets/" + test_id,
+        type : "DELETE",
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
+
+function handle_test_cases(lesson_id) {
     var testcases = $(".testinputrow");
 
     if (testcases.length != 0) {
         asyncs = [];
+
         $.each(testcases, function(idx, row) {
-            var data = extract_test_data_from_row(row);
-            waitfor = $.ajax({
-                url : BRONCODE_URL + '/api/solutionsets/', // the endpoint
-                type : 'POST', // http method
-        
-                data : {
-                    number: idx + 1,
-                    lesson: lesson_id,
-                    stdin: data.command_line,
-                    stdout: data.expected,
-                    hint: data.hint
-                }, // data sent with the post request
-                dataType: 'json',
-                // handle a non-successful response
-                success : function(json) {
-                    //
-                },
-                error : function(xhr,errmsg,err) {
-                    console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
+            jquery_row = $("#"+row.id);
+            if (jquery_row.find("[id|='is-new']").val() === "true") {
+                if (jquery_row.find("[id|='was-deleted']").val() === "false") {
+                    action = post_test_case(idx,jquery_row);
+                } else {
+                    // since its not in the database yet, just delete it
+                    jquery_row.empty();
                 }
-            });
-            asyncs.push(waitfor);
+            } else { // is old test case --> already in database
+                if (jquery_row.find("[id|='was-deleted']").val() === "false") {
+                    action = update_test_case(idx,jquery_row);
+                } else {
+                    action = delete_test_case(idx,jquery_row);
+                    jquery_row.empty();
+                }
+            }
+            asyncs.push(action);
         });
+
         // wait for all requests to be done
         // https://stackoverflow.com/questions/5627284/pass-in-an-array-of-deferreds-to-when
         $.when.apply($, asyncs).then(function() {

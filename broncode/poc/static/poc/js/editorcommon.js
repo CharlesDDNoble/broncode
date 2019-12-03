@@ -47,13 +47,18 @@ function add_new_testcase() {
                 </div>
             </div>
             <input type="hidden" id="number-${test_id}" value="${test_id}">
+            <input type="hidden" id="is-new" value="true">
+            <input type="hidden" id="was-deleted-${test_id}" value="false">
         </div>
     `);
     row.insertBefore("#add-test-wrapper").hide();
     row.slideDown();
     row.find("div .testinputdeletebtn").click(function(event) {
         row.slideUp("", function(event) {
-            row.empty();
+            // row.empty();
+            // defer deleting until submission
+            row.find("[id|='was-deleted']").attr("value","true")
+            row.hide();
         });
     });
     test_id++;
