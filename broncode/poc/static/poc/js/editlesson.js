@@ -102,7 +102,7 @@ $(function() {
 
 });
 
-$(document).ready(function(){
+$(document).ready(function() {
     lesson_id = $("#lesson-id").val()
 
     document.getElementById("btn-hidden-test-add").onclick = function(event) {

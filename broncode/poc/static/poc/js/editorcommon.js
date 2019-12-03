@@ -1,4 +1,5 @@
 var test_id = 1;
+
 $(document).ready(function() {
     // if there are already tests, then the next id is the last test id + 1
     if ($("[id|=test-row]").length > 0) {
@@ -10,9 +11,8 @@ $(document).ready(function() {
 
 function remove_testcase_row(row) {
     row.slideUp("", function() {
-        // row.empty();
         // defer deleting until submission
-        row.find("[id|='was-deleted']").attr("value","true")
+        row.find("[id|='was-deleted']").attr("value","true");
         row.hide();
     });
 }
@@ -74,7 +74,6 @@ function validate_input() {
             return false;
         }
     }
-
     return true;
 }
 
