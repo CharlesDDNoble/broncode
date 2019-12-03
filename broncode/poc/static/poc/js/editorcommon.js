@@ -128,8 +128,9 @@ function update_test_case(idx, jquery_row) {
 }
 
 function delete_test_case(idx, jquery_row) {
+    test_id = jquery_row.attr("id").split("-")[2];
+    
     return $.ajax({
-        test_id = jquery_row.attr("id").split("-")[2];
         url :  BRONCODE_URL + "/api/solutionsets/" + test_id,
         type : "DELETE",
         error : function(xhr,errmsg,err) {
