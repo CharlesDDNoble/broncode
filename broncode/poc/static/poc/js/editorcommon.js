@@ -55,21 +55,23 @@ function add_testcase_row() {
 // END FUNCTIONS TO CONTROL TEST CASE BUTTONS
 
 function validate_input() {
+    var is_valid = true;
+
     if ($('#lesson-name').val() == "") {
         M.toast({html: 'Lesson name cannot be blank.'})
-        return false;
+        is_valid = false;
     }
     if ($('#textarea-markdown').val() == "") {
         M.toast({html: 'Markdown content cannot be blank.'})
-        return false;
+        is_valid = false;
     }
     if ($('#select-language').val() == null) {
         M.toast({html: 'Please choose a language.'})
-        return false;
+        is_valid = false;
     }
     if (cEditor.getValue() == "") {
         M.toast({html: 'Please provide some example code.'})
-        return false;
+        is_valid = false;
     }
     
     $.each($(".testinputrow"), function(idx, row) {
@@ -78,10 +80,10 @@ function validate_input() {
         if (jquery_row.find(".testcase-output").val() === "" 
             && jquery_row.find("[id|='was-deleted'").val() === "false") {
             M.toast({html: 'Test cases require at least an expected output.'})
-            return false;
+            is_valid = false;
         }
     });
-    return true;
+    return is_valid;
 }
 
 
