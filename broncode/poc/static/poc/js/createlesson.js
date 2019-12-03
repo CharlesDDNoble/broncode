@@ -1,4 +1,4 @@
-var BRONCODE_URL = "http://broncode.cs.wmich.edu:12000"
+var BRONCODE_URL = "http://broncode.cs.wmich.edu"
 
 function create_lesson() {
     lesson_name = $('#lesson-name').val();
