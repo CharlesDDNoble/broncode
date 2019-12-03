@@ -27,7 +27,7 @@ function add_testcase_row() {
                 <label for="command-line-${test_id}">Input (Optional)</label>
             </div>
             <div class="col s3 input-field">
-                <input value="" type="text" id="expected-${test_id}" class="testcase-input-output"> 
+                <input value="" type="text" id="expected-${test_id}" class="testcase-output"> 
                 <label for="expected-${test_id}">Expected Output</label>
             </div>
             <div class="col s3 input-field">
@@ -71,9 +71,9 @@ function validate_input() {
         M.toast({html: 'Please provide some example code.'})
         return false;
     }
-    expecteds = document.getElementsByClassName("testcase-input-output");
-    for (var i in expecteds) {
-        if (expecteds[i].value == "") {
+    
+    $.each($(".testcase-output"), function(idx, input) {
+        if (input.value == "") {
             M.toast({html: 'Test cases require at least an expected output.'})
             return false;
         }
