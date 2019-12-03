@@ -158,10 +158,12 @@ function handle_test_cases(lesson_id) {
 
         $.each(testcases, function(idx, row) {
             jquery_row = $("#"+row.id);
+            action = null
+
             // if this test case is new --> is not in database yet
             if (jquery_row.find("[id|='is-new']").val() === "true") {
                 if (jquery_row.find("[id|='was-deleted']").val() === "false") {
-                    action = post_test_case(idx,jquery_row);
+                    var action = post_test_case(idx,jquery_row);
                 } else {
                     // since its not in the database yet, just delete it
                     jquery_row.empty();
@@ -174,7 +176,9 @@ function handle_test_cases(lesson_id) {
                     jquery_row.empty();
                 }
             }
-            asyncs.push(action);
+            if (action){
+                asyncs.push(action);
+            }
         });
 
         // wait for all requests to be done
