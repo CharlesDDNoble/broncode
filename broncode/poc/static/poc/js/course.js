@@ -11,6 +11,13 @@ function loadDynamicData(user, lesson, code) {
 // AJAX for posting
 function create_course() {
     var course_name = $("#course-name").val();
+
+    // validate input on course form    
+    if ($("#course-name").val() === "") {
+        M.toast({html: 'Course name must not be blank!', classes: 'rounded red lighten-3'});
+        return;
+    }
+
     // var course_lang = $("#course-language").val();
     console.log(course_name);
 
@@ -103,7 +110,8 @@ $(document).ready(function(){
     });
 
     // submit on 'enter'
-    $("#btn-create-course").keypress(function(event){
+    $("#course-name").keypress(function(event){
+        event.preventDefault();
         if (event.which === 13) {
             create_course();
         }
