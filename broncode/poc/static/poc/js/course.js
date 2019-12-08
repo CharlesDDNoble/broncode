@@ -111,8 +111,8 @@ $(document).ready(function(){
 
     // submit on 'enter'
     $("#course-name").keypress(function(event){
-        event.preventDefault();
         if (event.which === 13) {
+            event.preventDefault();
             create_course();
         }
     });
