@@ -7,6 +7,9 @@ from executors.codeexecutor import CodeExecutor
 
 class CodeServer():
 
+    def to_dict():
+        return vars(self)
+
     def alarm_handler(self, signum, frame):
         raise TimeoutError('Timeout!')
 
@@ -24,8 +27,6 @@ class CodeServer():
         self.code = ''
         self.num_inputs = ''
         self.inputs = []
-
-
 
     def make_block(self,msg):
         """Creates a BLOCK_SIZE message using msg, padding it with \0 if it is too short"""
