@@ -35,6 +35,7 @@ class CodeClient():
         self.send_time = 0
         self.recv_time = 0
         self.run_time = 0
+        # this is slightly more than codeserver timeout time
         self.max_time = 10.0
         self.max_connection_attempts = 20
         self.conn_wait_time = 1
@@ -93,11 +94,19 @@ class CodeClient():
                     self.run_logs.append(sock.recv(self.BLOCK_SIZE).replace(b'\0',b'').decode("utf-8"))
 
                 log = self.compilation_log
+                
+                # The CodeServer timed out first and sent blank log
+                ## TODO: Make CodeServer send timeout message to explicitly notify the CodeClient
+                ##       that it has timed out.
+                if log == "":
+                    raise socket.timeout
+
                 for i in range(len(self.inputs)):
                     log += "Input: " + self.inputs[i] + "\n"
                     log += "Output: \n" + self.run_logs[i] + "\n"
 
                 self.recv_time = time() - self.recv_time
+
 
                 done = True
             except socket.timeout:

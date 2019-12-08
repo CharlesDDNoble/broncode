@@ -133,25 +133,26 @@ def simulate_student(trials,index,interval,reps,max_executions,inputs):
     count = 0
 
     for rep in range(reps):
-        start_time = time()
+        for i in range(max_executions):
+            start_time = time()
 
-        # random.random -> fp from [0.0,1.0)
-        # choose some random time between 0 and execution_interval seconds to wait before execution
-        next_execution = random.random() * execution_interval
-        
-        my_trials += [None]
+            # random.random -> fp from [0.0,1.0)
+            # choose some random time between 0 and execution_interval seconds to wait before execution
+            next_execution = random.random() * execution_interval
+            
+            my_trials += [None]
 
-        # choose random code and exp from inputs 
-        code, exp = inputs[random.randint(0,len(inputs)-1)]
+            # choose random code and exp from inputs 
+            code, exp = inputs[random.randint(0,len(inputs)-1)]
 
-        sleep(next_execution)
-        
-        execute_request(code, exp, my_trials, count)
-        count += 1
+            sleep(next_execution)
+            
+            execute_request(code, exp, my_trials, count)
+            count += 1
 
-        # wait until next execution interval
-        if time() - start_time < execution_interval:
-            sleep(execution_interval - (time() - start_time))
+            # wait until next execution interval
+            if time() - start_time < execution_interval:
+                sleep(execution_interval - (time() - start_time))
 
     trials[index] = my_trials
 
@@ -178,7 +179,8 @@ def run_student_test(service_name,test_name,student_count,interval,reps,max_exec
     collected_trials = []
 
     for trial in trials:
-        collected_trials += trial
+        if trial:
+            collected_trials += trial
 
     max_wait = interval/max_executions
     test = Test(test_name,"Student",student_count,interval,max_wait,collected_trials)
@@ -267,7 +269,7 @@ def main():
     num_executions = 2
 
     # test with each one of these student counts
-    student_counts = [1,5,10,20,30]
+    student_counts = [1,5,10,20,30,40]
     # student_counts = [1,5,10,15,20,25,30]
 
 
@@ -286,12 +288,12 @@ def main():
         test.log_test(log)
 
     # output graph
-    visualizer.scatter("Number of Students vs. % Executions under 8 seconds For 30 Replicas",
+    visualizer.scatter("Number of Students vs. % Successful Executions under 10 seconds For 30 Replicas",
                         xdata,
                         ydata,
                         axis,
                         "Student Count",
-                        "% Successful executions with runtime < 8 sec",
+                        "% Successful executions with runtime < 10 sec",
                         ".png")
 
 
