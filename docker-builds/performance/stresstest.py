@@ -262,12 +262,12 @@ def main():
     # number of times to repeat the test over the interval 
     reps = 1
     # 60 second interval to execute num_executions
-    interval = 15
+    interval = 30
     # number of executions to execute over each interval
-    num_executions = 1
+    num_executions = 2
 
     # test with each one of these student counts
-    student_counts = [1,2,5]
+    student_counts = [1,5,10,20,30]
     # student_counts = [1,5,10,15,20,25,30]
 
 
