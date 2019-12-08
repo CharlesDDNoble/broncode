@@ -8,12 +8,6 @@ function loadDynamicData(user, lesson, code) {
     d_lesson_id = lesson;
 }
 
-$('#btn-create-course').on('click', function(event){
-    event.preventDefault();
-    create_course();
-});
-
-
 // AJAX for posting
 function create_course() {
     var course_name = $("#course-name").val();
@@ -101,6 +95,20 @@ function delete_course(course_id) {
     });
 };
 
+$(document).ready(function(){
+    // submit on button press
+    $('#btn-create-course').on('click', function(event){
+        event.preventDefault();
+        create_course();
+    });
+
+    // submit on 'enter'
+    $("#btn-create-course").keypress(function(event){
+        if (event.which === 13) {
+            create_course();
+        }
+    });
+}
 
 $(function() {
 
