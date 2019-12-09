@@ -32,7 +32,7 @@ function create_lesson() {
         // handle a successful response
         success : function(json) {
             lesson_id = json.id;
-            create_test_cases(lesson_id);
+            handle_test_cases(lesson_id);
         },
 
         // handle a non-successful response
@@ -43,50 +43,6 @@ function create_lesson() {
 
     return true;
 };
-
-function create_test_cases(lesson_id) {
-    var testcases = $(".testinputrow");
-
-    if (testcases.length != 0) {
-        asyncs = [];
-        $.each(testcases, function(idx, row) {
-            var data = extract_test_data_from_row(row);
-            waitfor = $.ajax({
-                url : BRONCODE_URL + '/api/solutionsets/', // the endpoint
-                type : 'POST', // http method
-        
-                data : {
-                    number: idx + 1,
-                    lesson: lesson_id,
-                    stdin: data.command_line,
-                    stdout: data.expected,
-                    hint: data.hint
-                }, // data sent with the post request
-                dataType: 'json',
-                // handle a non-successful response
-                success : function(json) {
-                    //
-                },
-                error : function(xhr,errmsg,err) {
-                    console.log(xhr.status + ': ' + xhr.responseText); // provide a bit more info about the error to the console
-                }
-            });
-            asyncs.push(waitfor);
-        });
-        // wait for all requests to be done
-        // https://stackoverflow.com/questions/5627284/pass-in-an-array-of-deferreds-to-when
-        $.when.apply($, asyncs).then(function() {
-            finish_create();
-        });
-    } else {
-        // no test cases to add, just finish up
-        finish_create();
-    }
-}
-
-function finish_create() {
-    window.location.replace(BRONCODE_URL + '/course/' + $('#course-id').val());
-}
 
 $(function() {
 
@@ -153,7 +109,7 @@ $(document).ready(function(){
 
     document.getElementById("btn-hidden-test-add").onclick = function(event) {
         event.preventDefault();
-        add_new_testcase();
+        add_testcase_row();
     };
 
     $('.sidenav').sidenav();

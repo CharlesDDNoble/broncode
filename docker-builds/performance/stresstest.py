@@ -24,7 +24,7 @@ def execute_request(code,exp,trials,index,wait=0):
 
     host = ''
     port = 4000
-    flags = " -o3 \n" 
+    flags = " -O3 \n" 
     
     handler = CodeClient(host,port,code,flags)
     handler.run()
@@ -122,35 +122,47 @@ def run_threaded_test(service_name,test_name,code,exp,total,interval,is_random=F
 
     return test
 
-def simulate_student(trials,index,time_limit,max_wait,max_executions,inputs):
+def simulate_student(trials,index,interval,reps,max_executions,inputs):
     start_time = time()
     
     random.seed(start_time)
     
-    next_execution = random.random() * max_wait
+    execution_interval = interval/max_executions
     execution_count = 0
     my_trials = []
     count = 0
 
-    while time() - start_time < time_limit and count < max_executions:
-        if next_execution <= 0:
-            inp = math.floor(random.random() * len(inputs))
-            code, exp = inputs[inp]
+    for rep in range(reps):
+        for i in range(max_executions):
+            start_time = time()
+
+            # random.random -> fp from [0.0,1.0)
+            # choose some random time between 0 and execution_interval seconds to wait before execution
+            next_execution = random.random() * execution_interval
+            
             my_trials += [None]
+
+            # choose random code and exp from inputs 
+            code, exp = inputs[random.randint(0,len(inputs)-1)]
+
+            sleep(next_execution)
+            
             execute_request(code, exp, my_trials, count)
             count += 1
-            next_execution = 5 + random.random() * max_wait
-        else:
-            next_execution -= .5
-            sleep(.5)
+
+            # wait until next execution interval
+            if time() - start_time < execution_interval:
+                sleep(execution_interval - (time() - start_time))
 
     trials[index] = my_trials
 
+
+
 # ======================== SIMULATED STUDENT TESTS ========================
-# Roughly simulate the access patterns for a student, i.e. for time_limit seconds,
-# wait a random time within max_wait, then execute_request to comp/run code in container.
+# Roughly simulate the access patterns for a student, i.e. for reps number of repitions of interval second tests,
+# with max_executions number of executions of comp/run code in container.
 # The code and expected output are 2-tuples pulled from the inputs [ (code,exp)^n ].
-def run_student_test(service_name,test_name,student_count,time_limit,max_wait,max_executions,inputs):
+def run_student_test(service_name,test_name,student_count,interval,reps,max_executions,inputs):
     while not has_max_replicas(service_name):
         sleep(.1)
 
@@ -158,18 +170,20 @@ def run_student_test(service_name,test_name,student_count,time_limit,max_wait,ma
     threads = [None] * student_count
 
     for i in range(student_count):
-        threads[i] = Thread(target=simulate_student,args=(trials,i,time_limit,max_wait,max_executions,inputs))
+        threads[i] = Thread(target=simulate_student,args=(trials,i,interval,reps,max_executions,inputs))
         threads[i].start()
 
     for i in range(student_count):
-        threads[i].join(time_limit + 10)
+        threads[i].join((reps * interval) + 10)
 
     collected_trials = []
 
     for trial in trials:
-        collected_trials += trial
+        if trial:
+            collected_trials += trial
 
-    test = Test(test_name,"Student",student_count,time_limit,max_wait,collected_trials)
+    max_wait = interval/max_executions
+    test = Test(test_name,"Student",student_count,interval,max_wait,collected_trials)
 
     if not len(collected_trials):
         print("WARNING: No test data collected")
@@ -217,24 +231,20 @@ def main():
     port = 4000
     flags = " -o3 \n" 
 
-    bad_code =  "int main(int argc,char** argv){error;return 0;}\n"
-    bad_exp  =  "Parsing gcc flags...\n" \
-                "Compiling code...\n" \
-                "gcc -o3 -o code code.c\n" \
-                "Something went wrong compiling your code:\n" \
-                "code.c: In function 'main':\n" \
-                "code.c:1:32: error: 'error' undeclared (first use in this function)\n" \
-                " int main(int argc,char** argv){error;return 0;}\n" \
-                "                                ^~~~~\n" \
-                "code.c:1:32: note: each undeclared identifier is reported only once for each function it appears in\n"
-
+    bad_code = "int main(int argc,char** argv){error;return 0;}\n"
+    bad_exp = "gcc -O3 -o code code.c\n" \
+              "Something went wrong compiling your code:\n" \
+              "code.c: In function 'main':\n" \
+              "code.c:1:32: error: 'error' undeclared (first use in this function)\n" \
+              " int main(int argc,char** argv){error;return 0;}\n" \
+              "                                ^~~~~\n" \
+              "code.c:1:32: note: each undeclared identifier is reported only once for each function it appears in\n"
+        
     good_code = "int main(int argc,char** argv){printf(\"Hello!\\n\");return 0;}\n"
-    good_exp  = "Parsing gcc flags...\n" \
-                "Compiling code...\n" \
-                "gcc -o3 -o code code.c\n" \
+    good_exp  = "gcc -O3 -o code code.c\n" \
                 "Executing program...\n" \
-                "./code\n" \
                 "Your code successfully compiled and ran, here's the output:\n" \
+                "./code\n" \
                 "Hello!\n"
 
     inf_code =  "int main(int argc,char** argv){while(1);return 0;}\n"
@@ -251,74 +261,42 @@ def main():
     # ======================== SIMULATED STUDENT TESTS ========================
 
     tests = []
-    time = 60
+    # number of times to repeat the test over the interval 
     reps = 1
-    max_wait = 30
-    max_executions = 2
-    
+    # 60 second interval to execute num_executions
+    interval = 30
+    # number of executions to execute over each interval
+    num_executions = 2
 
-    max_tests = (6-1 + 7-3) * reps 
-    for i in range(reps):
-       # Values 5,10,15,25
-       for j in range(1,6):
-           tests += [run_student_test(service_name,"Simulated Student Test",j*5,time,max_wait,max_executions,inputs)]
-           print("Finished test: "+str(len(tests))+"/"+str(max_tests))
-       # Values 30,40,50,60
-       for j in range(3,7):
-           tests += [run_student_test(service_name,"Simulated Student Test",j*10,time,max_wait,max_executions,inputs)]
-           print("Finished test: "+str(len(tests))+"/"+str(max_tests))
+    # test with each one of these student counts
+    student_counts = [1,5,10,20,30,40]
+    # student_counts = [1,5,10,15,20,25,30]
 
+
+    for i in range(len(student_counts)):
+        test_name = "Simulated "+str(student_counts[i])+"-Student Test"
+        test = run_student_test(service_name,test_name,student_counts[i],interval,reps,num_executions,inputs)
+        tests += [test]
+        print("Finished test: "+str(len(tests))+"/"+str(len(student_counts)))
+
+    # process test results to ouput graph
     xdata, ydata, axis = visualizer.get_percent_success_vs_count(tests)
     
-    visualizer.scatter("Number of Students vs. % Successful Executions",
+    log = "tests.log"
+    for test in tests:
+        visualizer.print_report(test)
+        test.log_test(log)
+
+    # output graph
+    visualizer.scatter("Number of Students vs. % Successful Executions under 10 seconds For 30 Replicas",
                         xdata,
                         ydata,
                         axis,
                         "Student Count",
-                        "% Successful executions with runtime < 8 sec",
+                        "% Successful executions with runtime < 10 sec",
                         ".png")
 
 
-    # ======================== TEST SPAWN TIME ========================
-   
-#    for i in range(10): 
-#        print(test_spawn_time(service_name,inputs))
-
-    # ======================== NON THREADED TESTS ========================
-
-    # BAD CODE
-    # code, exp = inputs[0]
-
-    # tests = []
-
-    # for i in range(2,8):
-    #     test = run_test(service_name,"Bad Code 1-interval "+str(i*5)+"-executions",code,exp,i*5,1)
-    #     visualizer.print_report(test)
-    #     test.log_test("bad_code_interval_tests.log")
-    #     tests += [test]
-
-
-    # xdata, ydata, axis = visualizer.get_percent_success_vs_count(tests)
-    
-    # visualizer.scatter("Trial Count vs. % Successful Executions",
-    #                     xdata,
-    #                     ydata,
-    #                     axis,
-    #                     "Trial Count",
-    #                     "% Success",
-    #                     ".png")
-    # ======================== THREADED TESTS - Regular Interval ========================
-
-    # BAD CODE
-    # code, exp = inputs[0]
-
-    # run_threaded_tests(service_name,"Bad Code Threaded 5-interval",code,exp,reps,5)
-
-    # ======================== THREADED TESTS - Random Interval ========================
-    # BAD CODE
-    # code, exp = inputs[0]
-
-    # run_threaded_tests(service_name,"Bad Code Threaded Random 180-interval 60-Repitions",code,exp,reps,180,True)
 
 if __name__ == "__main__":
     main()

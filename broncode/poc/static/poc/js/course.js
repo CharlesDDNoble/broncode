@@ -8,15 +8,16 @@ function loadDynamicData(user, lesson, code) {
     d_lesson_id = lesson;
 }
 
-$('#btn-create-course').on('click', function(event){
-    event.preventDefault();
-    create_course();
-});
-
-
 // AJAX for posting
 function create_course() {
     var course_name = $("#course-name").val();
+
+    // validate input on course form    
+    if ($("#course-name").val() === "") {
+        M.toast({html: 'Course name must not be blank!', classes: 'rounded red lighten-3'});
+        return;
+    }
+
     // var course_lang = $("#course-language").val();
     console.log(course_name);
 
@@ -101,6 +102,21 @@ function delete_course(course_id) {
     });
 };
 
+$(document).ready(function(){
+    // submit on button press
+    $('#btn-create-course').on('click', function(event){
+        event.preventDefault();
+        create_course();
+    });
+
+    // submit on 'enter'
+    $("#course-name").keypress(function(event){
+        if (event.which === 13) {
+            event.preventDefault();
+            create_course();
+        }
+    });
+});
 
 $(function() {
 

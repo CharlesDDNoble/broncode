@@ -8,28 +8,30 @@
     <label id="label-hidden-tests">Automated Tests<br>
     </label>
     {% for test in test_cases %}
-    <div class="row testinputrow valign-wrapper" id="test_row_{{ test.id }}">
+    <div class="row testinputrow valign-wrapper" id="test-row-{{ test.id }}">
         <div class="col s3 input-field">
-            <input value="{{ test.stdin }}" type="text" id="command_line_{{ test.id }}">
-            <label for="command_line_{{ test.id }}">Input (Optional)</label>
+            <input value="{{ test.stdin }}" type="text" id="command-line-{{ test.id }}">
+            <label for="command-line-{{ test.id }}">Input (Optional)</label>
         </div>
         <div class="col s3 input-field">
-            <input value="{{ test.stdout }}" type="text" id="expected_{{ test.id }}" class="testcase-input-output"> 
-            <label for="expected_{{ test.id }}">Expected Output</label>
+            <input value="{{ test.stdout }}" type="text" id="expected-{{ test.id }}" class="testcase-output"> 
+            <label for="expected-{{ test.id }}">Expected Output</label>
         </div>
         <div class="col s3 input-field">
-            <input value="{{ test.hint }}" type="text" id="hint_{{ test.id }}">
-            <label for="hint_{{ test.id }}">Hint (Optional)</label>
+            <input value="{{ test.hint }}" type="text" id="hint-{{ test.id }}">
+            <label for="hint-{{ test.id }}">Hint (Optional)</label>
         </div>
-        <div class="col s3 testinputdeletecol">
-            <div class="btn center-align testinputdeletebtn">
+        <div class="col s3 center-align testinputdeletecol">
+            <div class="btn red accent-4 testinputdeletebtn">
             <span>remove</span>
             </div>
         </div>
-        <input type="hidden" id="number_{{ test.id }}" value="{{ test.number }}">
+        <input type="hidden" id="number-{{ test.id }}" value="{{ test.number }}">
+        <input type="hidden" id="is-new-{{ test.id }}" value="false">
+        <input type="hidden" id="was-deleted-{{ test.id }}" value="false">
     </div>
     {% endfor %}
-    <div id="add-test-wrapper" class="right-align">
+    <div id="add-test-wrapper" class="center-align">
         <div class="btn" id="btn-hidden-test-add">
             <span>Add Test Case</span>
         </div>
