@@ -20,7 +20,7 @@ function delete_lesson(lesson_id) {
     console.log("delete_lesson("+lesson_id+")");
 
     $.ajax({
-        url : 'http://broncode.cs.wmich.edu/api/lessons/' + lesson_id, // the endpoint
+        url : 'https://broncode.cs.wmich.edu/api/lessons/' + lesson_id, // the endpoint
         type : 'DELETE', // http method
 
         data : {}, // data sent with the post request

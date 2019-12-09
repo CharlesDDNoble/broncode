@@ -1,5 +1,5 @@
 var test_id = 1;
-var BRONCODE_URL = "http://broncode.cs.wmich.edu"
+var BRONCODE_URL = "https://broncode.cs.wmich.edu"
 
 $(document).ready(function() {
     // if there are already tests, then the next id is the last test id + 1

@@ -1,4 +1,4 @@
-var BRONCODE_URL = "http://broncode.cs.wmich.edu"
+var BRONCODE_URL = "https://broncode.cs.wmich.edu"
 
 // AJAX for posting
 function edit_lesson() {

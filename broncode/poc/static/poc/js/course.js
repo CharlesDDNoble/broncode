@@ -1,7 +1,7 @@
 // Submit post on submit
 var d_user_id = -1 // django_user_id
 var d_lesson_id = -1 // django_lesson_id
-var BRONCODE_URL = "http://broncode.cs.wmich.edu"
+var BRONCODE_URL = "https://broncode.cs.wmich.edu"
 
 function loadDynamicData(user, lesson, code) {
     d_user_id = user;
