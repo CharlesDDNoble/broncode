@@ -1,3 +1,5 @@
 .vscode/
 __pycache__/
 nginx_static/
+.DS_Store
+._LICENSE
