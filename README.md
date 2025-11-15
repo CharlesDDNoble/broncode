@@ -5,3 +5,11 @@ Broncode is an interactive coding tutorial platform created by Josh Chandler, Ch
 
 ## Usage
 Usage of Broncode requires an Nginx server as well as Django, Docker and Postgres. Installation and usage instructions can be found in the manual found in the docs folder.
+
+## Architecture
+
+[Diagram](architechture-diagram.png)
+
+## Demo
+
+[Demo](demo.mp4)
