@@ -8,8 +8,8 @@ Usage of Broncode requires an Nginx server as well as Django, Docker and Postgre
 
 ## Architecture
 
-![Diagram](architechture-diagram.png)
+![Diagram](architecture-diagram.png)
 
 ## Demo
 
-![Demo](demo.mp4)
+![Demo](demo.gif)
